@@ -31,6 +31,7 @@
         <module>common</module>
         <module>gateway</module>
         <module>auth</module>
+        <module>user</module>
     </modules>
 
     <!-- 以变量的方式声明模块版本号 -->
