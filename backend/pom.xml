@@ -23,12 +23,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.13</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <!-- 子模块 -->
     <modules>
         <module>common</module>
+        <module>gateway</module>
     </modules>
 
     <!-- 以变量的方式声明模块版本号 -->
@@ -36,21 +37,20 @@
         <java.version>1.8</java.version> <!-- Java 版本 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 编码 -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- 编码 -->
-        <common.version>0.0.1-SNAPSHOT</common.version> <!-- common 模块版本号 -->
+        <lombok.version>1.18.24</lombok.version> <!-- lombok 版本 -->
         <mysql.version>8.0.30</mysql.version> <!-- mysql 8.0.30 -->
         <druid.version>1.2.16</druid.version> <!-- Druid 数据库连接池 -->
         <mybatis.version>2.2.0</mybatis.version> <!-- mybatis -->
     </properties>
 
-
     <!-- 统一管理版本号: 只是声明依赖，并不自动实现引入 -->
     <dependencyManagement>
         <dependencies>
-            <!-- 公共模块 -->
+            <!-- lombok -->
             <dependency>
-                <groupId>com.zxiaosi</groupId>
-                <artifactId>common</artifactId>
-                <version>${common.version}</version>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
 
             <!-- mysql -->
@@ -67,7 +67,7 @@
                 <version>${druid.version}</version>
             </dependency>
 
-            <!-- mybatis-spring-boot-stater -->
+            <!-- mybatis -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -75,5 +75,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- 所有子模块公用 -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
