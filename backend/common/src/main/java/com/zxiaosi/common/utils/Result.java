@@ -57,42 +57,42 @@ public class Result<T> implements Serializable {
 
 
     public static <T> Result<T> success() {
-        return new Result<>(SUCCESS_CODE, null, 0L, SUCCESS_MSG);
+        return new Result(SUCCESS_CODE, null, 0L, SUCCESS_MSG);
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result<>(SUCCESS_CODE, data, 0L, SUCCESS_MSG);
+        return new Result(SUCCESS_CODE, data, 0L, SUCCESS_MSG);
     }
 
     public static <T> Result<T> success(T data, long total) {
-        return new Result<>(SUCCESS_CODE, data, total, SUCCESS_MSG);
+        return new Result(SUCCESS_CODE, data, total, SUCCESS_MSG);
     }
 
     public static <T> Result<T> success(T data, String msg) {
-        return new Result<>(SUCCESS_CODE, data, 0L, msg);
+        return new Result(SUCCESS_CODE, data, 0L, msg);
     }
 
     public static <T> Result<T> success(T data, long total, String msg) {
-        return new Result<>(SUCCESS_CODE, data, total, msg);
+        return new Result(SUCCESS_CODE, data, total, msg);
     }
 
     public static <T> Result<T> fail() {
-        return new Result<>(ERROR_CODE, null, 0L, ERROR_MSG);
+        return new Result(ERROR_CODE, null, 0L, ERROR_MSG);
     }
 
     public static <T> Result<T> fail(String msg) {
-        return new Result<>(ERROR_CODE, null, 0L, msg);
+        return new Result(ERROR_CODE, null, 0L, msg);
     }
 
     public static <T> Result<T> fail(T data, String msg) {
-        return new Result<>(ERROR_CODE, data, 0L, msg);
+        return new Result(ERROR_CODE, data, 0L, msg);
     }
 
     public static <T> Result<T> fail(Integer code, String msg) {
-        return new Result<>(code, null, 0L, msg);
+        return new Result(code, null, 0L, msg);
     }
 
     public static <T> Result<T> fail(Integer code, T data, String msg) {
-        return new Result<>(code, data, 0L, msg);
+        return new Result(code, data, 0L, msg);
     }
 }

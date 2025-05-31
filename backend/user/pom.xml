@@ -39,9 +39,7 @@
                 <!-- 该插件主要用途：构建可执行的JAR -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.zxiaosi.user.UserApplication</mainClass> <!-- 指定该Main Class为全局的唯一入口 -->
-                </configuration>
+                <version>2.6.13</version>
                 <executions>
                     <execution>
                         <goals>
