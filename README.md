@@ -14,7 +14,9 @@
 
 - `Qiankun`
 
-- `zustand`
+- `Zustand`
+
+- `Vite-plugin-qiankun-lite`
 
 ### 微服务
 
