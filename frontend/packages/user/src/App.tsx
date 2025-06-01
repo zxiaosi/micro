@@ -1,5 +1,5 @@
 function App() {
-  return <>main 主应用</>;
+  return <>user 子应用</>;
 }
 
 export default App;

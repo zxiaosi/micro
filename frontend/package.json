@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
-    "main:dev": "pnpm -F main run dev"
+    "main:dev": "pnpm -F main run dev",
+    "user:dev": "pnpm -F user run dev"
   },
   "dependencies": {},
   "devDependencies": {
