@@ -2,11 +2,33 @@
 
 ## 项目介绍
 
-- 计划做一个 `微前端` + `微服务` 的项目
+### 微前端
 
-- `微前端`: `Vite` + `React` + `React-Router` + `Antd` + `Qiankun`
+- `Vite`
 
-- `微服务`: `Spring Boot` + `Spring Cloud GetWay` + `Nacos` + `MySQL` + `Redis` + `Satoken`
+- `React`
+
+- `React-Router`
+
+- `Antd`
+
+- `Qiankun`
+
+- `zustand`
+
+### 微服务
+
+- `Spring Boot`
+
+- `Spring Cloud GateWay`
+
+- `Nacos`
+
+- `MySQL`
+
+- `Redis`
+
+- `Satoken`
 
 ## 大致结构
 
