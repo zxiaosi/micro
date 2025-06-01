@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import qiankun from 'vite-plugin-qiankun-lite';
 
 // babel.config.js
 const ReactCompilerConfig = {
@@ -14,5 +15,6 @@ export default defineConfig({
         plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
       },
     }),
+    qiankun({ name: 'user', sandbox: true }),
   ],
 });

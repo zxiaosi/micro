@@ -1,5 +1,5 @@
 function App() {
-  return <>user 子应用</>;
+  return <h2>user 子应用</h2>;
 }
 
 export default App;

@@ -1,5 +1,13 @@
+import { BrowserRouter, Link } from 'react-router';
+
 function App() {
-  return <>main 主应用</>;
+  return (
+    <BrowserRouter>
+      <h2>main 主应用</h2>
+      <Link to={'user'}>展示子应用</Link>
+      <main id="sub-app" />
+    </BrowserRouter>
+  );
 }
 
 export default App;
