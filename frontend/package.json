@@ -1,0 +1,17 @@
+{
+  "name": "frontend",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
+    "main:dev": "pnpm -F main run dev"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-packagejson": "^2.5.15"
+  }
+}
