@@ -18,6 +18,14 @@
     </parent>
 
     <dependencies>
+
+        <!-- Webflux 注意是 Webflux 不是 Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 03/06/2025 00:18:57
+ Date: 03/06/2025 00:56:48
 */
 
 SET NAMES utf8mb4;
@@ -22,11 +22,11 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '资源id',
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资源名称',
   `level` smallint NOT NULL DEFAULT 0 COMMENT '层级: 0 目录 1 菜单 2 权限',
-  `pid` int NOT NULL DEFAULT 0 COMMENT '父节点id',
-  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `pid` int NOT NULL DEFAULT 0 COMMENT '资源父id',
+  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '资源图标',
   `router` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '页面路由\r\n',
   `router_attr` json NULL COMMENT '路由参数',
   `permission_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限code',
@@ -41,7 +41,7 @@ CREATE TABLE `resource`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '角色id',
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
   `description` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色描述',
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
