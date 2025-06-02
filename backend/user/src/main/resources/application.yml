@@ -1,7 +1,9 @@
 server:
-  port: 8082 # 端口号
+  port: 8081 # 端口号
 
 spring:
+  webflux:
+    base-path: /api # WebFlux的基础路径
   application:
     name: user # nacos中注册的应用名称
   cloud:
