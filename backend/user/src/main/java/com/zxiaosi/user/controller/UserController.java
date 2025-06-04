@@ -1,25 +1,20 @@
 package com.zxiaosi.user.controller;
 
-import cn.dev33.satoken.reactor.context.SaReactorHolder;
 import cn.dev33.satoken.stp.StpUtil;
 import com.zxiaosi.common.utils.Result;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @PostMapping("/login")
-    public Mono<Result<?>> login(@RequestParam String username, @RequestParam String password) {
-        // 模拟登录验证
-        return SaReactorHolder.sync(() -> {
-            if ("admin".equals(username) && "123456".equals(password)) {
-                StpUtil.login(10001);
-                return Result.success(StpUtil.getTokenInfo());
-            }
-            return Result.fail("登录失败！");
-        });
+    public Result<?> login(@RequestParam String username, @RequestParam String password) {
+        if ("admin".equals(username) && "123456".equals(password)) {
+            StpUtil.login(10001);
+            return Result.success(StpUtil.getTokenInfo());
+        }
+        return Result.fail("登录失败！");
     }
 
     @GetMapping("/checkLogin")
@@ -38,10 +33,7 @@ public class UserController {
 
     // 示例接口，获取当前登录用户ID
     @GetMapping("/info")
-    public Mono<Result<?>> getUserInfo() {
-        // 模拟登录验证
-        return SaReactorHolder.sync(() -> {
-            return Result.success("用户信息: UID=" + StpUtil.getLoginId());
-        });
+    public Result<?> getUserInfo() {
+        return Result.success("用户信息: UID=" + StpUtil.getLoginId());
     }
 }
