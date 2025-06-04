@@ -2,7 +2,9 @@
 
 ## 项目介绍
 
-### 微前端
+### web
+
+#### 微前端
 
 - `Vite`
 
@@ -17,6 +19,12 @@
 - `Zustand`
 
 - `Vite-plugin-qiankun-lite`
+
+### weapp
+
+### app
+
+### pc
 
 ### 微服务
 
