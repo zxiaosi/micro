@@ -11,7 +11,7 @@ const render = (props: any = {}) => {
 
   root = createRoot(container);
 
-  root.render(<App />);
+  root.render(<App microAppProps={props} />);
 };
 
 if (!window.__POWERED_BY_QIANKUN__) {
