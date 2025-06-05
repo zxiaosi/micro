@@ -1,9 +1,9 @@
-import { initGlobalState, type MicroAppStateActions } from 'qiankun';
-import { useEffect, useRef, useState } from 'react';
 import {
   InitialStateContext,
   type GlobalStateProps,
-} from '../hooks/useInitialState';
+} from '@/hooks/useInitialState';
+import { initGlobalState, type MicroAppStateActions } from 'qiankun';
+import { useEffect, useRef, useState } from 'react';
 
 /** 全局变量Provide */
 export const InitialStateProvide = ({ children }: { children: any }) => {

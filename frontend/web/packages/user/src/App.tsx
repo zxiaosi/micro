@@ -1,5 +1,5 @@
-import { useInitialState } from './hooks/useInitialState';
-import { InitialStateProvide } from './provider/InitialStateContext';
+import { useInitialState } from '@/hooks/useInitialState';
+import { InitialStateProvide } from '@/provider/InitialStateContext';
 
 function App() {
   const { globalState, setGlobalState } = useInitialState();

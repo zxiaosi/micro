@@ -1,6 +1,6 @@
+import { useInitialState } from '@/hooks/useInitialState';
+import { InitialStateProvide } from '@/provider/InitialStateContext';
 import { BrowserRouter, Link } from 'react-router';
-import { useInitialState } from './hooks/useInitialState';
-import { InitialStateProvide } from './provider/InitialStateContext';
 
 function App() {
   const { globalState, setGlobalState } = useInitialState();
