@@ -1,31 +1,39 @@
-import { useInitialState } from '@/hooks/useInitialState';
-import { InitialStateProvide } from '@/provider/InitialStateContext';
+import globalStore from '@/hooks/useGlobalState';
+import { useEffect, useState } from 'react';
+import { shallow } from 'zustand/vanilla/shallow';
 
 function App() {
-  const { globalState, setGlobalState } = useInitialState();
+  const [initialState, setInitialState] = useState({});
+
+  useEffect(() => {
+    globalStore?.subscribe(
+      (state) => state.initialState,
+      (state: any, prev: any) => {
+        console.log('bears change', state, prev);
+        setInitialState(state);
+      },
+      {
+        equalityFn: shallow,
+        fireImmediately: true,
+      },
+    );
+  }, []);
+
   return (
     <>
       <h2>user 子应用</h2>
-      {/* 只能更新已经存在的变量 https://qiankun.umijs.org/zh/api#initglobalstatestate */}
-      <button onClick={() => setGlobalState({ name: 'user', sex: '男' })}>
+      <button
+        onClick={() => {
+          globalStore
+            ?.getState()
+            ?.setInitialState?.({ timeStamp: Date.now().valueOf() });
+        }}
+      >
         更新全局变量
       </button>
-      <span style={{ marginLeft: 20 }}>{JSON.stringify(globalState)}</span>
+      <span style={{ marginLeft: 20 }}>{JSON.stringify(initialState)}</span>
     </>
   );
 }
 
-function AppProvider({ microAppProps }: { microAppProps?: any }) {
-  const { setGlobalState, onGlobalStateChange } = microAppProps;
-
-  return (
-    <InitialStateProvide
-      setGlobalState={setGlobalState}
-      onGlobalStateChange={onGlobalStateChange}
-    >
-      <App />
-    </InitialStateProvide>
-  );
-}
-
-export default AppProvider;
+export default App;
