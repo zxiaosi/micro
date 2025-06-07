@@ -1,5 +1,7 @@
 package com.zxiaosi.gateway.config;
 
+import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
@@ -23,23 +25,15 @@ public class SaTokenConfigure {
                 // 指定 [放行路由]
                 .addExclude("/favicon.ico")
                 // 指定[认证函数]: 每次请求执行
-                // 鉴权方法：每次访问进入
                 .setAuth(obj -> {
-//                    System.out.println("---------- sa全局认证");
+                    // 输出 API 请求日志，方便调试代码
+                    SaManager.getLog().debug("----- 请求path={}  提交token={}", SaHolder.getRequest().getRequestPath(), StpUtil.getTokenValue());
+
                     // 登录校验 -- 拦截所有路由，并排除 /api/user/login 用于开放登录
                     SaRouter.match("/**", "/api/user/login", r -> StpUtil.checkLogin());
-
-                    // 权限认证 -- 不同模块, 校验不同权限
-//                    SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
-//                    SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));
-//                    SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
-//                    SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
-
-                    // 更多匹配 ...  */
                 })
                 // 异常处理方法：每次setAuth函数出现异常时进入
                 .setError(e -> {
-                    System.out.println("---------- sa全局异常");
                     e.printStackTrace();
                     return SaResult.error(e.getMessage());
                 });

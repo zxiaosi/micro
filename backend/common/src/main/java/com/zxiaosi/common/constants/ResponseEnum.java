@@ -14,31 +14,25 @@ public enum ResponseEnum {
     ERROR(1, "error"),
 
     // 400系列
-    BAD_REQUEST(400, "请求的数据格式不符!"),
+    BAD_REQUEST(400, "请求的数据格式不符"),
 
-    UNAUTHORIZED(401, "登录凭证过期!"),
+    UNAUTHORIZED(401, "登录凭证过期"),
 
-    FORBIDDEN(403, "抱歉，你无权限访问!"),
+    FORBIDDEN(403, "抱歉，你无权限访问"),
 
-    NOT_FOUND(404, "请求的资源找不到!"),
+    NOT_FOUND(404, "请求的资源找不到"),
 
-    METHOD_NOT_ALLOWED(405, "请求的方法不允许!"),
+    METHOD_NOT_ALLOWED(405, "请求的方法不允许"),
 
     // 500系列
-    INTERNAL_SERVER_ERROR(500, "服务器内部错误!"),
+    INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
 
-    SERVICE_UNAVAILABLE(503, "服务器正忙，请稍后再试!"),
+    SERVICE_UNAVAILABLE(503, "服务器正忙，请稍后再试"),
 
     // 自定义系列
-    TOKEN_FORMAT_ISSUES(40101, "token格式不正确!"),
+    EMPTY_USERNAME(40401, "用户名不能为空"),
 
-    TOKEN_EXPIRED(40102, "token已过期!"),
-
-    OFFSITE_LOGIN(40103, "您的账号已经在别的地方登录!"),
-
-    EMPTY_USERNAME(40401, "用户名不能为空!"),
-
-    EMPTY_PASSWORD(40402, "密码不能为空!"),
+    EMPTY_PASSWORD(40402, "密码不能为空"),
 
     USERNAME_OR_PASSWORD_ERROR(40403, "用户名或密码错误!");
 

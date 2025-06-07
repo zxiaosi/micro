@@ -1,7 +1,8 @@
 package com.zxiaosi.common.exception;
 
+import cn.dev33.satoken.exception.SaTokenException;
+import cn.dev33.satoken.util.SaResult;
 import com.zxiaosi.common.constants.ResponseEnum;
-import com.zxiaosi.common.utils.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,16 +16,16 @@ public class GlobalException {
      * 自定义异常
      */
     @ExceptionHandler(CustomException.class)
-    public Result<?> handleCustomException(CustomException e) {
-        return Result.fail(e.getCode(), e.getMsg());
+    public SaResult handleCustomException(CustomException e) {
+        return SaResult.error(e.getMsg()).setCode(e.getCode());
     }
 
     /**
      * 全局异常
      */
     @ExceptionHandler(Exception.class)
-    public Result<?> handleException(Exception e) {
+    public SaResult handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        return Result.fail(ResponseEnum.INTERNAL_SERVER_ERROR.getCode(), e.getMessage());
+        return SaResult.error(e.getMessage()).setCode(ResponseEnum.INTERNAL_SERVER_ERROR.getCode());
     }
 }

@@ -54,7 +54,7 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
-        <!-- Nacos Discovery 服务发现 -->
+        <!-- Nacos Discovery -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
