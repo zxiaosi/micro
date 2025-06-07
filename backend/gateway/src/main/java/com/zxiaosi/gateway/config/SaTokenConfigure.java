@@ -25,9 +25,9 @@ public class SaTokenConfigure {
                 // 指定[认证函数]: 每次请求执行
                 // 鉴权方法：每次访问进入
                 .setAuth(obj -> {
-                    System.out.println("---------- sa全局认证");
-                    // 登录校验 -- 拦截所有路由，并排除 /auth/login 用于开放登录
-//                    SaRouter.match("/**", "/auth/login", r -> StpUtil.checkLogin());
+//                    System.out.println("---------- sa全局认证");
+                    // 登录校验 -- 拦截所有路由，并排除 /api/user/login 用于开放登录
+                    SaRouter.match("/**", "/api/user/login", r -> StpUtil.checkLogin());
 
                     // 权限认证 -- 不同模块, 校验不同权限
 //                    SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));

@@ -31,9 +31,8 @@ public class UserController {
         return Result.success("退出成功");
     }
 
-    // 示例接口，获取当前登录用户ID
-    @GetMapping("/info")
-    public Result<?> getUserInfo() {
-        return Result.success("用户信息: UID=" + StpUtil.getLoginId());
+    @GetMapping("/getUserInfo")
+    public Result<String> getUserInfo() {
+        return Result.success("用户信息" + StpUtil.getTokenInfo());
     }
 }

@@ -1,0 +1,11 @@
+server:
+  # 端口号
+  port: 8080
+
+spring:
+  profiles:
+    # 激活的环境
+    active: dev
+  application:
+    # nacos 服务名 (Nacos 中 dataId 的一部分)
+    name: gateway
