@@ -6,4 +6,56 @@
     <!-- resultType: 返回值类型 -->
     <!-- parameterType: 参数类型 -->
     <!-- 实体类字段和数据库一致直接用resultType -->
+
+    <!-- 根据 用户id 获取用户信息 -->
+    <select id="getUserByUserId" parameterType="integer" resultType="User">
+        select *
+        from user
+        where user.id = #{userId}
+          and user.is_deleted = 0 limit 1
+    </select>
+
+    <!-- 根据 openid 获取用户信息  -->
+    <select id="getUserByOpenId" parameterType="string" resultType="User">
+        select *
+        from user
+        where open_id = #{openId}
+          and user.is_deleted = 0 limit 1
+    </select>
+
+    <!-- 根据 用户名 获取用户信息 -->
+    <select id="getUserByUsername" parameterType="string" resultType="User">
+        select *
+        from user
+        where username = #{username}
+          and user.is_deleted = 0 limit 1
+    </select>
+
+    <!-- 插入用户信息 -->
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (open_id, username, password, phone, avatar, is_deleted, create_time, update_time)
+        values (#{open_id}, #{username}, #{password}, #{phone}, #{avatar}, #{isDeleted}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 根据 用户id 更新用户信息 -->
+    <update id="updateUserByUserId" parameterType="User">
+        update user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据 用户名 更新密码 - Spring Security 修改密码方法 -->
+    <update id="updatePasswordByUsername">
+        update user
+        set password = #{password}
+        where username = #{username}
+    </update>
 </mapper>

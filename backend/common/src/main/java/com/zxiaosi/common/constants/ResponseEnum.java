@@ -38,7 +38,9 @@ public enum ResponseEnum {
 
     EMPTY_USERNAME(40401, "用户名不能为空!"),
 
-    EMPTY_PASSWORD(40402, "密码不能为空!");
+    EMPTY_PASSWORD(40402, "密码不能为空!"),
+
+    USERNAME_OR_PASSWORD_ERROR(40403, "用户名或密码错误!");
 
     // 以上是枚举的成员，必须先定义，而且使用分号结束
 

@@ -1,43 +1,23 @@
-package com.zxiaosi.user.entity;
+package com.zxiaosi.user.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.zxiaosi.user.entity.Role;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-/**
- * 用户实体类
- */
 @Data
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class User implements Serializable {
-
+public class UserVo {
     /**
      * 用户id
      */
     private Integer id;
 
     /**
-     * 微信id
-     */
-    @JsonIgnore
-    private String openId;
-
-    /**
      * 用户昵称
      */
     private String username;
-
-    /**
-     * 用户密码
-     */
-    @JsonIgnore
-    private String password;
 
     /**
      * 用户手机号
@@ -50,7 +30,7 @@ public class User implements Serializable {
     private String avatar;
 
     /**
-     * 是否删除 0:未删除 1:已删除
+     * 是否删除
      */
     private Integer isDeleted;
 
@@ -65,4 +45,9 @@ public class User implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
+
+    /**
+     * 用户角色
+     */
+    private List<Role> roles;
 }

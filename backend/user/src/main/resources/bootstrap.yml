@@ -12,3 +12,12 @@ spring:
   application:
     # nacos 服务名 (Nacos 中 dataId 的一部分)
     name: user
+
+mybatis:
+  # 扫描实体类
+  type-aliases-package: com.zxiaosi.user.entity
+  # 扫描mapper
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true

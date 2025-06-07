@@ -2,27 +2,27 @@ package com.zxiaosi.user.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.zxiaosi.common.utils.Result;
+import com.zxiaosi.user.entity.vo.LoginVo;
+import com.zxiaosi.user.entity.vo.UserVo;
+import com.zxiaosi.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    @PostMapping("/login")
-    public Result<?> login(@RequestParam String username, @RequestParam String password) {
-        if ("admin".equals(username) && "123456".equals(password)) {
-            StpUtil.login(10001);
-            return Result.success(StpUtil.getTokenInfo());
-        }
-        return Result.fail("登录失败！");
-    }
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/checkLogin")
-    public Result<String> checkLogin() {
-        if (StpUtil.isLogin()) {
-            return Result.success("已登录，用户ID: " + StpUtil.getLoginId());
+    @PostMapping("/login")
+    public Result<?> login(@RequestBody LoginVo loginVo) {
+        Boolean flag = userService.checkUsernamePasswordService(loginVo);
+        if (flag) {
+            return Result.success(StpUtil.getTokenValue(), "登录成功！");
+        } else {
+            return Result.fail("登录失败！");
         }
-        return Result.fail("未登录");
     }
 
     @PostMapping("/logout")
@@ -32,7 +32,8 @@ public class UserController {
     }
 
     @GetMapping("/getUserInfo")
-    public Result<String> getUserInfo() {
-        return Result.success("用户信息" + StpUtil.getTokenInfo());
+    public Result<UserVo> getUserInfo() {
+        Integer loginId = StpUtil.getLoginIdAsInt();
+        return Result.success(userService.getUserByIdService(loginId));
     }
 }

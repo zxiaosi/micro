@@ -6,4 +6,13 @@
     <!-- resultType: 返回值类型 -->
     <!-- parameterType: 参数类型 -->
     <!-- 实体类字段和数据库一致直接用resultType -->
+
+    <!-- 根据用户 id 获取角色集合 -->
+    <select id="getRolesByUserId" parameterType="integer" resultType="Role">
+        select role.*
+        from role
+                 left join user_role ur on ur.role_id = role.id
+        where ur.user_id = #{userId}
+          and role.is_deleted = 0
+    </select>
 </mapper>
