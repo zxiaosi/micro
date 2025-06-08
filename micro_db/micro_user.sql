@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 08/06/2025 03:20:42
+ Date: 08/06/2025 22:12:50
 */
 
 SET NAMES utf8mb4;
@@ -91,6 +91,7 @@ CREATE TABLE `user`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户密码',
   `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户手机号',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户头像',
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除 0 未删除 1 已删除',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -104,7 +105,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, NULL, 'admin', '$2a$10$IvxccaJC6EPakoKkUo1ztewdLAf9hScYu9fw79upagmwW.s3HAN1O', NULL, NULL, 0, '2025-06-08 03:02:28', '2025-06-08 03:02:28');
+INSERT INTO `user` VALUES (1, NULL, 'admin', '$2a$10$IvxccaJC6EPakoKkUo1ztewdLAf9hScYu9fw79upagmwW.s3HAN1O', NULL, NULL, NULL, 0, '2025-06-08 03:02:28', '2025-06-08 03:02:28');
 
 -- ----------------------------
 -- Table structure for user_role

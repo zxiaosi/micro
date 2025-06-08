@@ -18,6 +18,9 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
+/**
+ * 用户服务实现类
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -26,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleMapper roleMapper;
-
 
     @Override
     public Boolean checkUsernamePasswordService(LoginVo loginVo) {

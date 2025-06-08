@@ -40,6 +40,19 @@
 #        server-addr: localhost:8848
 #        username: nacos
 #        password: nacos
+#  mail:
+#    # 配置 SMTP 服务器地址
+#    host: smtp.163.com
+#    # 发送者邮箱
+#    username:
+#    # 配置授权码
+#    password:
+#    # 端口号
+#    #    port: 465
+#    # 发送协议, 如果配置SSL端口，这里的发送协议改为 smtps
+#    protocol: smtp
+#    # 邮件编码方式
+#    default-encoding: utf-8
 #
 ## Sa-Token配置
 #sa-token:
@@ -57,6 +70,14 @@
 #  token-style: uuid
 #  # 是否输出操作日志
 #  is-log: true
+#
+## 自定义配置
+#custom:
+#  mail:
+#    # 邮件发送人
+#    name: 小四先生的栈
+#    # 验证码时长（单位: s）
+#    time: 60
 
 spring:
   cloud:
@@ -66,5 +87,4 @@ spring:
         server-addr: localhost:8848
         username: nacos
         password: nacos
-        namespace: 44cc311f-664f-4e4a-89db-53050896d7c5
         file-extension: yaml

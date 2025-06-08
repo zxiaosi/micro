@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zxiaosi.user.entity.Role;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 用户信息
+ */
 @Data
 public class UserVo {
     /**
@@ -25,6 +29,11 @@ public class UserVo {
     private String phone;
 
     /**
+     * 用户邮箱
+     */
+    private String email;
+
+    /**
      * 用户头像
      */
     private String avatar;
@@ -37,13 +46,13 @@ public class UserVo {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date updateTime;
 
     /**

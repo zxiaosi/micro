@@ -3,6 +3,9 @@ package com.zxiaosi.user.service;
 import com.zxiaosi.user.entity.vo.LoginVo;
 import com.zxiaosi.user.entity.vo.UserVo;
 
+/**
+ * 用户服务
+ */
 public interface UserService {
 
     /**

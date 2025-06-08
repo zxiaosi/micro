@@ -2,6 +2,9 @@ package com.zxiaosi.user.entity.vo;
 
 import lombok.Data;
 
+/**
+ * 登录参数
+ */
 @Data
 public class LoginVo {
 

@@ -33,8 +33,9 @@
 
     <!-- 插入用户信息 -->
     <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into user (open_id, username, password, phone, avatar, is_deleted, create_time, update_time)
-        values (#{open_id}, #{username}, #{password}, #{phone}, #{avatar}, #{isDeleted}, #{createTime}, #{updateTime})
+        insert into user (open_id, username, password, phone, email, avatar, is_deleted, create_time, update_time)
+        values (#{open_id}, #{username}, #{password}, #{phone}, #{email}, #{avatar}, #{isDeleted}, #{createTime},
+                #{updateTime})
     </insert>
 
     <!-- 根据 用户id 更新用户信息 -->
@@ -44,6 +45,7 @@
             <if test="username != null">username = #{username},</if>
             <if test="password != null">password = #{password},</if>
             <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
             <if test="avatar != null">avatar = #{avatar},</if>
             <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

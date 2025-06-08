@@ -7,6 +7,9 @@ import com.zxiaosi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 登录接口
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {

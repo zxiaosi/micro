@@ -34,7 +34,9 @@ public enum ResponseEnum {
 
     EMPTY_PASSWORD(40402, "密码不能为空"),
 
-    USERNAME_OR_PASSWORD_ERROR(40403, "用户名或密码错误!");
+    EMPTY_EMAIL(40403, "发送人，接收人，主题，内容均不可为空"),
+
+    USERNAME_OR_PASSWORD_ERROR(50001, "用户名或密码错误");
 
     // 以上是枚举的成员，必须先定义，而且使用分号结束
 

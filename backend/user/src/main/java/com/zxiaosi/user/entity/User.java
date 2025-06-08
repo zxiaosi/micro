@@ -3,7 +3,6 @@ package com.zxiaosi.user.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
@@ -14,7 +13,7 @@ import java.util.Date;
  * 用户实体类
  */
 @Data
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class) // 下划线驼峰映射
 public class User implements Serializable {
 
     /**
@@ -25,7 +24,6 @@ public class User implements Serializable {
     /**
      * 微信id
      */
-    @JsonIgnore
     private String openId;
 
     /**
@@ -36,8 +34,12 @@ public class User implements Serializable {
     /**
      * 用户密码
      */
-    @JsonIgnore
     private String password;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
 
     /**
      * 用户手机号
@@ -57,12 +59,12 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date updateTime;
 }

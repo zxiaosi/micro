@@ -1,6 +1,7 @@
 package com.zxiaosi.user;
 
 import cn.dev33.satoken.secure.SaSecureUtil;
+import cn.dev33.satoken.util.SaFoxUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -9,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 class UserApplicationTests {
 
     @Test
-    void contextLoads() {
+    void checkPwd() {
         // 定义明文
         String text = "123456";
 
@@ -23,6 +24,12 @@ class UserApplicationTests {
 
         boolean checkpw = BCrypt.checkpw(md5, pw_hash);
         System.out.println("验证：" + checkpw);
+    }
+
+    @Test
+    void generateCaptcha() {
+        int randomNumber = SaFoxUtil.getRandomNumber(100000, 999999);
+        System.out.println("随机数" + randomNumber);
     }
 
 }

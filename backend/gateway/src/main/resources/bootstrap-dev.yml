@@ -35,7 +35,7 @@
 #        - id: user-service
 #          uri: lb://user
 #          predicates:
-#            - Path=/api/user/**
+#            - Path=/api/user/**,/api/email/**
 #    nacos:
 #      # 服务发现
 #      discovery:
@@ -68,5 +68,4 @@ spring:
         server-addr: localhost:8848
         username: nacos
         password: nacos
-        namespace: 44cc311f-664f-4e4a-89db-53050896d7c5
         file-extension: yaml
