@@ -1,0 +1,29 @@
+{
+  "name": "@zxiaosi/sdk",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "zxiaosi",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/esm/index.d.mts",
+  "files": [
+    "dist",
+    "rolldown.config.ts",
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "build": "npx rimraf dist && rolldown -c rolldown.config.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "rolldown": "^1.0.0-beta.13",
+    "rolldown-plugin-dts": "^0.13.9"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.5"
+  }
+}

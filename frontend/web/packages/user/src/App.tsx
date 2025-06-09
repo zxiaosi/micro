@@ -1,4 +1,4 @@
-import globalStore from '@/hooks/useGlobalState';
+import { globalStore } from '@zxiaosi/sdk';
 import { useEffect, useState } from 'react';
 import { shallow } from 'zustand/vanilla/shallow';
 

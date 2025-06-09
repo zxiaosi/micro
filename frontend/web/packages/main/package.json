@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@zxiaosi/sdk": "workspace:*",
     "qiankun": "^2.10.16",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -33,6 +34,7 @@
     "vite": "^6.3.5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18",
+    "pnpm": ">=8"
   }
 }

@@ -1,13 +1,13 @@
 {
   "name": "frontend",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
+    "build:main": "pnpm -F main run build",
+    "build:sdk": "pnpm -F sdk run build",
+    "build:user": "pnpm -F user run build",
     "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
-    "main:dev": "pnpm -F main run dev",
-    "user:dev": "pnpm -F user run dev"
+    "dev:main": "pnpm -F main run dev",
+    "dev:user": "pnpm -F user run dev"
   },
   "dependencies": {},
   "devDependencies": {

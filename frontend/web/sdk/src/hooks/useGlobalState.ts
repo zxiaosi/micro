@@ -1,8 +1,6 @@
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
-// 适合封装成 npm 包
-
 /** 变量类型 */
 interface InitialStateProps {
   name?: string;
@@ -56,7 +54,7 @@ declare global {
 /** 创建全局状态 */
 const useGlobalStore = create<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
-    initialState: { name: 'main' },
+    initialState: {},
     setInitialState: (newInitialState, replace = false) =>
       set((state) => ({
         initialState: {
@@ -67,7 +65,14 @@ const useGlobalStore = create<GlobalStoreProps>()(
   })),
 );
 
-export default useGlobalStore;
+/** 定义 window 变量 */
+Object.defineProperty(window, '__ZUSTAND_STORE__', {
+  value: useGlobalStore,
+  writable: false, // 禁止修改
+  configurable: false, // 禁止删除
+});
 
-// 暴露给子应用
-window.__ZUSTAND_STORE__ = useGlobalStore;
+/** 从主应用获取 zustand store */
+const globalStore = window.__ZUSTAND_STORE__;
+
+export { globalStore, useGlobalStore };

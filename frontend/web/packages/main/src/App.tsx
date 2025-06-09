@@ -1,4 +1,4 @@
-import useGlobalStore from '@/hooks/useGlobalState';
+import { useGlobalStore } from '@zxiaosi/sdk';
 import { BrowserRouter, Link } from 'react-router';
 import { useShallow } from 'zustand/shallow';
 
