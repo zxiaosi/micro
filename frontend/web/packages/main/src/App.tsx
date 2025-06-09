@@ -1,9 +1,11 @@
-import { useGlobalStore } from '@zxiaosi/sdk';
+import { globalStore } from '@zxiaosi/sdk';
 import { BrowserRouter, Link } from 'react-router';
+import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 function App() {
-  const { initialState, setInitialState } = useGlobalStore(
+  const { initialState, setInitialState } = useStore(
+    globalStore,
     useShallow((state) => ({
       initialState: state.initialState,
       setInitialState: state.setInitialState,
@@ -12,7 +14,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <h2>main 主应用</h2>
+      <div style={{ fontSize: 24 }}>main 主应用</div>
 
       <button
         onClick={() => {

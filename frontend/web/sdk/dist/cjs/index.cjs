@@ -48,25 +48,25 @@ const subscribeWithSelectorImpl = (fn) => (set, get, api) => {
 const subscribeWithSelector = subscribeWithSelectorImpl;
 
 //#endregion
-//#region src/hooks/useGlobalState.ts
-/** 创建全局状态 */
-const useGlobalStore = (0, zustand.create)()(subscribeWithSelector((set) => ({
+//#region src/globalStore.ts
+/** 创建 zustand store */
+const store = (0, zustand.createStore)()(subscribeWithSelector((set) => ({
 	initialState: {},
 	setInitialState: (newInitialState, replace = false) => set((state) => ({ initialState: {
 		...!replace ? state.initialState : {},
 		...newInitialState
 	} }))
 })));
-/** 定义 window 变量 */
+if (!window.__ZUSTAND_STORE__)
+ /** 定义 window 变量 */
 Object.defineProperty(window, "__ZUSTAND_STORE__", {
-	value: useGlobalStore,
+	value: store,
 	writable: false,
 	configurable: false
 });
-/** 从主应用获取 zustand store */
+/** 导出全局状态 */
 const globalStore = window.__ZUSTAND_STORE__;
 
 //#endregion
 exports.globalStore = globalStore;
-exports.useGlobalStore = useGlobalStore;
 //# sourceMappingURL=index.cjs.map

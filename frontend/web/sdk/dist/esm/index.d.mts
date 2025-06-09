@@ -1,6 +1,6 @@
-import { StoreApi, UseBoundStore } from "zustand";
+import { StoreApi } from "zustand";
 
-//#region src/hooks/useGlobalState.d.ts
+//#region src/globalStore.d.ts
 /** 变量类型 */
 interface InitialStateProps {
   name?: string;
@@ -32,21 +32,11 @@ type StoreSubscribeWithSelector<T> = {
 /** 定义 window 变量类型 */
 declare global {
   interface Window {
-    __ZUSTAND_STORE__: UseBoundStore<Write<StoreApi<GlobalStoreProps>, StoreSubscribeWithSelector<GlobalStoreProps>>>;
+    __ZUSTAND_STORE__: Write<StoreApi<GlobalStoreProps>, StoreSubscribeWithSelector<GlobalStoreProps>>;
   }
 }
-/** 创建全局状态 */
-declare const useGlobalStore: UseBoundStore<Omit<StoreApi<GlobalStoreProps>, "subscribe"> & {
-  subscribe: {
-    (listener: (selectedState: GlobalStoreProps, previousSelectedState: GlobalStoreProps) => void): () => void;
-    <U>(selector: (state: GlobalStoreProps) => U, listener: (selectedState: U, previousSelectedState: U) => void, options?: {
-      equalityFn?: (a: U, b: U) => boolean;
-      fireImmediately?: boolean;
-    }): () => void;
-  };
-}>;
-/** 从主应用获取 zustand store */
-declare const globalStore: UseBoundStore<Write<StoreApi<GlobalStoreProps>, StoreSubscribeWithSelector<GlobalStoreProps>>>;
+/** 导出全局状态 */
+declare const globalStore: Write<StoreApi<GlobalStoreProps>, StoreSubscribeWithSelector<GlobalStoreProps>>;
 //#endregion
-export { globalStore, useGlobalStore };
+export { globalStore };
 //# sourceMappingURL=index.d.mts.map

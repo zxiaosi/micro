@@ -1,4 +1,4 @@
-import { create, type StoreApi, type UseBoundStore } from 'zustand';
+import { createStore, StoreApi } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
 /** 变量类型 */
@@ -42,17 +42,15 @@ type StoreSubscribeWithSelector<T> = {
 /** 定义 window 变量类型 */
 declare global {
   interface Window {
-    __ZUSTAND_STORE__: UseBoundStore<
-      Write<
-        StoreApi<GlobalStoreProps>,
-        StoreSubscribeWithSelector<GlobalStoreProps>
-      >
+    __ZUSTAND_STORE__: Write<
+      StoreApi<GlobalStoreProps>,
+      StoreSubscribeWithSelector<GlobalStoreProps>
     >;
   }
 }
 
-/** 创建全局状态 */
-const useGlobalStore = create<GlobalStoreProps>()(
+/** 创建 zustand store */
+const store = createStore<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
     initialState: {},
     setInitialState: (newInitialState, replace = false) =>
@@ -65,14 +63,16 @@ const useGlobalStore = create<GlobalStoreProps>()(
   })),
 );
 
-/** 定义 window 变量 */
-Object.defineProperty(window, '__ZUSTAND_STORE__', {
-  value: useGlobalStore,
-  writable: false, // 禁止修改
-  configurable: false, // 禁止删除
-});
+if (!window.__ZUSTAND_STORE__) {
+  /** 定义 window 变量 */
+  Object.defineProperty(window, '__ZUSTAND_STORE__', {
+    value: store,
+    writable: false, // 禁止修改
+    configurable: false, // 禁止删除
+  });
+}
 
-/** 从主应用获取 zustand store */
+/** 导出全局状态 */
 const globalStore = window.__ZUSTAND_STORE__;
 
-export { globalStore, useGlobalStore };
+export { globalStore };

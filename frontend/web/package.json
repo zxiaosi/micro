@@ -2,12 +2,13 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "build:main": "pnpm -F main run build",
+    "build:main": "pnpm run build:sdk",
     "build:sdk": "pnpm -F sdk run build",
     "build:user": "pnpm -F user run build",
     "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
     "dev:main": "pnpm -F main run dev",
-    "dev:user": "pnpm -F user run dev"
+    "dev:user": "pnpm -F user run dev",
+    "postinstall": "pnpm -F sdk run build"
   },
   "dependencies": {},
   "devDependencies": {

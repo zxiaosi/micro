@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { createStore } from "zustand";
 
 //#region ../node_modules/.pnpm/zustand@5.0.5_@types+react@19.1.6_react@19.1.0/node_modules/zustand/esm/middleware.mjs
 const subscribeWithSelectorImpl = (fn) => (set, get, api) => {
@@ -25,24 +25,25 @@ const subscribeWithSelectorImpl = (fn) => (set, get, api) => {
 const subscribeWithSelector = subscribeWithSelectorImpl;
 
 //#endregion
-//#region src/hooks/useGlobalState.ts
-/** 创建全局状态 */
-const useGlobalStore = create()(subscribeWithSelector((set) => ({
+//#region src/globalStore.ts
+/** 创建 zustand store */
+const store = createStore()(subscribeWithSelector((set) => ({
 	initialState: {},
 	setInitialState: (newInitialState, replace = false) => set((state) => ({ initialState: {
 		...!replace ? state.initialState : {},
 		...newInitialState
 	} }))
 })));
-/** 定义 window 变量 */
+if (!window.__ZUSTAND_STORE__)
+ /** 定义 window 变量 */
 Object.defineProperty(window, "__ZUSTAND_STORE__", {
-	value: useGlobalStore,
+	value: store,
 	writable: false,
 	configurable: false
 });
-/** 从主应用获取 zustand store */
+/** 导出全局状态 */
 const globalStore = window.__ZUSTAND_STORE__;
 
 //#endregion
-export { globalStore, useGlobalStore };
+export { globalStore };
 //# sourceMappingURL=index.mjs.map
