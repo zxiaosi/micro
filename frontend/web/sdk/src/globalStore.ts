@@ -39,18 +39,18 @@ type StoreSubscribeWithSelector<T> = {
   };
 };
 
-/** 定义 window 变量类型 */
-declare global {
-  interface Window {
-    __ZUSTAND_STORE__: Write<
-      StoreApi<GlobalStoreProps>,
-      StoreSubscribeWithSelector<GlobalStoreProps>
-    >;
-  }
-}
+export type GlobalStore = Write<
+  StoreApi<GlobalStoreProps>,
+  StoreSubscribeWithSelector<GlobalStoreProps>
+>;
 
-/** 创建 zustand store */
-const store = createStore<GlobalStoreProps>()(
+/**
+ * @name 全局状态
+ * @example const { initialState } = useStore(globalStore, (state)=> state.initialState)
+ * @example globalStore?.getState()?.setInitialState({})
+ * @example globalStore.subscribe((state) => state.initialState, (initialState) => { console.log('initialState', initialState) }, { fireImmediately: true })
+ */
+const globalStore = createStore<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
     initialState: {},
     setInitialState: (newInitialState, replace = false) =>
@@ -63,16 +63,4 @@ const store = createStore<GlobalStoreProps>()(
   })),
 );
 
-if (!window.__ZUSTAND_STORE__) {
-  /** 定义 window 变量 */
-  Object.defineProperty(window, '__ZUSTAND_STORE__', {
-    value: store,
-    writable: false, // 禁止修改
-    configurable: false, // 禁止删除
-  });
-}
-
-/** 导出全局状态 */
-const globalStore = window.__ZUSTAND_STORE__;
-
-export { globalStore };
+export default globalStore;

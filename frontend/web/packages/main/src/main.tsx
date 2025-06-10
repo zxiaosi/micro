@@ -1,3 +1,4 @@
+import { zxiaosiSdk } from '@zxiaosi/sdk';
 import { registerMicroApps, start } from 'qiankun';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
@@ -39,3 +40,5 @@ registerMicroApps(
 );
 
 start({ sandbox: true });
+
+zxiaosiSdk.init({});

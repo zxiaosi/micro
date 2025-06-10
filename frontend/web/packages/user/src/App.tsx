@@ -1,8 +1,9 @@
-import { globalStore } from '@zxiaosi/sdk';
+import { zxiaosiSdk } from '@zxiaosi/sdk';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
+import { shallow, useShallow } from 'zustand/shallow';
 
+const globalStore = zxiaosiSdk.instance.globalStore!;
 function App() {
   const { initialState, setInitialState } = useStore(
     globalStore,
@@ -12,23 +13,19 @@ function App() {
     })),
   );
 
-  // useEffect(() => {
-  //   globalStore?.subscribe(
-  //     (state) => state.initialState,
-  //     (state: any, prev: any) => {
-  //       console.log('bears change', state, prev);
-  //       setInitialState(state);
-  //     },
-  //     {
-  //       equalityFn: shallow,
-  //       fireImmediately: true,
-  //     },
-  //   );
-  // }, []);
-
   useEffect(() => {
-    console.log('initialState', initialState);
-  }, [initialState]);
+    globalStore?.subscribe(
+      (state) => state.initialState,
+      (state: any, prev: any) => {
+        console.log('bears change', state, prev);
+        setInitialState(state);
+      },
+      {
+        equalityFn: shallow,
+        fireImmediately: true,
+      },
+    );
+  }, []);
 
   return (
     <>
@@ -36,10 +33,7 @@ function App() {
 
       <button
         onClick={() => {
-          globalStore
-            ?.getState()
-            ?.setInitialState?.({ timeStamp: Date.now().valueOf() });
-          // setInitialState?.({ timeStamp: Date.now().valueOf() });
+          setInitialState?.({ timeStamp: Date.now().valueOf() });
         }}
       >
         更新全局变量
