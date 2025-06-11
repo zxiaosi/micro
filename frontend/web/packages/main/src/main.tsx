@@ -3,7 +3,13 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(<App />);
+const container = document.getElementById('root')!;
+const root = createRoot(container);
+
+const render = (props: any) => root.render(<App {...props} />);
+
+render({ loading: false });
+const loader = (loading: boolean) => render({ loading });
 
 /** 注册子应用 */
 registerMicroApps(
@@ -13,6 +19,7 @@ registerMicroApps(
       entry: 'http://localhost:8001',
       container: '#sub-app',
       activeRule: '/user',
+      loader,
     },
   ],
   {

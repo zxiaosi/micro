@@ -1,40 +1,35 @@
-import { sdk } from '@zxiaosi/sdk';
-import { BrowserRouter, Link } from 'react-router';
-import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
+import Dashboard from '@/pages/dashboard';
+import Login from '@/pages/login';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 
-function App() {
-  const { initialState, setInitialState } = useStore(
-    sdk.globalStore,
-    useShallow((state) => ({
-      initialState: state.initialState,
-      setInitialState: state.setInitialState,
-    })),
+function App({ loading }: any) {
+  const router = createBrowserRouter(
+    [
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/',
+        element: <Dashboard />,
+        children: [
+          {
+            path: 'user/*',
+            element: <>{loading && <div>loading...</div>}</>, // 子应用挂载点
+          },
+          {
+            path: 'test',
+            element: <div>test</div>,
+          },
+        ],
+      },
+    ],
+    {
+      basename: '/',
+    },
   );
 
-  return (
-    <BrowserRouter>
-      <div style={{ fontSize: 24 }}>main 主应用</div>
-
-      <button
-        onClick={() => {
-          setInitialState({ age: Math.floor(Math.random() * 100) });
-        }}
-      >
-        更新全局变量
-      </button>
-      <span style={{ marginLeft: 20 }}>{JSON.stringify(initialState)}</span>
-
-      <br />
-      <br />
-
-      <Link to={'user'} style={{ marginRight: 20 }}>
-        展示子应用
-      </Link>
-      <Link to={''}>回到主应用</Link>
-      <main id="sub-app" />
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
