@@ -1,12 +1,11 @@
-import { zxiaosiSdk } from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 import { shallow, useShallow } from 'zustand/shallow';
 
-const globalStore = zxiaosiSdk.instance.globalStore!;
 function App() {
   const { initialState, setInitialState } = useStore(
-    globalStore,
+    sdk.globalStore,
     useShallow((state) => ({
       initialState: state.initialState,
       setInitialState: state.setInitialState,
@@ -14,7 +13,7 @@ function App() {
   );
 
   useEffect(() => {
-    globalStore?.subscribe(
+    sdk.globalStore?.subscribe(
       (state) => state.initialState,
       (state: any, prev: any) => {
         console.log('bears change', state, prev);

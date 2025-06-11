@@ -1,12 +1,11 @@
-import { zxiaosiSdk } from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { BrowserRouter, Link } from 'react-router';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-const globalStore = zxiaosiSdk.instance.globalStore!;
 function App() {
   const { initialState, setInitialState } = useStore(
-    globalStore,
+    sdk.globalStore,
     useShallow((state) => ({
       initialState: state.initialState,
       setInitialState: state.setInitialState,

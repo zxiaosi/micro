@@ -1,4 +1,3 @@
-import { zxiaosiSdk } from '@zxiaosi/sdk';
 import { createRoot, type Root } from 'react-dom/client';
 import { name } from '../package.json';
 import App from './App.tsx';
@@ -39,5 +38,3 @@ export async function unmount(props: any) {
 export async function update(props: any) {
   console.log(`${name} update`, props);
 }
-
-zxiaosiSdk.init({});
