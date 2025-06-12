@@ -1,7 +1,7 @@
 import beian from '@/assets/beian.png';
 import axios from 'axios';
 import { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import './index.less';
 
 /** 页脚信息 */
@@ -28,9 +28,24 @@ const footerInfo = [
   ],
 ];
 
+/** 定时器 */
+let timer = null as any;
+
+/** 标识 */
+const scene = 1749756926882;
+
 /** 获取小程序二维码 */
 const getWeappQrcode = async () => {
-  return await axios.get('/api/weapp/qrcode', {});
+  return await axios.get('http://localhost:8080/api/weapp/qrcode', {
+    params: { scene },
+  });
+};
+
+/** 获取小程序二维码状态 */
+const getWeappQrcodeStatus = async () => {
+  return await axios.get('http://localhost:8080/api/weapp/getQrcodeStatus', {
+    params: { scene },
+  });
 };
 
 /**
@@ -38,7 +53,12 @@ const getWeappQrcode = async () => {
  * @see 流动波浪页脚 https://www.bilibili.com/video/BV1Ax4y157AB/
  */
 const Login = () => {
+  const navicate = useNavigate();
+
   const [qrCode, setQrCode] = useState('');
+  const [qrcodeStatus, setQrcodeStatus] = useState({
+    msg: '请稍等...',
+  });
 
   /** 跳转去外部链接 */
   const handleWindowOpen = (url?: string) => {
@@ -46,10 +66,28 @@ const Login = () => {
     window.open(url, '_blank');
   };
 
+  /** 轮询获取小程序二维码状态 */
+  const getQrcodeStatus = async () => {
+    timer = setInterval(() => {
+      getWeappQrcodeStatus().then((res) => {
+        console.log('获取小程序二维码状态成功', res);
+        setQrcodeStatus(res.data);
+        if (res.data === '2' || res.data === '3') {
+          navicate('/'); // 去首页
+        }
+      });
+    }, 10 * 1000);
+  };
+
   useEffect(() => {
     getWeappQrcode().then((res) => {
+      console.log('获取小程序二维码成功', res);
       setQrCode(res.data);
     });
+    getQrcodeStatus();
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -73,6 +111,7 @@ const Login = () => {
           </div>
 
           <div className="login-page-content-qrcode">
+            {qrcodeStatus.msg}
             {qrCode && <img src={'data:image/jpeg;base64,' + qrCode} />}
           </div>
         </div>
