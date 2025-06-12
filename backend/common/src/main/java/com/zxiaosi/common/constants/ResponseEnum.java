@@ -4,7 +4,7 @@ import lombok.Getter;
 
 
 /**
- * 自定义异常枚举类
+ * 自定义异常枚举
  */
 @Getter
 public enum ResponseEnum {

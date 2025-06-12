@@ -2,6 +2,7 @@ package com.zxiaosi.user.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.util.StrUtil;
 import com.zxiaosi.user.entity.vo.LoginVo;
 import com.zxiaosi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ public class UserController {
 
     @PostMapping("/login")
     public SaResult login(@RequestBody LoginVo loginVo) {
-        Boolean flag = userService.checkUsernamePasswordService(loginVo);
-        if (flag) {
-            return SaResult.data(StpUtil.getTokenValue());
+        String token = userService.checkUsernamePasswordService(loginVo);
+        if (StrUtil.isEmpty(token)) {
+            return SaResult.data(token);
         } else {
             return SaResult.error("登录失败！");
         }

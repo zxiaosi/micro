@@ -1,5 +1,6 @@
 package com.zxiaosi.user.entity.vo;
 
+import com.zxiaosi.common.constants.DeviceTypeEnum;
 import lombok.Data;
 
 /**
@@ -21,6 +22,6 @@ public class LoginVo {
     /**
      * 设备类型
      */
-    private String deviceType = "Web";
+    private String deviceType = DeviceTypeEnum.WEB.getMsg();
 
 }

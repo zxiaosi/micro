@@ -3,20 +3,18 @@ package com.zxiaosi.common.constants;
 import lombok.Getter;
 
 /**
- * 微信小程序 扫码登录状态 枚举
+ * 登录设备枚举
  */
 @Getter
-public enum WeappScanLoginEnum {
+public enum DeviceTypeEnum {
+    WEB(1, "Web"),
 
-    EXPIRED(-1, "已过期"),
+    WEAPP(2, "Weapp"),
 
-    NO_SCAN(0, "未扫码"),
+    APP(3, "App"),
 
-    SCAN(1, "已扫码"),
+    PC(4, "PC");
 
-    SUCCESS(2, "成功"),
-
-    FAIL(3, "失败");
 
     /**
      * 二维码状态
@@ -28,7 +26,7 @@ public enum WeappScanLoginEnum {
      */
     private final String msg;
 
-    WeappScanLoginEnum(Integer code, String msg) {
+    DeviceTypeEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -37,7 +35,7 @@ public enum WeappScanLoginEnum {
      * 根据code获取message
      */
     public static String getMsgByCode(int code) {
-        for (WeappScanLoginEnum response : WeappScanLoginEnum.values()) {
+        for (DeviceTypeEnum response : DeviceTypeEnum.values()) {
             if (response.getCode().equals(code)) {
                 return response.getMsg();
             }

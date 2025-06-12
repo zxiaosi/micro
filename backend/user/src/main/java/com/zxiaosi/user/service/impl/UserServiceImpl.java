@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private RoleMapper roleMapper;
 
     @Override
-    public Boolean checkUsernamePasswordService(LoginVo loginVo) {
+    public String checkUsernamePasswordService(LoginVo loginVo) {
         // 1. 查询用户
         User user = userMapper.getUserByUsername(loginVo.getUsername());
         if (ObjectUtils.isEmpty(user))
@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService {
 
         if (flag) {
             StpUtil.login(user.getId(), loginVo.getDeviceType());
-            return true;
+            return StpUtil.getTokenValue();
         } else {
-            return false;
+            return "";
         }
     }
 

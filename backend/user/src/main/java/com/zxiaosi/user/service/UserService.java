@@ -13,7 +13,7 @@ public interface UserService {
      *
      * @param loginVo 用户名密码
      */
-    Boolean checkUsernamePasswordService(LoginVo loginVo);
+    String checkUsernamePasswordService(LoginVo loginVo);
 
     /**
      * 根据用户Id获取当前用户信息(包含权限)
