@@ -35,7 +35,7 @@
 #        - id: user-service
 #          uri: lb://user
 #          predicates:
-#            - Path=/api/user/**,/api/email/**
+#            - Path=/api/user/**,/api/email/**,/api/weapp/**
 #    nacos:
 #      # 服务发现
 #      discovery:

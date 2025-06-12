@@ -40,7 +40,16 @@ public class WeappController {
 
     @PostMapping("/updateQrcodeStatus")
     public SaResult updateQrcodeStatus(@RequestParam String scene, @RequestParam String code) {
-        saTokenDao.update(scene, code);
+        Integer codeInt = Integer.parseInt(code);
+
+        if (codeInt.equals(WeappScanLoginEnum.SUCCESS.getCode()) || codeInt.equals(WeappScanLoginEnum.FAIL.getCode())) {
+            // 用户已经走完登录流程,  删除二维码状态
+            saTokenDao.delete(scene);
+        } else {
+            // 更新二维码状态
+            saTokenDao.update(scene, code);
+        }
+
         return SaResult.ok();
     }
 
