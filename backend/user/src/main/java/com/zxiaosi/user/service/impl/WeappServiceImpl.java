@@ -11,7 +11,6 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.zxiaosi.common.constants.DeviceTypeEnum;
 import com.zxiaosi.common.constants.ResponseEnum;
 import com.zxiaosi.common.constants.WeappScanLoginEnum;
 import com.zxiaosi.common.exception.CustomException;
@@ -32,16 +31,16 @@ import java.util.HashMap;
 @Service
 public class WeappServiceImpl implements WeappService {
 
-    @Value("${config.weapp.appid}")
+    @Value("${custom.weapp.appid}")
     private String appid;
 
-    @Value("${config.weapp.appSecret}")
+    @Value("${custom.weapp.appSecret}")
     private String appSecret;
 
-    @Value("${config.weapp.accessTokenKey}")
+    @Value("${custom.weapp.accessTokenKey}")
     private String accessTokenKey;
 
-    @Value("${config.weapp.envVersion}")
+    @Value("${custom.weapp.envVersion}")
     private String envVersion;
 
     @Autowired

@@ -23,14 +23,16 @@ public class SaTokenConfigure {
                 // 指定 [拦截路由]
                 .addInclude("/**") // 拦截全部路由
                 // 指定 [放行路由]
-                .addExclude("/favicon.ico")
+                .addExclude("/favicon.ico", "/api/weapp/qrcode", "/api/weapp/getQrcodeStatus", "/api/weapp/updateQrcodeStatus")
                 // 指定[认证函数]: 每次请求执行
                 .setAuth(obj -> {
                     // 输出 API 请求日志，方便调试代码
                     SaManager.getLog().debug("----- 请求path={}  提交token={}", SaHolder.getRequest().getRequestPath(), StpUtil.getTokenValue());
 
-                    // 登录校验 -- 拦截所有路由，并排除 /api/user/login 用于开放登录
-                    SaRouter.match("/**", "/api/user/login", r -> StpUtil.checkLogin());
+                    SaRouter
+                            .match("/**") // 拦截全部路由
+                            .notMatch("/api/user/login", "/api/weapp/login") // 放行登录接口
+                            .check(StpUtil::checkLogin); // 认证函数: 每次请求时判断是否登录
                 })
                 // 异常处理方法：每次setAuth函数出现异常时进入
                 .setError(e -> {
