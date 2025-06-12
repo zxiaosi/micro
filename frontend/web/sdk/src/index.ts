@@ -39,6 +39,9 @@ class Sdk {
           if (!target) return null;
           return Reflect.get(target, key, receiver);
         },
+        deleteProperty: (target, key) => {
+          throw new Error('The SDK cannot be deleted.');
+        },
       });
 
       // 2. 使用 Object.preventExtensions 禁止第一层属性扩展
