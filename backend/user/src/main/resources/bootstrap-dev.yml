@@ -57,7 +57,7 @@
 ## Sa-Token配置
 #sa-token:
 #  # token 名称（同时也是 cookie 名称）
-#  token-name: token
+#  token-name: Authorization
 #  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
 #  timeout: 2592000
 #  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
@@ -71,13 +71,23 @@
 #  # 是否输出操作日志
 #  is-log: true
 #
-## 自定义配置
+# 自定义配置
 #custom:
 #  mail:
 #    # 邮件发送人
 #    name: 小四先生的栈
 #    # 验证码时长（单位: s）
 #    time: 60
+#  weapp:
+#    # 小程序 appid
+#    appid:
+#    # 小程序 appSecret
+#    appSecret:
+#    # access_token 存储到  redis 的 key
+#    accessTokenKey: weapp_access_token
+#    # 要打开的小程序版本 develop、trial、release
+#    envVersion: release
+
 
 spring:
   cloud:

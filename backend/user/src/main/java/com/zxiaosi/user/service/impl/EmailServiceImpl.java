@@ -1,5 +1,7 @@
 package com.zxiaosi.user.service.impl;
 
+import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.util.SaFoxUtil;
 import com.alibaba.nacos.common.utils.StringUtils;
 import com.zxiaosi.common.constants.ResponseEnum;
 import com.zxiaosi.common.exception.CustomException;
@@ -17,12 +19,16 @@ import javax.mail.internet.InternetAddress;
 /**
  * 邮件服务实现类
  */
-@Service
 @RefreshScope // 刷新 Nacos 值
+@Service
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender; //注入邮件工具类
+
+    @Autowired
+    private SaTokenDao saTokenDao;
+
 
     @Value("${custom.mail.name}")
     private String name;
@@ -30,8 +36,11 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String from;
 
+    @Value("${custom.mail.time}")
+    private long time;
+
     @Override
-    public void sendMail(String to, String subject, String content) {
+    public void sendMailService(String to, String subject, String content) {
         if (StringUtils.isAnyBlank(from, to, subject, content)) {
             throw new CustomException(ResponseEnum.EMPTY_EMAIL.getMsg(), ResponseEnum.EMPTY_EMAIL.getCode());
         }
@@ -53,5 +62,21 @@ public class EmailServiceImpl implements EmailService {
             e.printStackTrace();
             throw new CustomException(e.getMessage());
         }
+    }
+
+    @Override
+    public void sendVerifyCodeService(String email) {
+        // 生成随机验证码
+        String captcha = SaFoxUtil.getRandomString(6);
+
+        // 获取邮箱验证码的剩余存活时间
+        long timeout = saTokenDao.getTimeout(email);
+        if (timeout != SaTokenDao.NOT_VALUE_EXPIRE) {
+            saTokenDao.delete(email); // 删除旧的验证码
+        }
+
+        // 存储验证码
+        saTokenDao.set(email, captcha, time);
+        this.sendMailService(email, "验证码", "网站注册验证码：" + captcha + "。");
     }
 }

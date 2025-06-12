@@ -12,6 +12,11 @@ public interface EmailService {
      * @param subject 主题
      * @param content 内容
      */
-    void sendMail(String to, String subject, String content);
+    void sendMailService(String to, String subject, String content);
 
+
+    /**
+     * 发送验证码
+     */
+    void sendVerifyCodeService(String email);
 }
