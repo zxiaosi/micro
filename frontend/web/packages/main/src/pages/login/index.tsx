@@ -1,5 +1,6 @@
 import beian from '@/assets/beian.png';
-import { Fragment } from 'react';
+import axios from 'axios';
+import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import './index.less';
 
@@ -27,16 +28,29 @@ const footerInfo = [
   ],
 ];
 
+/** 获取小程序二维码 */
+const getWeappQrcode = async () => {
+  return await axios.get('/api/weapp/qrcode', {});
+};
+
 /**
  * @name 登录页
  * @see 流动波浪页脚 https://www.bilibili.com/video/BV1Ax4y157AB/
  */
 const Login = () => {
+  const [qrCode, setQrCode] = useState('');
+
   /** 跳转去外部链接 */
   const handleWindowOpen = (url?: string) => {
     if (!url) return;
     window.open(url, '_blank');
   };
+
+  useEffect(() => {
+    getWeappQrcode().then((res) => {
+      setQrCode(res.data);
+    });
+  }, []);
 
   return (
     <div className="login-page">
@@ -56,6 +70,10 @@ const Login = () => {
           <div className="login-page-content-tip">
             <span>忘记密码？</span>
             <span>注册账号</span>
+          </div>
+
+          <div className="login-page-content-qrcode">
+            {qrCode && <img src={'data:image/jpeg;base64,' + qrCode} />}
           </div>
         </div>
       </div>
