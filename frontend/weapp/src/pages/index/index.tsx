@@ -12,21 +12,21 @@ export default function Index() {
     setScene(newScene);
     Taro.request({
       method: "POST",
-      url: `http://localhost:8080/api/weapp/updateQrcodeStatus?scene=${newScene}&code=${1}`,
+      url: `http://localhost:8080/api/weapp/qrcode/status/update?scene=${newScene}&code=${1}`,
     });
   });
 
   const handleLogin = () => {
     Taro.request({
       method: "POST",
-      url: `http://localhost:8080/api/weapp/updateQrcodeStatus?scene=${scene}&code=${2}`,
+      url: `http://localhost:8080/api/weapp/qrcode/status/update?scene=${scene}&code=${2}`,
     });
   };
 
   const handleCancel = () => {
     Taro.request({
       method: "POST",
-      url: `http://localhost:8080/api/weapp/updateQrcodeStatus?scene=${scene}&code=${3}`,
+      url: `http://localhost:8080/api/weapp/qrcode/status/update?scene=${scene}&code=${3}`,
     });
   };
 

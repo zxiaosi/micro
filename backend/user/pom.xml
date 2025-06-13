@@ -35,7 +35,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-http</artifactId>
-            <version>5.8.16</version>
         </dependency>
 
         <!-- Fastjson2 -->

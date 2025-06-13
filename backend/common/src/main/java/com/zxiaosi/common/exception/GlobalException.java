@@ -1,6 +1,5 @@
 package com.zxiaosi.common.exception;
 
-import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.util.SaResult;
 import com.zxiaosi.common.constants.ResponseEnum;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ public class GlobalException {
      */
     @ExceptionHandler(CustomException.class)
     public SaResult handleCustomException(CustomException e) {
+        LOGGER.error(e.getMessage(), e);
         return SaResult.error(e.getMsg()).setCode(e.getCode());
     }
 

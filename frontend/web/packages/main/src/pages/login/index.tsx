@@ -1,8 +1,9 @@
 import beian from '@/assets/beian.png';
 import axios from 'axios';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import './index.less';
+import { qrcodeBase } from './qrcode';
 
 /** 页脚信息 */
 const footerInfo = [
@@ -28,8 +29,14 @@ const footerInfo = [
   ],
 ];
 
-/** 定时器 */
-let timer = null as any;
+/** 登录状态 */
+const loginStatus = {
+  '-1': '请稍等...',
+  '0': '请扫码',
+  '1': '成功扫码',
+  '2': '用户授权成功',
+  '3': '用户取消授权',
+} as any;
 
 /** 标识 */
 const scene = 1749756926882;
@@ -41,24 +48,16 @@ const getWeappQrcode = async () => {
   });
 };
 
-/** 获取小程序二维码状态 */
-const getWeappQrcodeStatus = async () => {
-  return await axios.get('http://localhost:8080/api/weapp/getQrcodeStatus', {
-    params: { scene },
-  });
-};
-
 /**
  * @name 登录页
  * @see 流动波浪页脚 https://www.bilibili.com/video/BV1Ax4y157AB/
  */
 const Login = () => {
   const navicate = useNavigate();
+  const eventRef = useRef<EventSource>(null);
 
   const [qrCode, setQrCode] = useState('');
-  const [qrcodeStatus, setQrcodeStatus] = useState({
-    msg: '请稍等...',
-  });
+  const [qrcodeStatus, setQrcodeStatus] = useState('-1');
 
   /** 跳转去外部链接 */
   const handleWindowOpen = (url?: string) => {
@@ -67,26 +66,32 @@ const Login = () => {
   };
 
   /** 轮询获取小程序二维码状态 */
-  const getQrcodeStatus = async () => {
-    timer = setInterval(() => {
-      getWeappQrcodeStatus().then((res) => {
-        console.log('获取小程序二维码状态成功', res);
-        setQrcodeStatus(res.data);
-        if (res.data === '2' || res.data === '3') {
-          navicate('/'); // 去首页
-        }
-      });
-    }, 10 * 1000);
+  const subscribeQrcodeStatus = async () => {
+    eventRef.current = new EventSource(
+      `http://localhost:8080/api/weapp/qrcode/status/subscribe?scene=${scene}`,
+    );
+    eventRef.current.onopen = (e) => {
+      console.log('SSE连接成功', e);
+    };
+    eventRef.current.onmessage = (e) => {
+      console.log('监听到小程序二维码状态变化', e);
+      setQrcodeStatus(e.data);
+    };
+    eventRef.current.onerror = (e) => {
+      console.log('SSE连接失败', e);
+    };
   };
 
   useEffect(() => {
-    getWeappQrcode().then((res) => {
-      console.log('获取小程序二维码成功', res);
-      setQrCode(res.data);
-    });
-    getQrcodeStatus();
+    // getWeappQrcode().then((res) => {
+    //   console.log('获取小程序二维码成功', res);
+    //   setQrCode(res.data.data);
+    // });
+    setQrCode(qrcodeBase);
+    subscribeQrcodeStatus();
+
     return () => {
-      clearInterval(timer);
+      eventRef.current?.close();
     };
   }, []);
 
@@ -111,7 +116,7 @@ const Login = () => {
           </div>
 
           <div className="login-page-content-qrcode">
-            {qrcodeStatus.msg}
+            {loginStatus[qrcodeStatus]}
             {qrCode && <img src={'data:image/jpeg;base64,' + qrCode} />}
           </div>
         </div>

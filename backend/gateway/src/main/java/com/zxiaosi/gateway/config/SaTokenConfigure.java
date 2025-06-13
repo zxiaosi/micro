@@ -24,7 +24,7 @@ public class SaTokenConfigure {
                 // 指定 [拦截路由]
                 .addInclude("/**") // 拦截全部路由
                 // 指定 [放行路由]
-                .addExclude("/favicon.ico", "/api/weapp/qrcode", "/api/weapp/getQrcodeStatus", "/api/weapp/updateQrcodeStatus")
+                .addExclude("/favicon.ico", "/api/weapp/qrcode/**")
                 // 指定[认证函数]: 每次请求执行
                 .setAuth(obj -> {
                     // 输出 API 请求日志，方便调试代码
