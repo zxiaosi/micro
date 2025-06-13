@@ -29,6 +29,7 @@ function App() {
   return (
     <>
       <div style={{ fontSize: 24 }}>user 子应用</div>
+      <div className="test-css-variable">测试css变量</div>
 
       <button
         onClick={() => {

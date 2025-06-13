@@ -45,4 +45,4 @@ registerMicroApps(
   },
 );
 
-start({ sandbox: true });
+start({ sandbox: { experimentalStyleIsolation: true } });

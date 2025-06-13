@@ -9,3 +9,10 @@ body {
   width: 100%;
   height: 100%;
 }
+
+:root {
+  --primary: rgb(30, 144, 255);
+  --success: rgb(46, 213, 115);
+  --warning: rgb(255, 165, 2);
+  --error: rgb(255, 71, 87);
+}
