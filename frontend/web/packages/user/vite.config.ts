@@ -5,7 +5,7 @@ import qiankun from 'vite-plugin-qiankun-lite';
 
 // babel.config.js
 const ReactCompilerConfig = {
-  target: '19', // '17' | '18' | '19'
+  target: '18', // '17' | '18' | '19'
 };
 
 // https://vite.dev/config/
@@ -42,7 +42,7 @@ export default ({ mode }) => {
     },
     build: {
       rollupOptions: {
-        // 开排除 react react-dom, 使用 cdn 加载
+        // 排除 react react-dom, 使用 cdn 加载
         // https://github.com/umijs/qiankun/issues/627
         external: ['react', 'react-dom'],
       },
