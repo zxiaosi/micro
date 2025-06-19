@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "build:main": "pnpm run build:sdk",
+    "build:main": "pnpm -F main run build",
     "build:sdk": "pnpm -F sdk run build",
     "build:user": "pnpm -F user run build",
     "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
