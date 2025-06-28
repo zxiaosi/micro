@@ -1,4 +1,4 @@
-import { sdk } from '@zxiaosi/sdk';
+import sdk from '@zxiaosi/sdk';
 import { Link, Outlet } from 'react-router';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';

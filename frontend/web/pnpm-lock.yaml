@@ -23,9 +23,6 @@ importers:
       '@zxiaosi/sdk':
         specifier: workspace:*
         version: link:../../sdk
-      axios:
-        specifier: ^1.9.0
-        version: 1.10.0
       qiankun:
         specifier: ^2.10.16
         version: 2.10.16
@@ -90,9 +87,6 @@ importers:
       '@zxiaosi/sdk':
         specifier: workspace:*
         version: link:../../sdk
-      axios:
-        specifier: ^1.9.0
-        version: 1.10.0
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -154,6 +148,9 @@ importers:
 
   sdk:
     dependencies:
+      axios:
+        specifier: ^1.10.0
+        version: 1.10.0
       react:
         specifier: ^19.1.0
         version: 19.1.0

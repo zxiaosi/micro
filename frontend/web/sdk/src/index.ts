@@ -1,14 +1,6 @@
-import globalStore, { GlobalStore } from './globalStore';
-
-interface SdkProps {
-  /** sdk 名称 */
-  name: string;
-  /** 全局 Store */
-  globalStore: GlobalStore;
-  /** 初始化方法 */
-  init: (args: Partial<SdkProps>) => void;
-  [key: string]: any;
-}
+import Http from './api/index';
+import { SdkProps } from './global';
+import globalStore from './store/index';
 
 class Sdk {
   /** sdk 实例 */
@@ -18,8 +10,8 @@ class Sdk {
     this._instance = {
       name: '',
       globalStore,
+      api: new Http(),
       init: this.init.bind(this),
-      temp: {},
     };
   }
 
@@ -66,4 +58,4 @@ class Sdk {
 
 const sdk: SdkProps = new Sdk().registerSdk('sdk');
 
-export { sdk };
+export default sdk;

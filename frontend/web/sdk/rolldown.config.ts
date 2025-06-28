@@ -5,7 +5,7 @@ import { peerDependencies } from './package.json';
 const common = defineConfig({
   input: './src/index.ts',
   external: Object.keys(peerDependencies),
-  platform: 'node',
+  platform: 'browser',
 });
 
 const config = defineConfig([

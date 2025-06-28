@@ -1,4 +1,4 @@
-import { sdk } from '@zxiaosi/sdk';
+import sdk from '@zxiaosi/sdk';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 import { shallow, useShallow } from 'zustand/shallow';

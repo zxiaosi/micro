@@ -16,7 +16,9 @@
   "scripts": {
     "build": "npx rimraf dist && rolldown -c rolldown.config.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
   "devDependencies": {
     "rolldown": "^1.0.0-beta.13",
     "rolldown-plugin-dts": "^0.13.9"

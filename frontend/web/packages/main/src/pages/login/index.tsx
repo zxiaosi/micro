@@ -1,5 +1,5 @@
 import beian from '@/assets/beian.png';
-import axios from 'axios';
+import sdk from '@zxiaosi/sdk';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import './index.less';
@@ -43,7 +43,7 @@ const scene = 1749756926882;
 
 /** 获取小程序二维码 */
 const getWeappQrcode = async () => {
-  return await axios.get('http://localhost:8080/api/weapp/qrcode', {
+  return await sdk.api.get('http://localhost:8080/api/weapp/qrcode', {
     params: { scene },
   });
 };
