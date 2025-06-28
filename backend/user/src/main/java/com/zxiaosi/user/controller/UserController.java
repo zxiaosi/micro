@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/login")
     public SaResult login(@RequestBody LoginVo loginVo) {
         String token = userService.checkUsernamePasswordService(loginVo);
-        if (StrUtil.isEmpty(token)) {
+        if (StrUtil.isNotEmpty(token)) {
             return SaResult.data(token);
         } else {
             return SaResult.error("登录失败！");
