@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from 'vite';
 
 // babel.config.js
 const ReactCompilerConfig = {
-  target: '18', // '17' | '18' | '19'
+  target: '19', // '17' | '18' | '19'
 };
 
 // https://vite.dev/config/
@@ -36,13 +36,6 @@ export default ({ mode }) => {
         less: {
           javascriptEnabled: true,
         },
-      },
-    },
-    build: {
-      rollupOptions: {
-        // 排除 react react-dom, 使用 cdn 加载
-        // https://github.com/umijs/qiankun/issues/627
-        external: ['react', 'react-dom'],
       },
     },
   });

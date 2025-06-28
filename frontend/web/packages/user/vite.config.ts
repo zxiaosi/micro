@@ -2,10 +2,11 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import qiankun from 'vite-plugin-qiankun-lite';
+import { name } from './package.json';
 
 // babel.config.js
 const ReactCompilerConfig = {
-  target: '18', // '17' | '18' | '19'
+  target: '19', // '17' | '18' | '19'
 };
 
 // https://vite.dev/config/
@@ -26,7 +27,7 @@ export default ({ mode }) => {
           plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
         },
       }),
-      qiankun({ name: 'user', sandbox: true }),
+      qiankun({ name: name, sandbox: true }),
     ],
     resolve: {
       alias: {
@@ -38,13 +39,6 @@ export default ({ mode }) => {
         less: {
           javascriptEnabled: true,
         },
-      },
-    },
-    build: {
-      rollupOptions: {
-        // 排除 react react-dom, 使用 cdn 加载
-        // https://github.com/umijs/qiankun/issues/627
-        external: ['react', 'react-dom'],
       },
     },
   });
