@@ -15,7 +15,11 @@
     "declaration": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "lib": ["DOM", "ESNext"]
+    "lib": ["DOM", "ESNext"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["rolldown.config.ts", "tsconfig.json"]

@@ -1,6 +1,6 @@
-import Http from './api/index';
-import { SdkProps } from './global';
-import globalStore from './store/index';
+import Http from '@/api/index';
+import { SdkProps } from '@/global';
+import globalStore from '@/store/index';
 
 class Sdk {
   /** sdk 实例 */
@@ -52,7 +52,13 @@ class Sdk {
 
   /** 注入属性 */
   init(newData: Partial<SdkProps> = {}) {
-    this._instance = { ...this._instance, ...newData };
+    const { api, ...rest } = newData;
+
+    if (api && Object.keys(api).length > 0) {
+      this._instance.api = new Http(api);
+    }
+    
+    this._instance = { ...this._instance, ...rest };
   }
 }
 
