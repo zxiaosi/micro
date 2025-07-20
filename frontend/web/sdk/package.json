@@ -20,13 +20,19 @@
     "axios": "^1.10.0"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "rolldown": "^1.0.0-beta.23",
-    "rolldown-plugin-dts": "^0.13.13"
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "rolldown": "^1.0.0-beta.28",
+    "rolldown-plugin-dts": "^0.14.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4"
   },
   "peerDependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router": "^7.6.1",
     "zustand": "^5.0.5"
   }
 }

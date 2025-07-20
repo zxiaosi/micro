@@ -1,6 +1,7 @@
 import Http from '@/api/index';
 import { SdkProps } from '@/global';
 import globalStore from '@/store/index';
+import React from 'react';
 
 class Sdk {
   /** sdk 实例 */
@@ -11,6 +12,10 @@ class Sdk {
       name: '',
       globalStore,
       api: new Http(),
+      components: {
+        Login: React.lazy(() => import('@/components/login/index')),
+        NotFound: React.lazy(() => import('@/components/notFound/index')),
+      },
       init: this.init.bind(this),
     };
   }
@@ -57,7 +62,7 @@ class Sdk {
     if (api && Object.keys(api).length > 0) {
       this._instance.api = new Http(api);
     }
-    
+
     this._instance = { ...this._instance, ...rest };
   }
 }

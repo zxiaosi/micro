@@ -1,7 +1,9 @@
 import Dashboard from '@/pages/dashboard';
-import Login from '@/pages/login';
+import sdk from '@zxiaosi/sdk';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
+const Login = sdk.components.Login;
+const NotFound = sdk.components.NotFound;
 function App({ loading }: any) {
   const router = createBrowserRouter(
     [
@@ -22,6 +24,10 @@ function App({ loading }: any) {
             element: <div>test</div>,
           },
         ],
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
     {

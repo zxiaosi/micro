@@ -8,6 +8,8 @@ export interface SdkProps {
   globalStore: GlobalStore;
   /** api 接口 */
   api: Record<string, any>;
+  /** 公用组件 */
+  components: Record<string, React.FC<any>>;
   /** 初始化方法 */
   init: (args: Partial<SdkProps>) => void;
   [key: string]: any;

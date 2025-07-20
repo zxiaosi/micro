@@ -1,0 +1,173 @@
+.login-page {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #ffcdcd, #4ecdc4, #45b7d1);
+  animation: gradient-bg 25s ease infinite;
+  background-size: 300% 300%;
+}
+
+.login-page-content-wapper {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page-content {
+  width: 380px;
+  box-sizing: border-box;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.login-page-content-header {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.login-page-content-form > div {
+  margin-bottom: 30px;
+  padding: 12px 20px 12px 40px;
+  border: 0;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.login-page-content-button {
+  text-align: center;
+  padding: 12px;
+  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+  border: 0;
+  border-radius: 25px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.login-page-content-tip {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-page-content-tip > span {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.login-page-content-qrcode {
+  width: 100%;
+}
+
+.login-page-content-qrcode > img {
+  width: 100%;
+}
+
+.login-page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 30vh;
+  text-align: center;
+  font-size: 14px;
+}
+
+.login-page-footer-fg {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.login-page-footer-fg-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 6px;
+}
+
+.login-page-footer-fg-line-item {
+  cursor: pointer;
+}
+
+.login-page-footer-fg-line-item:hover {
+  text-decoration: underline;
+}
+
+.login-page-footer-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.login-page-footer-bg-waves {
+  width: 100%;
+  height: 100%;
+}
+
+.login-page-footer-bg-waves-parallax use {
+  /* 使use元素执行move-forever动画 */
+  animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+
+.login-page-footer-bg-waves-parallax use:nth-child(1) {
+  /* 延迟2秒启动动画  */
+  animation-delay: -2s;
+  /* 设置动画持续时间为7秒 */
+  animation-duration: 7s;
+}
+
+.login-page-footer-bg-waves-parallax use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.login-page-footer-bg-waves-parallax use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.login-page-footer-bg-waves-parallax use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+}
+
+@keyframes gradient-bg {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
