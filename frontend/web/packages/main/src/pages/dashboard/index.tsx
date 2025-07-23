@@ -3,7 +3,6 @@ import { Link, Outlet } from 'react-router';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.less';
-
 /** 首页 */
 const Dashboard = () => {
   const { initialState, setInitialState } = useStore(

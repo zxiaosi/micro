@@ -1,9 +1,9 @@
 import Dashboard from '@/pages/dashboard';
 import sdk from '@zxiaosi/sdk';
 import { createBrowserRouter, RouterProvider } from 'react-router';
+const Login = sdk.getComponent('Login');
+const NotFound = sdk.getComponent('NotFound');
 
-const Login = sdk.components.Login;
-const NotFound = sdk.components.NotFound;
 function App({ loading }: any) {
   const router = createBrowserRouter(
     [

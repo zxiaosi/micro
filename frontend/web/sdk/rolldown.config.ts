@@ -46,7 +46,7 @@ const config = defineConfig([
       sourcemap: true,
       entryFileNames: '[name].mjs',
       chunkFileNames: '[name]-[hash].mjs',
-      // minify: true, // 启用代码压缩
+      minify: true, // 启用代码压缩
     },
   },
   {
@@ -58,7 +58,7 @@ const config = defineConfig([
       sourcemap: true,
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
-      // minify: true, // 启用代码压缩
+      minify: true, // 启用代码压缩
     },
   },
   {
@@ -70,7 +70,7 @@ const config = defineConfig([
       sourcemap: true,
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
-      // minify: true, // 启用代码压缩
+      minify: true, // 启用代码压缩
     },
   },
 ]);

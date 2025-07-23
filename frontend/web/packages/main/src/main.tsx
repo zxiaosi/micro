@@ -1,7 +1,15 @@
+import NotFound from '@/pages/notFound/index.tsx';
+import sdk from '@zxiaosi/sdk';
 import { registerMicroApps, start } from 'qiankun';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+
+sdk.init({
+  components: {
+    NotFound,
+  },
+});
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
