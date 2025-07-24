@@ -22,6 +22,7 @@ const babelOptions: RollupBabelInputPluginOptions = {
   babelHelpers: 'bundled', // 使用打包的 Babel 辅助函数
 };
 
+/** 通用配置 */
 const common = defineConfig({
   input: './src/index.ts',
   platform: 'browser', // 作用于浏览器环境
@@ -43,9 +44,9 @@ const config = defineConfig([
     output: {
       dir: 'dist/esm',
       format: 'es',
-      sourcemap: true,
       entryFileNames: '[name].mjs',
       chunkFileNames: '[name]-[hash].mjs',
+      sourcemap: true,
       minify: true, // 启用代码压缩
     },
   },
@@ -55,9 +56,9 @@ const config = defineConfig([
     output: {
       dir: 'dist/cjs',
       format: 'cjs',
-      sourcemap: true,
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
+      sourcemap: true,
       minify: true, // 启用代码压缩
     },
   },
@@ -67,9 +68,9 @@ const config = defineConfig([
     output: {
       dir: 'dist/cjs',
       format: 'esm',
-      sourcemap: true,
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
+      sourcemap: true,
       minify: true, // 启用代码压缩
     },
   },
