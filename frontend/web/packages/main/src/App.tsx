@@ -1,7 +1,6 @@
-import zxiaosiSdk from '@zxiaosi/sdk';
-const { Root } = zxiaosiSdk;
 function App({ loading }: any) {
-  return <Root />;
+  if (loading) return <>加载中...</>;
+  return <>主应用</>;
 }
 
 export default App;

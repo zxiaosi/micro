@@ -30,6 +30,10 @@ const common = defineConfig({
     alias: { '@': './src' }, // 设置别名
     tsconfigFilename: './tsconfig.json', // 指定 TypeScript 配置文件
   },
+  output: {
+    sourcemap: true, // 生成 sourcemap 文件
+    minify: true, // 启用代码压缩
+  },
 });
 
 const config = defineConfig([
@@ -46,8 +50,7 @@ const config = defineConfig([
       format: 'es',
       entryFileNames: '[name].mjs',
       chunkFileNames: '[name]-[hash].mjs',
-      sourcemap: true,
-      minify: true, // 启用代码压缩
+      ...common.output,
     },
   },
   {
@@ -58,8 +61,7 @@ const config = defineConfig([
       format: 'cjs',
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
-      sourcemap: true,
-      minify: true, // 启用代码压缩
+      ...common.output,
     },
   },
   {
@@ -70,8 +72,7 @@ const config = defineConfig([
       format: 'esm',
       entryFileNames: '[name].cjs',
       chunkFileNames: '[name]-[hash].cjs',
-      sourcemap: true,
-      minify: true, // 启用代码压缩
+      ...common.output,
     },
   },
 ]);

@@ -1,10 +1,9 @@
 import NotFound from '@/pages/notFound/index.tsx';
-import zxiaosiSdk from '@zxiaosi/sdk';
+import sdk from '@zxiaosi/sdk';
 import { registerMicroApps, start } from 'qiankun';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-const { sdk } = zxiaosiSdk;
 
 sdk.init({
   components: {
