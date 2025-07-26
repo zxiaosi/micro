@@ -5,26 +5,43 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 import axios, { AxiosError } from 'axios';
+import { ApiConfigProps } from './config';
 
 /** 自定义配置项 */
-export interface ExtraRequestOption extends AxiosRequestConfig {
+interface ExtraRequestOption extends AxiosRequestConfig {
   /** 是否需要原始数据 */
   isOriginalData?: boolean;
   /** 是否显示错误信息 */
   isShowFailMsg?: boolean;
 }
 
-class Http {
+/** 请求类 */
+export interface ApiProps {
+  /**
+   * 请求
+   * @param url 请求地址
+   * @param data 请求数据
+   * @param options 自定义配置项
+   */
+  request(
+    url: string,
+    data?: string | object,
+    options?: ExtraRequestOption,
+  ): Promise<AxiosResponse<any, any>>;
+}
+
+/** 请求类 */
+class Api implements ApiProps {
   _instance: AxiosInstance;
 
   constructor(options: AxiosRequestConfig = {}) {
     this._instance = axios.create(options);
-    this.requestInterceptors(); // 请求拦截器
-    this.responseInterceptors(); // 响应拦截器
+    this._defaultRequestInterceptors();
+    this._defaultResponseInterceptors();
   }
 
-  /** 请求拦截器 */
-  requestInterceptors() {
+  /** 默认请求拦截器 */
+  _defaultRequestInterceptors() {
     this._instance.interceptors.request.use(
       function (config: InternalAxiosRequestConfig) {
         return config;
@@ -36,8 +53,8 @@ class Http {
     );
   }
 
-  /** 响应拦截器 */
-  responseInterceptors() {
+  /** 默认响应拦截器 */
+  _defaultResponseInterceptors() {
     this._instance.interceptors.response.use(
       function (response: AxiosResponse) {
         const { data, config } = response;
@@ -70,16 +87,30 @@ class Http {
     );
   }
 
-  request(
-    url: string,
-    data: string | object = {},
-    options: ExtraRequestOption = {
-      isOriginalData: false,
-      isShowFailMsg: true,
-    },
+  request: ApiProps['request'] = async function (
+    url,
+    data = {},
+    options = { isOriginalData: false, isShowFailMsg: true },
   ) {
     return this._instance.request({ url, data, ...options });
-  }
+  };
+
+  /** 添加请求拦截器 */
+  addRequestInterceptor: ApiConfigProps['addRequestInterceptor'] = function (
+    onFulfilled,
+    onRejected,
+    options,
+  ) {
+    this._instance.interceptors.request.use(onFulfilled, onRejected, options);
+  };
+
+  /** 添加响应拦截器 */
+  addResponseInterceptor: ApiConfigProps['addResponseInterceptor'] = function (
+    onFulfilled,
+    onRejected,
+  ) {
+    this._instance.interceptors.response.use(onFulfilled, onRejected);
+  };
 }
 
-export default Http;
+export default Api;

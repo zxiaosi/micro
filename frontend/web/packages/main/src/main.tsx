@@ -6,9 +6,7 @@ import App from './App.tsx';
 import './index.css';
 
 sdk.init({
-  components: {
-    NotFound,
-  },
+  components: { NotFound },
 });
 
 const container = document.getElementById('root')!;

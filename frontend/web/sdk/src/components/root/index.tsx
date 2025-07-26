@@ -1,9 +1,8 @@
-import sdk from '@/sdk';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
 /** 根组件 */
-const Root = () => {
-  console.log('Root component initialized');
+const Root = ({ sdk }: any) => {
+  console.log('Root component initialized', sdk);
 
   const Login = sdk.getComponent('Login');
   const NotFound = sdk.getComponent('NotFound');

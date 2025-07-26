@@ -24,7 +24,7 @@ const babelOptions: RollupBabelInputPluginOptions = {
 
 /** 通用配置 */
 const common = defineConfig({
-  input: './src/index.ts',
+  input: './src/index.tsx',
   platform: 'browser', // 作用于浏览器环境
   resolve: {
     alias: { '@': './src' }, // 设置别名
