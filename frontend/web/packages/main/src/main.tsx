@@ -20,3 +20,10 @@ sdk.inject({
 });
 
 createRoot(document.getElementById('root')!).render(<App />);
+
+// production mock server
+if (process.env.NODE_ENV === 'production') {
+  import('./mockProdServer').then(({ setupProdMockServer }) => {
+    setupProdMockServer();
+  });
+}

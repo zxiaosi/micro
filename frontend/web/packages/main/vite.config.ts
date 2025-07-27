@@ -27,7 +27,7 @@ export default ({ mode }) => {
       }),
       viteMockServe({
         enable: true,
-        mockPath: resolve(__dirname, 'mock'),
+        mockPath: resolve(__dirname, `mock/${mode}`),
         watchFiles: true,
         logger: true,
       }),
