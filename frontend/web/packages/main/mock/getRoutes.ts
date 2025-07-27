@@ -11,13 +11,15 @@ const routes = [
     hidden: false,
   },
   {
-    path: '/test',
-    component: 'Test',
+    path: '/user',
+    component: 'Microapp',
     meta: {
       title: '测试页',
       icon: 'ControlOutlined',
     },
     hidden: false,
+    routerAttr:
+      '{"name": "user", "entry": "http://localhost:8001", "activeRule": "/user", "rootId": "sub-app"}',
   },
 ];
 

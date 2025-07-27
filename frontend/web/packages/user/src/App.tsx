@@ -5,7 +5,7 @@ import { shallow, useShallow } from 'zustand/shallow';
 
 function App() {
   const { initialState, setInitialState } = useStore(
-    sdk.globalStore,
+    sdk.store,
     useShallow((state) => ({
       initialState: state.initialState,
       setInitialState: state.setInitialState,
@@ -13,7 +13,7 @@ function App() {
   );
 
   useEffect(() => {
-    sdk.globalStore?.subscribe(
+    sdk.store?.subscribe(
       (state) => state.initialState,
       (state: any, prev: any) => {
         console.log('bears change', state, prev);

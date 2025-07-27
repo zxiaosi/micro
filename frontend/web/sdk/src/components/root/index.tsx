@@ -1,4 +1,5 @@
 import { useRoot } from '@/hooks/useRoot';
+import { registerMicroApps, start } from 'qiankun';
 import { memo, useEffect, useState } from 'react';
 import {
   createBrowserRouter,
@@ -6,9 +7,11 @@ import {
   createMemoryRouter,
   Navigate,
   RouteObject,
-  RouterProvider,
   RouterProviderProps,
 } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
+import Layout from '../layout';
+import Microapp from '../microapp';
 
 /** 根组件 */
 const Root = () => {
@@ -25,11 +28,23 @@ const Root = () => {
       const resp = await sdk.settings?.getRoutesApi?.();
       const data = resp?.data || [];
 
+      // 微应用信息
+      const microApps = [];
+
       // 子路由处理
       const subRoutes: RouteObject[] =
         data?.map((item) => {
-          const Component = sdk.getComponent(item.component) || null;
-          return { ...item, Component };
+          // 微应用
+          if (item.routerAttr) {
+            const routerAttr = JSON.parse(item.routerAttr) || {};
+            const id = routerAttr.rootId || 'sub-app';
+
+            microApps.push({ ...routerAttr, container: `#${id}` });
+            return { ...item, element: <Microapp rootId={id} /> }; // 不能使用懒加载
+          } else {
+            const Component = sdk.getComponent(item.component) || null;
+            return { ...item, Component };
+          }
         }) || [];
 
       // 所有路由
@@ -38,12 +53,46 @@ const Root = () => {
         { path: '/', element: <Navigate to="/dashboard" replace /> },
         {
           path: '/',
-          Component: sdk.getComponent('Layout'),
+          element: <Layout />, // 使用懒加载会导致 Root 组件渲染多次
           children: subRoutes,
           errorElement: <>找不到页面</>,
         },
         { path: '*', Component: sdk.getComponent('NotFound') },
       ];
+
+      // 注册微应用
+      registerMicroApps(microApps, {
+        beforeLoad: [
+          async (app) => {
+            console.log(
+              '[LifeCycle] before load %c%s',
+              'color: green;',
+              app.name,
+            );
+          },
+        ],
+        beforeMount: [
+          async (app) => {
+            console.log(
+              '[LifeCycle] before mount %c%s',
+              'color: green;',
+              app.name,
+            );
+          },
+        ],
+        afterUnmount: [
+          async (app) => {
+            console.log(
+              '[LifeCycle] after unmount %c%s',
+              'color: green;',
+              app.name,
+            );
+          },
+        ],
+      });
+
+      // 启动 qiankun
+      start({ sandbox: { experimentalStyleIsolation: true } });
 
       let newRouter = undefined;
       switch (sdk.settings?.routerMode) {

@@ -34,9 +34,12 @@ const BaseLayout = () => {
       <Link to={'/'} style={{ marginRight: 20 }}>
         主应用
       </Link>
-      <Link to={'/user'} style={{ marginRight: 20 }}>
+      <span
+        onClick={() => navigate('/user', { flushSync: true })}
+        style={{ marginRight: 20, cursor: 'pointer' }}
+      >
         子应用
-      </Link>
+      </span>
 
       <Link to={'/login'}>去登录页</Link>
 
