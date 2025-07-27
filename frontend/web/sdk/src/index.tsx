@@ -8,6 +8,8 @@ import Api, { ApiProps } from '@/api';
 import apiConfig, { ApiConfigProps } from '@/api/config';
 import clientConfig, { ClientConfigProps } from '@/client';
 import defaultComponents from '@/components/index';
+import defaultHooks, { HooksProps } from '@/hooks';
+import { RootProvider } from '@/hooks/useRoot';
 import settingsConfig, { SettingsConfigProps } from '@/settings';
 import Storage, { StorageProps } from '@/storage';
 import globalStore, { GlobalStore } from '@/store';
@@ -25,6 +27,8 @@ export interface SdkProps {
   apiConfig: Partial<ApiConfigProps>;
   /** 客户端配置 */
   client: Partial<ClientConfigProps>;
+  /** Hooks */
+  readonly hooks: Partial<HooksProps>;
   /** 全局 Store */
   readonly store: GlobalStore;
   /** localStorage */
@@ -66,6 +70,7 @@ class Sdk {
       api: new Api(apiConfig),
       apiConfig: apiConfig,
       client: clientConfig,
+      hooks: defaultHooks,
       store: globalStore,
       storage: new Storage(),
       settings: settingsConfig,
@@ -139,9 +144,15 @@ class Sdk {
 
   /** 获取根组件 */
   getRootComponent() {
-    const Root = this.getComponent('Root') as ComponentType<{ sdk: SdkProps }>;
-    // return <Root sdk={this._instance} />; // <>{sdk.getRootComponent()}</>
-    return () => <Root sdk={this._instance} />; // const App = sdk.getRootComponent(); <App />
+    const Root = this.getComponent('Root');
+    // 返回组件, 调用方法为: <>{sdk.getRootComponent()}</>
+    // 返回一个函数, 调用方法为: const App = sdk.getRootComponent(); <App />
+
+    return () => (
+      <RootProvider sdk={this._instance}>
+        <Root />
+      </RootProvider>
+    );
   }
 }
 

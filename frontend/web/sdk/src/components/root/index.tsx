@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useRoot } from '@/hooks/useRoot';
+import { memo, useEffect, useState } from 'react';
 import {
   createBrowserRouter,
   createHashRouter,
   createMemoryRouter,
   Navigate,
-  Outlet,
   RouteObject,
   RouterProvider,
   RouterProviderProps,
 } from 'react-router';
 
 /** 根组件 */
-const Root = ({ sdk }: any) => {
+const Root = () => {
+  const sdk = useRoot();
+
   console.log('Root component initialized', sdk);
 
   const [router, setRouter] =
     useState<RouterProviderProps['router']>(undefined);
 
-  const Login = sdk.getComponent('Login');
-  const NotFound = sdk.getComponent('NotFound');
   /** 获取路由数据 */
   const getRoutes = async () => {
     try {
@@ -28,21 +28,21 @@ const Root = ({ sdk }: any) => {
       // 子路由处理
       const subRoutes: RouteObject[] =
         data?.map((item) => {
-          const Element = sdk.getComponent(item.component) || null;
-          return { ...item, element: <Element /> };
+          const Component = sdk.getComponent(item.component) || null;
+          return { ...item, Component };
         }) || [];
 
       // 所有路由
       const allRoutes: RouteObject[] = [
-        { path: '/login', element: <Login /> },
+        { path: '/login', Component: sdk.getComponent('Login') },
         { path: '/', element: <Navigate to="/dashboard" replace /> },
         {
           path: '/',
-          element: <Outlet />,
+          Component: sdk.getComponent('Layout'),
           children: subRoutes,
           errorElement: <>找不到页面</>,
         },
-        { path: '*', element: <NotFound /> },
+        { path: '*', Component: sdk.getComponent('NotFound') },
       ];
 
       let newRouter = undefined;
@@ -75,4 +75,4 @@ const Root = ({ sdk }: any) => {
   return <RouterProvider router={router} />;
 };
 
-export default Root;
+export default memo(Root);
