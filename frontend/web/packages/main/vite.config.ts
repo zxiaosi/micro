@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { defineConfig, loadEnv } from 'vite';
-
+import { viteMockServe } from 'vite-plugin-mock';
 // babel.config.js
 const ReactCompilerConfig = {
   target: '19', // '17' | '18' | '19'
@@ -24,6 +24,12 @@ export default ({ mode }) => {
         babel: {
           plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
         },
+      }),
+      viteMockServe({
+        enable: true,
+        mockPath: resolve(__dirname, 'mock'),
+        watchFiles: true,
+        logger: true,
       }),
     ],
     resolve: {

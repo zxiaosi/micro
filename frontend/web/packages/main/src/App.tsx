@@ -1,8 +1,14 @@
 import sdk from '@zxiaosi/sdk';
+import { useEffect } from 'react';
+import { getRoutesApi } from './service';
 
-function App({ loading }: any) {
+function App() {
   const Root = sdk.getRootComponent();
-  if (loading) return <>加载中...</>;
+  useEffect(() => {
+    getRoutesApi().then((res) => {
+      console.log('获取路由数据:', res);
+    });
+  }, []);
   return <Root />;
 }
 

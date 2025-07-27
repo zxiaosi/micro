@@ -6,6 +6,9 @@ import App from './App.tsx';
 import './index.css';
 
 sdk.inject({
+  apiConfig: {
+    baseURL: '/api',
+  },
   components: { NotFound },
 });
 

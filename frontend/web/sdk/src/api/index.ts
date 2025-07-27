@@ -25,7 +25,6 @@ export interface ApiProps {
    */
   request(
     url: string,
-    data?: string | object,
     options?: ExtraRequestOption,
   ): Promise<AxiosResponse<any, any>>;
 }
@@ -59,6 +58,8 @@ class Api implements ApiProps {
       function (response: AxiosResponse) {
         const { data, config } = response;
         const { isOriginalData, isShowFailMsg } = config as ExtraRequestOption;
+        console.log('响应数据:', response);
+
         const { code, msg } = data;
 
         if (code !== 200 && isShowFailMsg) console.error(msg);
@@ -87,12 +88,13 @@ class Api implements ApiProps {
     );
   }
 
-  request: ApiProps['request'] = async function (
-    url,
-    data = {},
-    options = { isOriginalData: false, isShowFailMsg: true },
-  ) {
-    return this._instance.request({ url, data, ...options });
+  request: ApiProps['request'] = async function (url, options) {
+    return this._instance.request({
+      url,
+      isOriginalData: false,
+      isShowFailMsg: true,
+      ...options,
+    });
   };
 
   /** 添加请求拦截器 */

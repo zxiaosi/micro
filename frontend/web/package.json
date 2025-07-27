@@ -5,7 +5,7 @@
     "build:main": "pnpm -F main run build",
     "build:sdk": "pnpm -F sdk run build",
     "build:user": "pnpm -F user run build",
-    "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules",
+    "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules && npx rimraf ./pnpm-lock.yaml",
     "dev:main": "pnpm -F main run dev",
     "dev:user": "pnpm -F user run dev",
     "postinstall": "npx only-allow pnpm"

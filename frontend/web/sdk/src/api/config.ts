@@ -39,7 +39,7 @@ export interface ApiConfigProps extends AxiosRequestConfig {
 /** 请求配置 */
 const apiConfig: ApiConfigProps = {
   /** 请求地址 */
-  baseURL: '/api',
+  baseURL: '/',
   /** 请求超时时间 0 表示不超时 */
   timeout: 0,
 };
