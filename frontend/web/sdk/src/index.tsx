@@ -37,11 +37,11 @@ interface SdkProps {
   components: Record<string, ComponentType>;
 
   /**
-   * 注入属性 - 只开放一部分属性
+   * 注入属性
    */
-  readonly init: (
-    args: Partial<
-      Pick<SdkProps, 'name' | 'apiConfig' | 'client' | 'components'>
+  readonly inject: (
+    attr: Partial<
+      Pick<SdkProps, 'name' | 'apiConfig' | 'client' | 'components'> // 只开放一部分属性
     >,
   ) => void;
   /**
@@ -75,7 +75,7 @@ class Sdk {
       store: globalStore,
       storage: new Storage(),
       components: defaultComponents,
-      init: this.init.bind(this),
+      inject: this.inject.bind(this),
       setComponent: this.setComponent.bind(this),
       getComponent: this.getComponent.bind(this),
       getRootComponent: this.getRootComponent.bind(this),
@@ -115,8 +115,8 @@ class Sdk {
   }
 
   /** 注入属性 */
-  init: SdkProps['init'] = function (args = {}) {
-    merge(this._instance, args); // 合并传入的属性
+  inject: SdkProps['inject'] = function (attr = {}) {
+    merge(this._instance, attr); // 合并传入的属性
 
     const { apiConfig } = this._instance;
 
