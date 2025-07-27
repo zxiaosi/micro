@@ -1,3 +1,6 @@
+// 使用按需加载的方式引入 lodash
+import isEmpty from 'lodash/isEmpty';
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -33,10 +36,24 @@ export interface ApiProps {
 class Api implements ApiProps {
   _instance: AxiosInstance;
 
-  constructor(options: AxiosRequestConfig = {}) {
-    this._instance = axios.create(options);
-    this._defaultRequestInterceptors();
-    this._defaultResponseInterceptors();
+  constructor(options: ApiConfigProps = {}) {
+    const { addRequestInterceptor, addResponseInterceptor, ...rest } = options;
+
+    this._instance = axios.create(rest); // 创建实例
+    this._defaultRequestInterceptors(); // 添加默认请求拦截器
+    this._defaultResponseInterceptors(); // 添加默认响应拦截器
+
+    // 添加自定义拦截器
+    if (!isEmpty(addRequestInterceptor)) {
+      const { onFulfilled, onRejected, options } = addRequestInterceptor;
+      this._instance.interceptors.request.use(onFulfilled, onRejected, options);
+    }
+
+    // 添加自定义响应拦截器
+    if (!isEmpty(addResponseInterceptor)) {
+      const { onFulfilled, onRejected } = addResponseInterceptor;
+      this._instance.interceptors.response.use(onFulfilled, onRejected);
+    }
   }
 
   /** 默认请求拦截器 */
@@ -58,7 +75,6 @@ class Api implements ApiProps {
       function (response: AxiosResponse) {
         const { data, config } = response;
         const { isOriginalData, isShowFailMsg } = config as ExtraRequestOption;
-        console.log('响应数据:', response);
 
         const { code, msg } = data;
 
@@ -95,23 +111,6 @@ class Api implements ApiProps {
       isShowFailMsg: true,
       ...options,
     });
-  };
-
-  /** 添加请求拦截器 */
-  addRequestInterceptor: ApiConfigProps['addRequestInterceptor'] = function (
-    onFulfilled,
-    onRejected,
-    options,
-  ) {
-    this._instance.interceptors.request.use(onFulfilled, onRejected, options);
-  };
-
-  /** 添加响应拦截器 */
-  addResponseInterceptor: ApiConfigProps['addResponseInterceptor'] = function (
-    onFulfilled,
-    onRejected,
-  ) {
-    this._instance.interceptors.response.use(onFulfilled, onRejected);
   };
 }
 

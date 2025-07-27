@@ -13,27 +13,27 @@ export interface ApiConfigProps extends AxiosRequestConfig {
    * @param onRejected 请求拦截器失败回调
    * @param options 拦截器选项
    */
-  addRequestInterceptor?: (
+  addRequestInterceptor?: {
     onFulfilled?: (
       value: InternalAxiosRequestConfig<any>,
     ) =>
       | InternalAxiosRequestConfig<any>
-      | Promise<InternalAxiosRequestConfig<any>>,
-    onRejected?: ((error: any) => any) | null,
-    options?: AxiosInterceptorOptions,
-  ) => void;
+      | Promise<InternalAxiosRequestConfig<any>>;
+    onRejected?: ((error: any) => any) | null;
+    options?: AxiosInterceptorOptions;
+  };
 
   /**
    * 添加响应拦截器
    * @param onFulfilled 响应拦截器成功回调
    * @param onRejected 响应拦截器失败回调
    */
-  addResponseInterceptor?: (
+  addResponseInterceptor?: {
     onFulfilled?:
       | ((value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>)
-      | null,
-    onRejected?: ((error: any) => any) | null,
-  ) => void;
+      | null;
+    onRejected?: ((error: any) => any) | null;
+  };
 }
 
 /** 请求配置 */

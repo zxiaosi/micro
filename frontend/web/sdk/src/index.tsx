@@ -1,23 +1,19 @@
 // 使用按需加载的方式引入 lodash
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
 import set from 'lodash/set';
 
-// SDK 相关模块
-import Api from '@/api';
-import apiConfig from '@/api/config';
-import clientConfig from '@/client';
+import Api, { ApiProps } from '@/api';
+import apiConfig, { ApiConfigProps } from '@/api/config';
+import clientConfig, { ClientConfigProps } from '@/client';
 import defaultComponents from '@/components/index';
-import Storage from '@/storage';
-import globalStore from '@/store/index';
-
-// 类型定义
-import { ApiProps } from '@/api';
-import { ApiConfigProps } from '@/api/config';
-import { ClientConfigProps } from '@/client';
-import { StorageProps } from '@/storage';
-import { GlobalStore } from '@/store';
+import settingsConfig, { SettingsConfigProps } from '@/settings';
+import Storage, { StorageProps } from '@/storage';
+import globalStore, { GlobalStore } from '@/store';
 import { ComponentType } from 'react';
+
+type Field = 'name' | 'apiConfig' | 'client' | 'settings' | 'components'; // 只开放一部分属性
 
 /** Sdk 接口 */
 export interface SdkProps {
@@ -33,17 +29,15 @@ export interface SdkProps {
   readonly store: GlobalStore;
   /** localStorage */
   readonly storage: StorageProps;
+  /** 额外配置 */
+  settings?: SettingsConfigProps;
   /** 公用组件 */
   components: Record<string, ComponentType>;
 
   /**
    * 注入属性
    */
-  readonly inject: (
-    attr: Partial<
-      Pick<SdkProps, 'name' | 'apiConfig' | 'client' | 'components'> // 只开放一部分属性
-    >,
-  ) => void;
+  readonly inject: (attr: Partial<Pick<SdkProps, Field>>) => void;
   /**
    * 设置组件
    * @param component 组件
@@ -74,6 +68,7 @@ class Sdk {
       client: clientConfig,
       store: globalStore,
       storage: new Storage(),
+      settings: settingsConfig,
       components: defaultComponents,
       inject: this.inject.bind(this),
       setComponent: this.setComponent.bind(this),
@@ -120,7 +115,7 @@ class Sdk {
 
     const { apiConfig } = this._instance;
 
-    if (apiConfig && Object.keys(apiConfig).length > 0) {
+    if (!isEmpty(apiConfig)) {
       this._instance.api = new Api(apiConfig);
     }
   };

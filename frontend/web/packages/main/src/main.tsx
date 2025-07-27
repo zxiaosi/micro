@@ -1,4 +1,5 @@
 import NotFound from '@/pages/notFound/index.tsx';
+import { getRoutesApi } from '@/service/index.ts';
 import sdk from '@zxiaosi/sdk';
 import { registerMicroApps, start } from 'qiankun';
 import { createRoot } from 'react-dom/client';
@@ -8,6 +9,9 @@ import './index.css';
 sdk.inject({
   apiConfig: {
     baseURL: '/api',
+  },
+  settings: {
+    getRoutesApi: getRoutesApi,
   },
   components: { NotFound },
 });
