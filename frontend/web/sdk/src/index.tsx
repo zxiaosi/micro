@@ -26,9 +26,9 @@ interface SdkProps {
   /** 请求 */
   readonly api: ApiProps;
   /** 请求配置 */
-  apiConfig: ApiConfigProps;
+  apiConfig: Partial<ApiConfigProps>;
   /** 客户端配置 */
-  client: ClientConfigProps;
+  client: Partial<ClientConfigProps>;
   /** 全局 Store */
   readonly store: GlobalStore;
   /** localStorage */
@@ -37,7 +37,7 @@ interface SdkProps {
   components: Record<string, ComponentType>;
 
   /**
-   * 注入属性
+   * 注入属性 - 只开放一部分属性
    */
   readonly init: (
     args: Partial<
