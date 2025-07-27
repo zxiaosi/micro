@@ -1,3 +1,4 @@
+import Dashboard from '@/pages/dashboard/index.tsx';
 import NotFound from '@/pages/notFound/index.tsx';
 import { getRoutesApi } from '@/service/index.ts';
 import sdk from '@zxiaosi/sdk';
@@ -11,9 +12,12 @@ sdk.inject({
     baseURL: '/api',
   },
   settings: {
-    getRoutesApi: getRoutesApi,
+    getRoutesApi,
   },
-  components: { NotFound },
+  components: {
+    Dashboard,
+    NotFound,
+  },
 });
 
 const container = document.getElementById('root')!;

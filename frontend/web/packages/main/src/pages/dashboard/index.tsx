@@ -6,7 +6,7 @@ import './index.less';
 /** 首页 */
 const Dashboard = () => {
   const { initialState, setInitialState } = useStore(
-    sdk.globalStore,
+    sdk.store,
     useShallow((state) => ({
       initialState: state.initialState,
       setInitialState: state.setInitialState,
