@@ -20,7 +20,7 @@ import { GlobalStore } from '@/store';
 import { ComponentType } from 'react';
 
 /** Sdk 接口 */
-interface SdkProps {
+export interface SdkProps {
   /** sdk 名称 */
   name: string;
   /** 请求 */
