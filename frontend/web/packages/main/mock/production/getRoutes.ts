@@ -19,7 +19,7 @@ const routes = [
     },
     hidden: false,
     routerAttr:
-      '{"name": "user", "entry": "/user/", "activeRule": "/user", "rootId": "sub-app"}',
+      '{"name": "user", "entry": "/subapp/sub-user/", "activeRule": "/user", "rootId": "sub-app"}',
   },
 ];
 
