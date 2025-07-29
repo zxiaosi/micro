@@ -1,21 +1,34 @@
-/** 额外配置 */
-export interface SettingsConfigProps {
+import { SdkProps } from '@/global';
+import { AxiosRequestConfig } from 'axios';
+
+interface Props {
   /** 路由模式 */
-  routerMode?: 'browser' | 'hash' | 'memory';
+  routerMode: 'browser' | 'hash' | 'memory';
   /** 登录接口 */
-  loginApi?: (data?: any) => any;
+  loginApi: (options?: AxiosRequestConfig) => any;
   /** 获取用户信息接口 */
-  getUserInfoApi?: (data?: any) => any;
+  getUserInfoApi: (options?: AxiosRequestConfig) => any;
   /** 获取路由数据接口 */
-  getRoutesApi?: (data?: any) => any;
+  getRoutesApi: (options?: AxiosRequestConfig) => any;
 }
 
 /** 额外配置 */
-const settingsConfig: SettingsConfigProps = {
-  routerMode: 'browser',
-  loginApi: undefined,
-  getUserInfoApi: undefined,
-  getRoutesApi: undefined,
+const createSettings = (sdk: SdkProps, opt: Partial<Props> = {}): Props => {
+  return {
+    routerMode: 'browser',
+    loginApi: async (options) => {
+      return await sdk.api.request('/api/login', options);
+    },
+    getUserInfoApi: async (options) => {
+      return await sdk.api.request('/api/userInfo', options);
+    },
+    getRoutesApi: async (options) => {
+      return await sdk.api.request('/api/routes', options);
+    },
+    ...opt,
+  };
 };
 
-export default settingsConfig;
+export default createSettings;
+
+export type SettingsProps = Props;

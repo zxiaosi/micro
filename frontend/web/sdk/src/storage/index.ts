@@ -1,59 +1,59 @@
-/** localStorage */
-export interface StorageProps {
-  /**
-   * Token 名称
-   */
+import { SdkProps } from '@/global';
+
+interface Props {
+  /** Token 名称 */
   tokenName: string;
   /**
    * 设置缓存
    * @param key 缓存键
    * @param value 缓存值
    */
-  setItem: (key: string, value: any) => void;
+  readonly setItem: (key: string, value: any) => void;
   /**
    * 获取缓存
    * @param key 缓存键
    */
-  getItem: (key: string) => any;
+  readonly getItem: (key: string) => any;
   /**
    * 删除缓存
    * @param key 缓存键
    */
-  removeItem: (key: string) => void;
+  readonly removeItem: (key: string) => void;
   /**
    * 清除所有缓存
    */
-  clear: () => void;
+  readonly clear: () => void;
 }
 
 /** localStorage */
-class Storage implements StorageProps {
-  tokenName: string;
-
-  constructor(tokenName: string = 'token') {
-    this.tokenName = tokenName;
-  }
-
-  setItem: StorageProps['setItem'] = function (key, value) {
-    if (value instanceof Object) value = JSON.stringify(value);
-    return localStorage.setItem(key, value);
+const createStorage = (sdk: SdkProps, opt: Partial<Props> = {}): Props => {
+  return {
+    tokenName: 'token',
+    setItem: (key, value) => {
+      if (value instanceof Object) value = JSON.stringify(value);
+      return localStorage.setItem(key, value);
+    },
+    getItem: (key) => {
+      const value = localStorage.getItem(key);
+      if (value) {
+        try {
+          return JSON.parse(value);
+        } catch (error) {
+          return value;
+        }
+      }
+      return value;
+    },
+    removeItem: (key) => {
+      return localStorage.removeItem(key);
+    },
+    clear: () => {
+      return localStorage.clear();
+    },
+    ...opt,
   };
+};
 
-  getItem: StorageProps['getItem'] = function (key) {
-    try {
-      if (key) return JSON.parse(key);
-    } catch (e) {
-      return key || null;
-    }
-  };
+export default createStorage;
 
-  removeItem: StorageProps['removeItem'] = function (key) {
-    localStorage.removeItem(key);
-  };
-
-  clear() {
-    localStorage.clear();
-  }
-}
-
-export default Storage;
+export type StorageProps = Props;

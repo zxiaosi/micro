@@ -1,14 +1,22 @@
-import { NavigateFunction } from 'react-router';
+import { SdkProps } from '@/global';
+import { Location, NavigateFunction } from 'react-router';
 
-/** 客户端配置 */
-export interface ClientConfigProps {
+interface Props {
+  /** 主应用 location */
+  readonly location: Partial<Location>;
   /** 主应用navigate（解决子应用跳转问题） */
-  navigate: NavigateFunction;
+  readonly navigate: NavigateFunction;
 }
 
 /** 客户端配置 */
-const clientConfig: ClientConfigProps = {
-  navigate: null,
+const createClient = (sdk: SdkProps, opt: Partial<Props> = {}): Props => {
+  return {
+    location: null,
+    navigate: null,
+    ...opt,
+  };
 };
 
-export default clientConfig;
+export default createClient;
+
+export type ClientProps = Props;

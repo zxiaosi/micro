@@ -1,7 +1,7 @@
 import sdk from '@zxiaosi/sdk';
 
 function App() {
-  const Root = sdk.getRootComponent();
+  const Root = sdk.components.getRootComponent();
 
   return <Root />;
 }

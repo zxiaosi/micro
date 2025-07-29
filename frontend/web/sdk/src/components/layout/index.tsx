@@ -1,5 +1,6 @@
 import { useRoot } from '@/hooks/useRoot';
-import { Link, Outlet, useNavigate } from 'react-router';
+import { memo } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.css';
@@ -8,7 +9,8 @@ const BaseLayout = () => {
   const sdk = useRoot();
 
   const navigate = useNavigate();
-  sdk.inject({ client: { navigate } }); // 注入父组件的 navigate 方法到 SDK
+  const location = useLocation();
+  sdk.register({ client: { navigate, location } }); // 注入父组件的 navigate 方法到 SDK
 
   const { initialState, setInitialState } = useStore(
     sdk.store,
@@ -48,4 +50,4 @@ const BaseLayout = () => {
   );
 };
 
-export default BaseLayout;
+export default memo(BaseLayout);

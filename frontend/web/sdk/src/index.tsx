@@ -1,89 +1,74 @@
 // 使用按需加载的方式引入 lodash
-import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
-import set from 'lodash/set';
 
-import Api, { ApiProps } from '@/api';
-import apiConfig, { ApiConfigProps } from '@/api/config';
-import clientConfig, { ClientConfigProps } from '@/client';
-import defaultComponents from '@/components/index';
-import defaultHooks, { HooksProps } from '@/hooks';
-import { RootProvider } from '@/hooks/useRoot';
-import settingsConfig, { SettingsConfigProps } from '@/settings';
-import Storage, { StorageProps } from '@/storage';
-import globalStore, { GlobalStore } from '@/store';
-import { ComponentType } from 'react';
-
-type Field = 'name' | 'apiConfig' | 'client' | 'settings' | 'components'; // 只开放一部分属性
-
-/** Sdk 接口 */
-export interface SdkProps {
-  /** sdk 名称 */
-  name: string;
-  /** 请求 */
-  readonly api: ApiProps;
-  /** 请求配置 */
-  apiConfig: Partial<ApiConfigProps>;
-  /** 客户端配置 */
-  client: Partial<ClientConfigProps>;
-  /** Hooks */
-  readonly hooks: Partial<HooksProps>;
-  /** 全局 Store */
-  readonly store: GlobalStore;
-  /** localStorage */
-  readonly storage: StorageProps;
-  /** 额外配置 */
-  settings?: SettingsConfigProps;
-  /** 公用组件 */
-  components: Record<string, ComponentType>;
-
-  /**
-   * 注入属性
-   */
-  readonly inject: (attr: Partial<Pick<SdkProps, Field>>) => void;
-  /**
-   * 设置组件
-   * @param component 组件
-   * @param name 组件名称
-   */
-  readonly setComponent: (component: ComponentType, name?: string) => void;
-  /**
-   * 获取组件
-   * @param name 组件名称
-   */
-  readonly getComponent: (name?: string) => ComponentType;
-  /**
-   * 获取根组件
-   */
-  readonly getRootComponent: () => ComponentType;
-  [key: string]: any;
-}
+import createApi from '@/api';
+import createClient from '@/client';
+import createComponents from '@/components';
+import { SdkProps } from '@/global';
+import hooks from '@/hooks';
+import createSettings from '@/settings';
+import createStorage from '@/storage';
+import globalStore from '@/store';
 
 class Sdk {
   /** sdk 实例 */
-  _instance: SdkProps;
+  _instance: SdkProps = {
+    name: '',
+    api: null,
+    client: null,
+    components: null,
+    hooks: null,
+    store: null,
+    storage: null,
+    settings: null,
+    register: null,
+  };
 
-  constructor() {
-    this._instance = {
-      name: '',
-      api: new Api(apiConfig),
-      apiConfig: apiConfig,
-      client: clientConfig,
-      hooks: defaultHooks,
+  constructor(name: string) {
+    this.register({
+      name,
+      hooks: hooks,
       store: globalStore,
-      storage: new Storage(),
-      settings: settingsConfig,
-      components: defaultComponents,
-      inject: this.inject.bind(this),
-      setComponent: this.setComponent.bind(this),
-      getComponent: this.getComponent.bind(this),
-      getRootComponent: this.getRootComponent.bind(this),
-    };
+      register: this.register.bind(this),
+    });
+
+    this.mountSdk();
   }
 
-  /** 注册sdk */
-  registerSdk(name: string) {
+  /** 注册属性 */
+  register: SdkProps['register'] = function (options = {}) {
+    const { api, client, settings, storage, components, ...rest } = options;
+
+    const opt: Partial<SdkProps> = {};
+
+    if (isEmpty(this._instance?.api) || !isEmpty(api)) {
+      opt['api'] = createApi(this._instance, api);
+    }
+
+    if (isEmpty(this._instance?.client) || !isEmpty(client)) {
+      opt['client'] = createClient(this._instance, client);
+    }
+
+    if (isEmpty(this._instance?.settings) || !isEmpty(hooks)) {
+      opt['settings'] = createSettings(this._instance, settings);
+    }
+
+    if (isEmpty(this._instance?.storage) || !isEmpty(storage)) {
+      opt['storage'] = createStorage(this._instance, storage);
+    }
+
+    if (isEmpty(this._instance?.components) || !isEmpty(components)) {
+      opt['components'] = createComponents(this._instance, components);
+    }
+
+    merge(this._instance, opt, rest); // 合并传入的属性
+  };
+
+  /** 挂载sdk */
+  mountSdk() {
+    const name = this._instance?.name;
+
     if (name && window[name]) {
       return window[name];
     } else {
@@ -113,49 +98,8 @@ class Sdk {
       return instance;
     }
   }
-
-  /** 注入属性 */
-  inject: SdkProps['inject'] = function (attr = {}) {
-    merge(this._instance, attr); // 合并传入的属性
-
-    const { apiConfig } = this._instance;
-
-    if (!isEmpty(apiConfig)) {
-      this._instance.api = new Api(apiConfig);
-    }
-  };
-
-  /** 设置组件 */
-  setComponent: SdkProps['setComponent'] = function (component, name) {
-    if (!component) throw new Error('setComponent -- 组件不能为空');
-
-    const componentName = name || component.displayName || component.name;
-    if (!componentName) throw new Error('setComponent -- 组件名称不能为空');
-
-    set(this._instance.components, componentName, component);
-  };
-
-  /** 获取组件 */
-  getComponent: SdkProps['getComponent'] = function (name?: string) {
-    if (!name) throw new Error('getComponent -- 组件名称不能为空');
-
-    return get(this._instance.components, name);
-  };
-
-  /** 获取根组件 */
-  getRootComponent() {
-    const Root = this.getComponent('Root');
-    // 返回组件, 调用方法为: <>{sdk.getRootComponent()}</>
-    // 返回一个函数, 调用方法为: const App = sdk.getRootComponent(); <App />
-
-    return () => (
-      <RootProvider sdk={this._instance}>
-        <Root />
-      </RootProvider>
-    );
-  }
 }
 
-const sdk: SdkProps = new Sdk().registerSdk('sdk');
+const sdk: SdkProps = new Sdk('sdk').mountSdk();
 
 export default sdk;

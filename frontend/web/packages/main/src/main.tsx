@@ -6,8 +6,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-sdk.inject({
-  apiConfig: {
+sdk.register({
+  api: {
     baseURL: '/api',
   },
   settings: {

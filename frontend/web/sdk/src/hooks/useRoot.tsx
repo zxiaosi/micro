@@ -1,5 +1,5 @@
+import { SdkProps } from '@/global';
 import { createContext, useContext } from 'react';
-import { SdkProps } from '..';
 
 /** 根组件上下文 */
 const RootConext = createContext<SdkProps>(null);

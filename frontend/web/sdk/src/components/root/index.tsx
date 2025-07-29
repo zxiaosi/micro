@@ -10,8 +10,6 @@ import {
   RouterProviderProps,
 } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
-import Layout from '../layout';
-import Microapp from '../microapp';
 
 /** 根组件 */
 const Root = () => {
@@ -25,7 +23,7 @@ const Root = () => {
   /** 获取路由数据 */
   const getRoutes = async () => {
     try {
-      const resp = await sdk.settings?.getRoutesApi?.();
+      const resp = await sdk.settings.getRoutesApi();
       const data = resp?.data || [];
 
       // 微应用信息
@@ -40,24 +38,28 @@ const Root = () => {
             const id = routerAttr.rootId || 'sub-app';
 
             microApps.push({ ...routerAttr, container: `#${id}` });
-            return { ...item, element: <Microapp rootId={id} /> }; // 不能使用懒加载
+            const Element: any =
+              sdk.components.getComponent(item.component) ||
+              sdk.components.getComponent('Microapp');
+            return { ...item, element: <Element rootId={id} /> }; // 不能使用懒加载
           } else {
-            const Component = sdk.getComponent(item.component) || null;
+            const Component =
+              sdk.components.getComponent(item.component) || null;
             return { ...item, Component };
           }
         }) || [];
 
       // 所有路由
       const allRoutes: RouteObject[] = [
-        { path: '/login', Component: sdk.getComponent('Login') },
+        { path: '/login', Component: sdk.components.getComponent('Login') },
         { path: '/', element: <Navigate to="/dashboard" replace /> },
         {
           path: '/',
-          element: <Layout />, // 使用懒加载会导致 Root 组件渲染多次
+          Component: sdk.components.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
           children: subRoutes,
           errorElement: <>找不到页面</>,
         },
-        { path: '*', Component: sdk.getComponent('NotFound') },
+        { path: '*', Component: sdk.components.getComponent('NotFound') },
       ];
 
       // 注册微应用

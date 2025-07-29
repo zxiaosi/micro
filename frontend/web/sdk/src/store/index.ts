@@ -52,7 +52,9 @@ export type GlobalStore = Write<
  */
 const globalStore = createStore<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
-    initialState: {},
+    initialState: {
+      temp: '123',
+    },
     setInitialState: (newInitialState, replace = false) =>
       set((state) => ({
         initialState: {
