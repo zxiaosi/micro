@@ -2,23 +2,19 @@ import { MockMethod } from 'vite-plugin-mock';
 
 const routes = [
   {
+    name: '首页',
     path: '/dashboard',
     component: 'Dashboard',
-    meta: {
-      title: '首页',
-      icon: 'DashboardOutlined',
-    },
+    icon: 'DashboardOutlined',
     hidden: false,
   },
   {
+    name: '测试页',
     path: '/user',
     component: 'Microapp',
-    meta: {
-      title: '测试页',
-      icon: 'ControlOutlined',
-    },
+    icon: 'ControlOutlined',
     hidden: false,
-    routerAttr:
+    routeAttr:
       '{"name": "user", "entry": "/subapp/sub-user/", "activeRule": "/user", "rootId": "sub-app"}',
   },
 ];

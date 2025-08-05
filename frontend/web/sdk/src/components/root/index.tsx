@@ -1,4 +1,10 @@
+import { useMicroState } from '@/hooks/useMicroState';
 import { useRoot } from '@/hooks/useRoot';
+import {
+  getFirstPagePathUtil,
+  handleRoutesUtil,
+  lifeCyclesUtil,
+} from '@/utils';
 import { registerMicroApps, start } from 'qiankun';
 import { memo, useEffect, useState } from 'react';
 import {
@@ -15,7 +21,7 @@ import { RouterProvider } from 'react-router/dom';
 const Root = () => {
   const sdk = useRoot();
 
-  console.log('Root component initialized', sdk);
+  const { setLoading } = useMicroState();
 
   const [router, setRouter] =
     useState<RouterProviderProps['router']>(undefined);
@@ -23,36 +29,24 @@ const Root = () => {
   /** 获取路由数据 */
   const getRoutes = async () => {
     try {
+      // 获取路由数据
       const resp = await sdk.api.getRoutesApi();
-      const data = resp?.data || [];
 
-      // 微应用信息
-      const microApps = [];
+      // 处理路由数据
+      const { microApps, subRoutes } = handleRoutesUtil(resp?.data || [], sdk);
 
-      // 子路由处理
-      const subRoutes: RouteObject[] =
-        data?.map((item) => {
-          // 微应用
-          if (item.routerAttr) {
-            const routerAttr = JSON.parse(item.routerAttr) || {};
-            const id = routerAttr.rootId || 'sub-app';
+      // 子应用添加 loader
+      const newMicroApps = microApps.map((item) => {
+        return { ...item, loader: (loading) => setLoading(loading) };
+      });
 
-            microApps.push({ ...routerAttr, container: `#${id}` });
-            const Element: any =
-              sdk.components.getComponent(item.component) ||
-              sdk.components.getComponent('Microapp');
-            return { ...item, element: <Element rootId={id} /> }; // 不能使用懒加载
-          } else {
-            const Component =
-              sdk.components.getComponent(item.component) || null;
-            return { ...item, Component };
-          }
-        }) || [];
+      // 获取首页路径
+      const firstPath = getFirstPagePathUtil(subRoutes);
 
-      // 所有路由
+      // 合并所有路由
       const allRoutes: RouteObject[] = [
         { path: '/login', Component: sdk.components.getComponent('Login') },
-        { path: '/', element: <Navigate to="/dashboard" replace /> },
+        { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
           Component: sdk.components.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
@@ -63,35 +57,7 @@ const Root = () => {
       ];
 
       // 注册微应用
-      registerMicroApps(microApps, {
-        beforeLoad: [
-          async (app) => {
-            console.log(
-              '[LifeCycle] before load %c%s',
-              'color: green;',
-              app.name,
-            );
-          },
-        ],
-        beforeMount: [
-          async (app) => {
-            console.log(
-              '[LifeCycle] before mount %c%s',
-              'color: green;',
-              app.name,
-            );
-          },
-        ],
-        afterUnmount: [
-          async (app) => {
-            console.log(
-              '[LifeCycle] after unmount %c%s',
-              'color: green;',
-              app.name,
-            );
-          },
-        ],
-      });
+      registerMicroApps(newMicroApps, lifeCyclesUtil);
 
       // 启动 qiankun
       start({ sandbox: { experimentalStyleIsolation: true } });

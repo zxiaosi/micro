@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 
 import { SdkResult } from '@/global';
+import { MicroStateProvider } from '@/hooks/useMicroState';
 import { RootProvider } from '@/hooks/useRoot';
 import React, { ComponentType } from 'react';
 
@@ -64,7 +65,9 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
     getRootComponent: () => {
       return () => (
         <RootProvider sdk={sdk}>
-          <Root />
+          <MicroStateProvider>
+            <Root />
+          </MicroStateProvider>
         </RootProvider>
       );
     },

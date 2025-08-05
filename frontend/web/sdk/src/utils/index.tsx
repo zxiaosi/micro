@@ -1,0 +1,103 @@
+// 使用按需加载的方式引入 lodash
+import isEmpty from 'lodash/isEmpty';
+
+import { SdkResult } from '@/global';
+import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
+import { Outlet } from 'react-router';
+
+/** qiankun 生命周期 钩子函数 */
+export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
+  beforeLoad: [
+    async (app) => {
+      console.log('[LifeCycle] before load %c%s', 'color: green;', app.name);
+    },
+  ],
+  beforeMount: [
+    async (app) => {
+      console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name);
+    },
+  ],
+  afterUnmount: [
+    async (app) => {
+      console.log('[LifeCycle] after unmount %c%s', 'color: green;', app.name);
+    },
+  ],
+};
+
+/**
+ * 处理路由数据
+ * @param routes 路由数据
+ * @param sdk sdk
+ */
+export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
+  const microApps: RegistrableApp<ObjectType>[] = [];
+  const subRoutes = transformRoutesUtil(routes, microApps, sdk);
+  return { microApps, subRoutes };
+};
+
+/**
+ * 递归转换路由数据
+ * @param routes 路由数据
+ * @param microApps 子应用列表
+ * @param sdk sdk
+ */
+export const transformRoutesUtil = (
+  routes: any[],
+  microApps: RegistrableApp<ObjectType>[],
+  sdk: SdkResult,
+) => {
+  return routes.map((item) => {
+    let element = null; //
+
+    const { component, routeAttr, children } = item;
+
+    // 处理子应用路由
+    if (routeAttr) {
+      const { name, rootId, ...rest } = JSON.parse(routeAttr);
+
+      // 避免重复注册
+      if (!microApps.some((app) => app.name === name)) {
+        microApps.push({ name, container: `#${rootId}`, ...rest });
+      }
+
+      const Microapp: any = sdk.components.getComponent('Microapp');
+      element = <Microapp rootId={rootId} />;
+    } else if (component === 'Outlet') {
+      // 处理路由出口
+      element = <Outlet />;
+    } else {
+      // 处理普通组件
+      const Element = sdk.components.getComponent(component) || null;
+      element = <Element />;
+    }
+
+    // 转换子路由
+    const processedChildren = children?.length
+      ? transformRoutesUtil(children, microApps, sdk)
+      : [];
+
+    return {
+      ...item,
+      element,
+      children: processedChildren,
+    };
+  });
+};
+
+/**
+ * 获取第一个页面的路径
+ * @param routes 路由数据
+ */
+export const getFirstPagePathUtil = (routes: any[]) => {
+  let firstPagePath = '/';
+
+  if (isEmpty(routes)) return firstPagePath;
+
+  firstPagePath = routes?.[0]?.path;
+
+  if (!isEmpty(routes?.[0]?.children)) {
+    firstPagePath = getFirstPagePathUtil(routes?.[0]?.children);
+  }
+
+  return firstPagePath;
+};
