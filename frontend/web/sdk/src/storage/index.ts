@@ -1,8 +1,11 @@
-import { SdkProps } from '@/global';
+import { SdkResult } from '@/global';
 
 interface Props {
   /** Token 名称 */
-  tokenName: string;
+  tokenName?: string;
+}
+
+interface Result extends Props {
   /**
    * 设置缓存
    * @param key 缓存键
@@ -26,13 +29,17 @@ interface Props {
 }
 
 /** localStorage */
-const createStorage = (sdk: SdkProps, opt: Partial<Props> = {}): Props => {
+const createStorage = (sdk: SdkResult, opt: Props = {}): Result => {
   return {
     tokenName: 'token',
+
+    ...opt,
+
     setItem: (key, value) => {
       if (value instanceof Object) value = JSON.stringify(value);
       return localStorage.setItem(key, value);
     },
+
     getItem: (key) => {
       const value = localStorage.getItem(key);
       if (value) {
@@ -44,16 +51,15 @@ const createStorage = (sdk: SdkProps, opt: Partial<Props> = {}): Props => {
       }
       return value;
     },
+
     removeItem: (key) => {
       return localStorage.removeItem(key);
     },
+
     clear: () => {
       return localStorage.clear();
     },
-    ...opt,
   };
 };
 
-export default createStorage;
-
-export type StorageProps = Props;
+export { createStorage, Props as StorageProps, Result as StorageResult };

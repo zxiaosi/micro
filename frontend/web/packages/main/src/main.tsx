@@ -8,9 +8,9 @@ import './index.css';
 
 sdk.register({
   api: {
-    baseURL: '/api',
-  },
-  settings: {
+    config: {
+      baseURL: '/api',
+    },
     getRoutesApi,
   },
   components: {

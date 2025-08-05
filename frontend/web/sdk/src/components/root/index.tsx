@@ -23,7 +23,7 @@ const Root = () => {
   /** 获取路由数据 */
   const getRoutes = async () => {
     try {
-      const resp = await sdk.settings.getRoutesApi();
+      const resp = await sdk.api.getRoutesApi();
       const data = resp?.data || [];
 
       // 微应用信息
@@ -97,7 +97,7 @@ const Root = () => {
       start({ sandbox: { experimentalStyleIsolation: true } });
 
       let newRouter = undefined;
-      switch (sdk.settings?.routerMode) {
+      switch (sdk.app.routerMode) {
         case 'browser':
           newRouter = createBrowserRouter(allRoutes, { basename: '/' });
           break;

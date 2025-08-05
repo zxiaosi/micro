@@ -1,11 +1,24 @@
-import { DeepPartial, SdkProps } from '@/global';
+import { SdkResult } from '@/global';
 import { AxiosResponse } from 'axios';
 import Api, { ApiConfig, ApiRequestOption } from './http';
 
-interface Props extends ApiConfig {
+interface Props {
+  /** Axios配置 */
+  config?: ApiConfig;
+  /**
+   * 获取用户信息
+   */
+  getUserInfoApi?: () => Promise<any>;
+  /**
+   * 获取路由数据
+   */
+  getRoutesApi?: () => Promise<any>;
+}
+
+interface Result extends Required<Readonly<Props>> {
   /**
    * 请求
-   * @param url 请求地址
+   * @param  url 请求地址
    * @param options 自定义配置项
    */
   readonly request: (
@@ -14,26 +27,44 @@ interface Props extends ApiConfig {
   ) => Promise<AxiosResponse<any, any>>;
 }
 
-/** 请求配置 */
-const createApi = (sdk: SdkProps, opt: DeepPartial<Props>): Props => {
+/** Api配置 */
+const createApi = (sdk: SdkResult, opt: Props = {}): Result => {
+  const { config = {}, ...restOpt } = opt;
+
+  // 合并配置
+  const allConfig = {
+    baseURL: '/api',
+    timeout: 0,
+    ...config,
+  } satisfies ApiConfig;
+
   // 创建实例
-  const api = new Api(opt).getInstance();
+  const api = new Api(allConfig).getInstance();
+
+  // b
 
   return {
-    baseURL: '/api', // 默认基础路径
-    timeout: 0, // 默认不超时
-    ...opt,
+    config: allConfig,
 
-    request: (url, options) =>
-      api.request({
+    getUserInfoApi: async () => {
+      return await sdk.api.request('/userInfo');
+    },
+
+    getRoutesApi: async () => {
+      return await sdk.api.request('/routes');
+    },
+
+    ...restOpt,
+
+    request: async (url, options = {}) => {
+      return await api.request({
         url,
         isOriginalData: false,
         isShowFailMsg: true,
         ...options,
-      }),
+      });
+    },
   };
 };
 
-export default createApi;
-
-export type ApiProps = Props;
+export { Props as ApiProps, Result as ApiResult, createApi };

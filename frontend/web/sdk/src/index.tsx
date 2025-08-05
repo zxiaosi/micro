@@ -2,80 +2,64 @@
 import isEmpty from 'lodash/isEmpty';
 import merge from 'lodash/merge';
 
-import createApi from '@/api';
-import createClient from '@/client';
-import createComponents from '@/components';
-import { SdkProps } from '@/global';
-import hooks from '@/hooks';
-import createSettings from '@/settings';
-import createStorage from '@/storage';
+import { createApi } from '@/api';
+import { createApp } from '@/app';
+import { createClient } from '@/client';
+import { createComponents } from '@/components';
+import { SdkProps, SdkResult } from '@/global';
+import { createHooks } from '@/hooks';
+import { createStorage } from '@/storage';
 import globalStore from '@/store';
 
-class Sdk {
+class Sdk implements SdkResult {
   /** sdk 实例 */
-  _instance: SdkProps = {
-    name: '',
-    api: null,
-    client: null,
-    components: null,
-    hooks: null,
-    store: null,
-    storage: null,
-    settings: null,
-    register: null,
-  };
+  name = '';
+  api = null;
+  app = null;
+  client = null;
+  components = null;
+  hooks = null;
+  store = null;
+  storage = null;
 
   constructor(name: string) {
-    this.register({
-      name,
-      hooks: hooks,
-      store: globalStore,
-      register: this.register.bind(this),
-    });
-
+    this.register({ name, store: globalStore });
     this.mountSdk();
   }
 
   /** 注册属性 */
-  register: SdkProps['register'] = function (options = {}) {
-    const { api, client, settings, storage, components, ...rest } = options;
+  register(options: SdkProps = {}) {
+    const { api, app, client, components, hooks, storage, ...rest } = options;
 
-    const opt: Partial<SdkProps> = {};
+    const modules = [
+      { key: 'api', value: api, creator: createApi },
+      { key: 'app', value: app, creator: createApp },
+      { key: 'client', value: client, creator: createClient },
+      { key: 'components', value: components, creator: createComponents },
+      { key: 'hooks', value: hooks, creator: createHooks },
+      { key: 'storage', value: storage, creator: createStorage },
+    ];
 
-    if (isEmpty(this._instance?.api) || !isEmpty(api)) {
-      opt['api'] = createApi(this._instance, api);
-    }
+    modules.forEach(({ key, value, creator }) => {
+      if (isEmpty(this[key]) || !isEmpty(value)) {
+        this[key] = creator(this, value);
+      }
+    });
 
-    if (isEmpty(this._instance?.client) || !isEmpty(client)) {
-      opt['client'] = createClient(this._instance, client);
-    }
-
-    if (isEmpty(this._instance?.settings) || !isEmpty(hooks)) {
-      opt['settings'] = createSettings(this._instance, settings);
-    }
-
-    if (isEmpty(this._instance?.storage) || !isEmpty(storage)) {
-      opt['storage'] = createStorage(this._instance, storage);
-    }
-
-    if (isEmpty(this._instance?.components) || !isEmpty(components)) {
-      opt['components'] = createComponents(this._instance, components);
-    }
-
-    merge(this._instance, opt, rest); // 合并传入的属性
-  };
+    merge(this, rest); // 合并传入的属性
+  }
 
   /** 挂载sdk */
   mountSdk() {
-    const name = this._instance?.name;
+    const name = this.name;
 
     if (name && window[name]) {
       return window[name];
     } else {
-      this._instance.name = name;
+      this.name = name;
 
       // 1. 使用 new Proxy 禁止修改
-      const instance = new Proxy(this._instance, {
+      const instance = new Proxy(this, {
         set: (target, key, value, receiver) => {
           return Reflect.set(target, key, value, receiver);
         },
@@ -100,6 +84,6 @@ class Sdk {
   }
 }
 
-const sdk: SdkProps = new Sdk('sdk').mountSdk();
+const sdk: SdkResult = new Sdk('sdk').mountSdk();
 
 export default sdk;

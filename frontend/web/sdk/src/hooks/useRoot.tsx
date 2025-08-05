@@ -1,8 +1,8 @@
-import { SdkProps } from '@/global';
+import { SdkResult } from '@/global';
 import { createContext, useContext } from 'react';
 
 /** 根组件上下文 */
-const RootConext = createContext<SdkProps>(null);
+const RootConext = createContext<SdkResult>(null);
 
 /** 根组件 Provider */
 export const RootProvider = ({ sdk, children }) => {
