@@ -6,10 +6,10 @@ import { createApi } from '@/api';
 import { createApp } from '@/app';
 import { createClient } from '@/client';
 import { createComponents } from '@/components';
-import { SdkProps, SdkResult } from '@/global';
+import { ModuleProps, SdkProps, SdkResult } from '@/global';
 import { createHooks } from '@/hooks';
 import { createStorage } from '@/storage';
-import globalStore from '@/store';
+import { createStore } from '@/store';
 
 class Sdk implements SdkResult {
   /** sdk 实例 */
@@ -23,13 +23,14 @@ class Sdk implements SdkResult {
   storage = null;
 
   constructor(name: string) {
-    this.register({ name, store: globalStore });
+    this.register({ name });
     this.mountSdk();
   }
 
   /** 注册属性 */
   register(options: SdkProps = {}) {
-    const { api, app, client, components, hooks, storage, ...rest } = options;
+    const { api, app, client, components, hooks, storage, store, ...rest } =
+      options;
 
     const modules = [
       { key: 'api', value: api, creator: createApi },
@@ -38,7 +39,8 @@ class Sdk implements SdkResult {
       { key: 'components', value: components, creator: createComponents },
       { key: 'hooks', value: hooks, creator: createHooks },
       { key: 'storage', value: storage, creator: createStorage },
-    ];
+      { key: 'store', value: store, creator: createStore },
+    ] satisfies ModuleProps[];
 
     modules.forEach(({ key, value, creator }) => {
       if (isEmpty(this[key]) || !isEmpty(value)) {

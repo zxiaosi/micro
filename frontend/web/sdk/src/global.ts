@@ -2,9 +2,9 @@ import { ApiProps, ApiResult } from '@/api';
 import { AppProps, AppResult } from '@/app';
 import { ClientProps, ClientResult } from '@/client';
 import { ComponentsProps, ComponentsResult } from '@/components';
-import { HooksProps } from '@/hooks';
+import { HooksProps, HooksResult } from '@/hooks';
 import { StorageProps, StorageResult } from '@/storage';
-import { GlobalStore } from '@/store';
+import { StoreProps, StoreResult } from '@/store';
 
 export interface SdkProps {
   /** sdk 名称 */
@@ -18,13 +18,11 @@ export interface SdkProps {
   /** Hooks */
   hooks?: HooksProps;
   /** 全局 Store */
-  store?: GlobalStore;
+  store?: StoreProps;
   /** localStorage */
   storage?: StorageProps;
   /** 公用组件 */
   components?: ComponentsProps;
-
-  [key: string]: any;
 }
 
 export interface SdkResult extends SdkProps {
@@ -37,9 +35,9 @@ export interface SdkResult extends SdkProps {
   /** 客户端 配置 */
   client: ClientResult;
   /** Hooks */
-  hooks: HooksProps;
+  hooks: HooksResult;
   /** 全局 Store */
-  store: GlobalStore;
+  store: StoreResult;
   /** localStorage */
   storage: StorageResult;
   /** 公用组件 */
@@ -49,4 +47,10 @@ export interface SdkResult extends SdkProps {
    * 注册属性
    */
   readonly register: (options?: SdkProps) => void;
+}
+
+export interface ModuleProps {
+  key: keyof SdkProps;
+  value: any;
+  creator: (sdk: SdkResult, opt: ModuleProps['value']) => any;
 }

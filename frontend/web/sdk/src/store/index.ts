@@ -1,5 +1,8 @@
-import { createStore, StoreApi } from 'zustand';
+import { SdkResult } from '@/global';
+import { createStore as createStoreZustand, StoreApi } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+
+interface Props {}
 
 /** 变量类型 */
 interface InitialStateProps {
@@ -39,7 +42,7 @@ type StoreSubscribeWithSelector<T> = {
   };
 };
 
-export type GlobalStore = Write<
+type Result = Write<
   StoreApi<GlobalStoreProps>,
   StoreSubscribeWithSelector<GlobalStoreProps>
 >;
@@ -50,7 +53,7 @@ export type GlobalStore = Write<
  * @example globalStore?.getState()?.setInitialState({})
  * @example globalStore.subscribe((state) => state.initialState, (initialState) => { console.log('initialState', initialState) }, { fireImmediately: true })
  */
-const globalStore = createStore<GlobalStoreProps>()(
+const globalStore = createStoreZustand<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
     initialState: {
       temp: '123',
@@ -65,4 +68,9 @@ const globalStore = createStore<GlobalStoreProps>()(
   })),
 );
 
-export default globalStore;
+/** 全局 Store */
+const createStore = (sdk: SdkResult, opt: Props = {}): Result => {
+  return globalStore;
+};
+
+export { createStore, Props as StoreProps, Result as StoreResult };
