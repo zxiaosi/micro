@@ -1,3 +1,6 @@
+// 使用按需加载的方式引入 lodash
+import merge from 'lodash/merge';
+
 import { SdkResult } from '@/global';
 
 interface Props {
@@ -30,16 +33,14 @@ interface Result extends Props {
 
 /** localStorage */
 const createStorage = (sdk: SdkResult, opt: Props = {}): Result => {
-  return {
+  // 返回结果
+  const result: Result = {
     tokenName: 'token',
-
-    ...opt,
 
     setItem: (key, value) => {
       if (value instanceof Object) value = JSON.stringify(value);
       return localStorage.setItem(key, value);
     },
-
     getItem: (key) => {
       const value = localStorage.getItem(key);
       if (value) {
@@ -51,15 +52,16 @@ const createStorage = (sdk: SdkResult, opt: Props = {}): Result => {
       }
       return value;
     },
-
     removeItem: (key) => {
       return localStorage.removeItem(key);
     },
-
     clear: () => {
       return localStorage.clear();
     },
   };
+
+  // 合并属性
+  return merge(result, opt);
 };
 
 export { createStorage, Props as StorageProps, Result as StorageResult };

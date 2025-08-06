@@ -1,5 +1,8 @@
+// 使用按需加载的方式引入 lodash
+import merge from 'lodash/merge';
+
 import { SdkResult } from '@/global';
-import { Location, NavigateFunction } from 'react-router';
+import { Location, NavigateFunction } from 'react-router-dom';
 
 interface Props {
   /** 主应用 location */
@@ -12,13 +15,14 @@ interface Result extends Required<Readonly<Props>> {}
 
 /** 客户端配置 */
 const createClient = (sdk: SdkResult, opt: Props = {}): Props => {
-  return {
+  // 返回结果
+  const result: Result = {
     location: null,
-
     navigate: null,
-
-    ...opt,
   };
+
+  // 合并属性
+  return merge(result, opt);
 };
 
 export { Props as ClientProps, Result as ClientResult, createClient };

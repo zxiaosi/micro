@@ -1,3 +1,6 @@
+// 使用按需加载的方式引入 lodash
+import merge from 'lodash/merge';
+
 import { SdkResult } from '@/global';
 import { MicroStateProvider, useMicroState } from './useMicroState';
 import { RootProvider, useRoot } from './useRoot';
@@ -16,13 +19,17 @@ interface Props {
 interface Result extends Required<Readonly<Props>> {}
 
 const createHooks = (sdk: SdkResult, opt: Props = {}): Result => {
-  return {
+  // 返回结果
+  const result: Result = {
     useRoot,
     RootProvider,
 
     useMicroState,
     MicroStateProvider,
   };
+
+  // 合并属性
+  return merge(result, opt);
 };
 
 export { createHooks, Props as HooksProps, Result as HooksResult };

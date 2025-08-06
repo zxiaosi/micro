@@ -7,6 +7,7 @@ interface Props {}
 /** 变量类型 */
 interface InitialStateProps {
   name?: string;
+  theme?: 'light' | 'dark';
   [key: string]: any;
 }
 
@@ -55,9 +56,7 @@ type Result = Write<
  */
 const globalStore = createStoreZustand<GlobalStoreProps>()(
   subscribeWithSelector((set) => ({
-    initialState: {
-      temp: '123',
-    },
+    initialState: {},
     setInitialState: (newInitialState, replace = false) =>
       set((state) => ({
         initialState: {

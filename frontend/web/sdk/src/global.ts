@@ -3,8 +3,10 @@ import { AppProps, AppResult } from '@/app';
 import { ClientProps, ClientResult } from '@/client';
 import { ComponentsProps, ComponentsResult } from '@/components';
 import { HooksProps, HooksResult } from '@/hooks';
+import { RouterProps, RouterResult } from '@/router';
 import { StorageProps, StorageResult } from '@/storage';
 import { StoreProps, StoreResult } from '@/store';
+import { UIProps, UIResult } from '@/ui';
 
 export interface SdkProps {
   /** sdk 名称 */
@@ -15,14 +17,18 @@ export interface SdkProps {
   app?: AppProps;
   /** 客户端 配置 */
   client?: ClientProps;
-  /** Hooks */
-  hooks?: HooksProps;
-  /** 全局 Store */
-  store?: StoreProps;
-  /** localStorage */
-  storage?: StorageProps;
   /** 公用组件 */
   components?: ComponentsProps;
+  /** Hooks */
+  hooks?: HooksProps;
+  /** 路由 配置 */
+  router?: RouterProps;
+  /** localStorage */
+  storage?: StorageProps;
+  /** 全局 Store */
+  store?: StoreProps;
+  /** ProLayout 配置 */
+  ui?: UIProps;
 }
 
 export interface SdkResult extends SdkProps {
@@ -34,14 +40,18 @@ export interface SdkResult extends SdkProps {
   app: AppResult;
   /** 客户端 配置 */
   client: ClientResult;
-  /** Hooks */
-  hooks: HooksResult;
-  /** 全局 Store */
-  store: StoreResult;
-  /** localStorage */
-  storage: StorageResult;
   /** 公用组件 */
   components: ComponentsResult;
+  /** Hooks */
+  hooks: HooksResult;
+  /** 路由 配置 */
+  router: RouterResult;
+  /** localStorage */
+  storage: StorageResult;
+  /** 全局 Store */
+  store: StoreResult;
+  /** ProLayout 配置 */
+  ui: UIResult;
 
   /**
    * 注册属性

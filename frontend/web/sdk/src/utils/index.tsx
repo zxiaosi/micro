@@ -2,8 +2,16 @@
 import isEmpty from 'lodash/isEmpty';
 
 import { SdkResult } from '@/global';
+import * as Icons from '@ant-design/icons';
 import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
-import { Outlet } from 'react-router';
+import { createElement } from 'react';
+import { Outlet } from 'react-router-dom';
+
+/** 动态创建Icon */
+export const dynamicIcon = (icon: string) => {
+  const antIcon: { [key: string]: any } = Icons; // 防止类型报错
+  return createElement(antIcon[icon]);
+};
 
 /** qiankun 生命周期 钩子函数 */
 export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
@@ -49,7 +57,7 @@ export const transformRoutesUtil = (
   return routes.map((item) => {
     let element = null; //
 
-    const { component, routeAttr, children } = item;
+    const { component, routeAttr, icon, children } = item;
 
     // 处理子应用路由
     if (routeAttr) {
@@ -79,6 +87,7 @@ export const transformRoutesUtil = (
     return {
       ...item,
       element,
+      icon: dynamicIcon(icon),
       children: processedChildren,
     };
   });

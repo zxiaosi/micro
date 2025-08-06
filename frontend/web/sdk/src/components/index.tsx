@@ -1,5 +1,6 @@
 // 使用按需加载的方式引入 lodash
 import get from 'lodash/get';
+import merge from 'lodash/merge';
 import set from 'lodash/set';
 
 import { SdkResult } from '@/global';
@@ -38,14 +39,13 @@ interface Result extends Required<Readonly<Props>> {
 
 /** 组件配置 */
 const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
-  return {
+  // 返回结果
+  const result: Result = {
     Login,
     NotFound,
     Root,
     Layout, // 不使用懒加载 - 防止多次渲染
     Microapp, // 不使用懒加载 - 防止qiankun挂载不上
-
-    ...opt,
 
     setComponent: (component, name) => {
       if (!component) throw new Error('setComponent -- 组件不能为空');
@@ -55,13 +55,11 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
 
       set(sdk.components, componentName, component);
     },
-
     getComponent: (name: string) => {
       if (!name) throw new Error('getComponent -- 组件名称不能为空');
 
       return get(sdk.components, name) as ComponentType;
     },
-
     getRootComponent: () => {
       return () => (
         <RootProvider sdk={sdk}>
@@ -72,6 +70,9 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
       );
     },
   };
+
+  // 合并属性
+  return merge(result, opt);
 };
 
 export {

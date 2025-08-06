@@ -17,6 +17,19 @@ sdk.register({
     Dashboard,
     NotFound,
   },
+  ui: {
+    title: import.meta.env.VITE_APP_TITLE,
+    layout: 'mix',
+    menuFooterRender: (props) => {
+      if (props?.collapsed) return undefined;
+
+      return (
+        <div style={{ textAlign: 'center' }}>
+          ©2020 - {new Date().getFullYear()} By Mr.XiaoSi
+        </div>
+      );
+    },
+  },
 });
 
 createRoot(document.getElementById('root')!).render(<App />);

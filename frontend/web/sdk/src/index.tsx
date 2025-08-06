@@ -8,8 +8,10 @@ import { createClient } from '@/client';
 import { createComponents } from '@/components';
 import { ModuleProps, SdkProps, SdkResult } from '@/global';
 import { createHooks } from '@/hooks';
+import { createRouter } from '@/router';
 import { createStorage } from '@/storage';
 import { createStore } from '@/store';
+import { createUI } from '@/ui';
 
 class Sdk implements SdkResult {
   /** sdk 实例 */
@@ -19,8 +21,10 @@ class Sdk implements SdkResult {
   client = null;
   components = null;
   hooks = null;
-  store = null;
+  router = null;
   storage = null;
+  store = null;
+  ui = null;
 
   constructor(name: string) {
     this.register({ name });
@@ -29,8 +33,18 @@ class Sdk implements SdkResult {
 
   /** 注册属性 */
   register(options: SdkProps = {}) {
-    const { api, app, client, components, hooks, storage, store, ...rest } =
-      options;
+    const {
+      api,
+      app,
+      client,
+      components,
+      hooks,
+      router,
+      storage,
+      store,
+      ui,
+      ...rest
+    } = options;
 
     const modules = [
       { key: 'api', value: api, creator: createApi },
@@ -38,8 +52,10 @@ class Sdk implements SdkResult {
       { key: 'client', value: client, creator: createClient },
       { key: 'components', value: components, creator: createComponents },
       { key: 'hooks', value: hooks, creator: createHooks },
+      { key: 'router', value: router, creator: createRouter },
       { key: 'storage', value: storage, creator: createStorage },
       { key: 'store', value: store, creator: createStore },
+      { key: 'ui', value: ui, creator: createUI },
     ] satisfies ModuleProps[];
 
     modules.forEach(({ key, value, creator }) => {

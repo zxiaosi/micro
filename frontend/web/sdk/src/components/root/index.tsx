@@ -13,15 +13,15 @@ import {
   createMemoryRouter,
   Navigate,
   RouteObject,
+  RouterProvider,
   RouterProviderProps,
-} from 'react-router';
-import { RouterProvider } from 'react-router/dom';
+} from 'react-router-dom';
 
 /** 根组件 */
 const Root = () => {
   const sdk = useRoot();
 
-  const { setLoading } = useMicroState();
+  const { loading, setLoading } = useMicroState();
 
   const [router, setRouter] =
     useState<RouterProviderProps['router']>(undefined);
@@ -78,6 +78,16 @@ const Root = () => {
       }
 
       setRouter(newRouter);
+
+      // 注入属性
+      sdk.register({
+        router: {
+          routes: allRoutes,
+          microApps: newMicroApps,
+          microAppState: loading,
+          menuData: subRoutes,
+        },
+      });
     } catch (error) {
       console.error('获取路由信息错误, 请配置路由接口:', error);
     }

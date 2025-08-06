@@ -11,11 +11,11 @@ const render = (props: any = {}) => {
 
   root = createRoot(container);
 
-  root.render(<App />);
+  root.render(<App basename={props?.name} />);
 };
 
 if (!window.__POWERED_BY_QIANKUN__) {
-  render();
+  render({ basename: '' });
 }
 
 export async function bootstrap() {

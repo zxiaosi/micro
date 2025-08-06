@@ -1,3 +1,6 @@
+// 使用按需加载的方式引入 lodash
+import merge from 'lodash/merge';
+
 import { SdkResult } from '@/global';
 import { AxiosResponse } from 'axios';
 import Api, { ApiConfig, ApiRequestOption } from './http';
@@ -41,21 +44,15 @@ const createApi = (sdk: SdkResult, opt: Props = {}): Result => {
   // 创建实例
   const api = new Api(allConfig).getInstance();
 
-  // b
-
-  return {
+  // 返回结果
+  const result: Result = {
     config: allConfig,
-
     getUserInfoApi: async () => {
       return await sdk.api.request('/userInfo');
     },
-
     getRoutesApi: async () => {
       return await sdk.api.request('/routes');
     },
-
-    ...restOpt,
-
     request: async (url, options = {}) => {
       return await api.request({
         url,
@@ -65,6 +62,9 @@ const createApi = (sdk: SdkResult, opt: Props = {}): Result => {
       });
     },
   };
+
+  // 合并属性
+  return merge(result, restOpt);
 };
 
 export { Props as ApiProps, Result as ApiResult, createApi };
