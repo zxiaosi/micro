@@ -1,3 +1,5 @@
+import CustomActions from '@/components/customActions';
+import CustomMenuFooter from '@/components/customMenuFooter';
 import Dashboard from '@/pages/dashboard/index.tsx';
 import NotFound from '@/pages/notFound/index.tsx';
 import { getRoutesApi } from '@/service/index.ts';
@@ -20,15 +22,8 @@ sdk.register({
   ui: {
     title: import.meta.env.VITE_APP_TITLE,
     layout: 'mix',
-    menuFooterRender: (props) => {
-      if (props?.collapsed) return undefined;
-
-      return (
-        <div style={{ textAlign: 'center' }}>
-          ©2020 - {new Date().getFullYear()} By Mr.XiaoSi
-        </div>
-      );
-    },
+    actionsRender: (props) => <CustomActions {...props} />,
+    menuFooterRender: (props) => <CustomMenuFooter {...props} />,
   },
 });
 

@@ -8,6 +8,7 @@ import { MicroStateProvider } from '@/hooks/useMicroState';
 import { RootProvider } from '@/hooks/useRoot';
 import React, { ComponentType } from 'react';
 
+import { ThemeProvider } from '@/hooks/useTheme';
 import Layout from './layout';
 import Microapp from './microapp';
 const Login = React.lazy(() => import('@/components/login/index'));
@@ -63,9 +64,11 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
     getRootComponent: () => {
       return () => (
         <RootProvider sdk={sdk}>
-          <MicroStateProvider>
-            <Root />
-          </MicroStateProvider>
+          <ThemeProvider>
+            <MicroStateProvider>
+              <Root />
+            </MicroStateProvider>
+          </ThemeProvider>
         </RootProvider>
       );
     },
