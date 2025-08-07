@@ -4,11 +4,6 @@ import { defineConfig, loadEnv } from 'vite';
 import { viteMockServe } from 'vite-plugin-mock';
 import { name } from './package.json';
 
-// babel.config.js
-const ReactCompilerConfig = {
-  target: '19', // '17' | '18' | '19'
-};
-
 // https://vite.dev/config/
 export default ({ mode }) => {
   // 环境变量文件夹
@@ -24,7 +19,7 @@ export default ({ mode }) => {
     plugins: [
       react({
         // babel: {
-        //   plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+        //   plugins: [['babel-plugin-react-compiler', { target: '19' }]],
         // },
       }),
       viteMockServe({
