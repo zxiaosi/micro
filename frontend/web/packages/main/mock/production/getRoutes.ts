@@ -1,5 +1,3 @@
-import { MockMethod } from 'vite-plugin-mock';
-
 const routes = [
   {
     name: '首页',
@@ -19,13 +17,14 @@ const routes = [
   },
 ];
 
-export default [
-  {
-    url: '/api/getRoutes',
-    method: 'get',
-    timeout: 1000, // 模拟延时
-    response: ({ query }) => {
-      return { code: 200, data: routes, msg: 'success' };
-    },
-  },
-] as MockMethod[];
+export default { code: 200, data: routes, msg: 'success' };
+
+// export default [
+//   {
+//     url: '/api/getRoutes',
+//     method: 'get',
+//     response: ({ query }) => {
+//       return { code: 200, data: routes, msg: 'success' };
+//     },
+//   },
+// ] as MockMethod[];

@@ -18,9 +18,9 @@ export default ({ mode }) => {
     },
     plugins: [
       react({
-        // babel: {
-        //   plugins: [['babel-plugin-react-compiler', { target: '19' }]],
-        // },
+        babel: {
+          plugins: [['babel-plugin-react-compiler', { target: '19' }]],
+        },
       }),
       qiankun({ name: name, sandbox: true }),
     ],
