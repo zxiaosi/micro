@@ -2,7 +2,6 @@ import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel';
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import { injectCssImport } from './rolldown-plugin';
 
 /** babel 配置 */
 const babelOptions: RollupBabelInputPluginOptions = {
@@ -20,6 +19,7 @@ const babelOptions: RollupBabelInputPluginOptions = {
   ], // 使用 React 和 ES6+ 预设
   exclude: 'node_modules/**', // 排除 node_modules 中的文件
   babelHelpers: 'bundled', // 使用打包的 Babel 辅助函数
+  plugins: ['@emotion/babel-plugin'], // 使用 emotion 的 babel 插件
 };
 
 /** 通用配置 */
@@ -39,12 +39,7 @@ const common = defineConfig({
 const config = defineConfig([
   {
     ...common,
-    plugins: [
-      peerDepsExternal(),
-      babel(babelOptions),
-      dts(),
-      injectCssImport(),
-    ],
+    plugins: [peerDepsExternal(), babel(babelOptions), dts()],
     output: {
       dir: 'dist/esm',
       format: 'es',
@@ -55,7 +50,7 @@ const config = defineConfig([
   },
   {
     ...common,
-    plugins: [peerDepsExternal(), babel(babelOptions), injectCssImport()],
+    plugins: [peerDepsExternal(), babel(babelOptions)],
     output: {
       dir: 'dist/cjs',
       format: 'cjs',

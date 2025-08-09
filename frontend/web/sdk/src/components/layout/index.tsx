@@ -4,7 +4,6 @@ import { ConfigProvider, theme } from 'antd';
 import { memo, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
-import './index.css';
 /** 首页 */
 const BaseLayout = () => {
   const sdk = useRoot();

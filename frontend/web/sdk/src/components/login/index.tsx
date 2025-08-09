@@ -1,6 +1,23 @@
+/** @jsxImportSource @emotion/react */
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './index.css';
+import {
+  loginPage,
+  loginPageContent,
+  loginPageContentButton,
+  loginPageContentForm,
+  loginPageContentHeader,
+  loginPageContentQrcode,
+  loginPageContentTip,
+  loginPageContentWapper,
+  loginPageFooter,
+  loginPageFooterBg,
+  loginPageFooterBgWaves,
+  loginPageFooterBgWavesParallax,
+  loginPageFooterFg,
+  loginPageFooterFgLine,
+  loginPageFooterFgLineItem,
+} from './css';
 
 /** 页脚信息 */
 const footerInfo = [
@@ -96,26 +113,39 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div className="login-page">
+    <div css={loginPage} className="login-page">
       {/* 内容 */}
-      <div className="login-page-content-wapper">
-        <div className="login-page-content">
+      <div css={loginPageContentWapper} className="login-page-content-wapper">
+        <div css={loginPageContent} className="login-page-content">
           <Link to={'/'}>回首页</Link>
-          <div className="login-page-content-header">小四先生的栈</div>
+          <div
+            css={loginPageContentHeader}
+            className="login-page-content-header"
+          >
+            小四先生的栈
+          </div>
 
-          <div className="login-page-content-form">
+          <div css={loginPageContentForm} className="login-page-content-form">
             <div>用户名</div>
             <div>密码</div>
           </div>
 
-          <div className="login-page-content-button">立即登录</div>
+          <div
+            css={loginPageContentButton}
+            className="login-page-content-button"
+          >
+            立即登录
+          </div>
 
-          <div className="login-page-content-tip">
+          <div css={loginPageContentTip} className="login-page-content-tip">
             <span>忘记密码？</span>
             <span>注册账号</span>
           </div>
 
-          <div className="login-page-content-qrcode">
+          <div
+            css={loginPageContentQrcode}
+            className="login-page-content-qrcode"
+          >
             {loginStatus[qrcodeStatus]}
             {qrCode && <img src={'data:image/jpeg;base64,' + qrCode} />}
           </div>
@@ -123,11 +153,15 @@ const Login: React.FC = () => {
       </div>
 
       {/* 页脚 */}
-      <div className={'login-page-footer'}>
-        <div className="login-page-footer-fg">
+      <div css={loginPageFooter} className={'login-page-footer'}>
+        <div css={loginPageFooterFg} className="login-page-footer-fg">
           {footerInfo.map((item, idx) => {
             return (
-              <div key={idx} className="login-page-footer-fg-line">
+              <div
+                key={idx}
+                css={loginPageFooterFgLine}
+                className="login-page-footer-fg-line"
+              >
                 {item.map((subItem) => {
                   const { key, label, url, img } = subItem;
                   return (
@@ -137,6 +171,7 @@ const Login: React.FC = () => {
                       ) : (
                         <span
                           onClick={() => handleWindowOpen(url)}
+                          css={url && loginPageFooterFgLineItem}
                           className={url && 'login-page-footer-fg-line-item'}
                         >
                           {label}
@@ -150,8 +185,9 @@ const Login: React.FC = () => {
           })}
         </div>
 
-        <div className="login-page-footer-bg">
+        <div css={loginPageFooterBg} className="login-page-footer-bg">
           <svg
+            css={loginPageFooterBgWaves}
             className="login-page-footer-bg-waves"
             viewBox="0 24 150 28"
             preserveAspectRatio="none"
@@ -164,7 +200,10 @@ const Login: React.FC = () => {
               />
             </defs>
 
-            <g className="login-page-footer-bg-waves-parallax">
+            <g
+              css={loginPageFooterBgWavesParallax}
+              className="login-page-footer-bg-waves-parallax"
+            >
               <use
                 xlinkHref="#gentle-wave"
                 x="48"
