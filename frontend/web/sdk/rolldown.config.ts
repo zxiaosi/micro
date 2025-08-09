@@ -9,16 +9,16 @@ const babelOptions: RollupBabelInputPluginOptions = {
     [
       '@babel/preset-env',
       {
-        modules: false, // 不转换模块语法
+        modules: false, // 不转换模块语法, 让 Rollup 处理模块语法
         targets: {
-          node: 'current', // 目标 Node.js 版本
+          node: 'current', // 当前 Node.js 版本
         },
       },
     ],
     '@babel/preset-react',
   ], // 使用 React 和 ES6+ 预设
   exclude: 'node_modules/**', // 排除 node_modules 中的文件
-  babelHelpers: 'bundled', // 使用打包的 Babel 辅助函数
+  babelHelpers: 'bundled', // 使用打包的 Babel 辅助函数, 避免重复打包
   plugins: ['@emotion/babel-plugin'], // 使用 emotion 的 babel 插件
 };
 
@@ -32,7 +32,7 @@ const common = defineConfig({
   },
   output: {
     sourcemap: true, // 生成 sourcemap 文件
-    minify: true, // 启用代码压缩
+    minify: true, // 启用代码压缩, 调试时可以关闭
   },
 });
 
