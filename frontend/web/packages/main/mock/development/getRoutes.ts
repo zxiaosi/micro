@@ -9,31 +9,49 @@ const routes = [
     hidden: false,
   },
   {
-    name: '系统模块',
-    path: '/user',
+    name: '拓扑图模块',
+    path: '/flow',
     component: 'Microapp',
-    icon: 'ControlOutlined',
+    icon: 'NodeIndexOutlined',
+    hidden: false,
+    routeAttr:
+      '{"name": "flow", "entry": "http://localhost:8002", "activeRule": "/flow", "rootId": "sub-app"}',
+  },
+  {
+    name: '系统模块',
+    path: '/system',
+    component: 'Outlet',
+    icon: 'SettingOutlined',
     hidden: false,
     children: [
       {
         name: '用户管理',
-        path: '/dashboard',
-        component: 'Dashboard',
-        icon: 'DashboardOutlined',
+        path: '/system/user',
+        component: 'Microapp',
+        icon: 'UserOutlined',
         hidden: false,
         routeAttr:
-          '{"name": "user", "entry": "http://localhost:8001", "activeRule": "/user", "rootId": "sub-app"}',
+          '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
+      },
+      {
+        name: '角色管理',
+        path: '/system/role',
+        component: 'Microapp',
+        icon: 'DeploymentUnitOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
+      },
+      {
+        name: '资源管理',
+        path: '/system/resource',
+        component: 'Microapp',
+        icon: 'FundViewOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
       },
     ],
-  },
-  {
-    name: '拓扑图模块',
-    path: '/flow',
-    component: 'Microapp',
-    icon: 'BranchesOutlined',
-    hidden: false,
-    routeAttr:
-      '{"name": "user", "entry": "http://localhost:8001", "activeRule": "/user", "rootId": "sub-app"}',
   },
 ];
 

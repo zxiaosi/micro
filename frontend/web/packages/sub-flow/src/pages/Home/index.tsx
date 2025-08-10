@@ -1,32 +1,12 @@
-import sdk from '@zxiaosi/sdk';
-import { DatePicker } from 'antd';
-import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import './index.less';
 
-function Home() {
-  const [theme, setTheme] = useStore(
-    sdk.store,
-    useShallow((state) => [state.theme, state.setTheme]),
-  );
-
+/** 首页 */
+const Home = () => {
   return (
-    <>
-      <div className="sub-app-title">flow 子应用</div>
-      <div className="test-css-variable">测试css变量</div>
-
-      <button
-        onClick={() => {
-          setTheme?.(theme === 'light' ? 'dark' : 'light');
-        }}
-      >
-        更新主题
-      </button>
-      <div>
-        <DatePicker />
-      </div>
-    </>
+    <div className="home-page">
+      <div className="home-page-title">子应用 Flow - 首页</div>
+    </div>
   );
-}
+};
 
 export default Home;

@@ -7,13 +7,49 @@ const routes = [
     hidden: false,
   },
   {
-    name: '测试页',
-    path: '/user',
+    name: '拓扑图模块',
+    path: '/flow',
     component: 'Microapp',
-    icon: 'ControlOutlined',
+    icon: 'NodeIndexOutlined',
     hidden: false,
     routeAttr:
-      '{"name": "user", "entry": "/subapp/sub-user/", "activeRule": "/user", "rootId": "sub-app"}',
+      '{"name": "flow", "entry": "/subapp/sub-flow/", "activeRule": "/flow", "rootId": "sub-app"}',
+  },
+  {
+    name: '系统模块',
+    path: '/system',
+    component: 'Microapp',
+    icon: 'SettingOutlined',
+    hidden: false,
+    children: [
+      {
+        name: '用户管理',
+        path: '/system/user',
+        component: 'User',
+        icon: 'UserOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "system", "entry": "/subapp/sub-system/", "activeRule": "/system", "rootId": "sub-app"}',
+      },
+      {
+        name: '角色管理',
+        path: '/system/role',
+        component: 'Role',
+        icon: 'DeploymentUnitOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "system", "entry": "/subapp/sub-system/", "activeRule": "/system", "rootId": "sub-app"}',
+      },
+      {
+        name: '资源管理',
+        path: '/system/resource',
+        component: 'Resource',
+        icon: 'FundViewOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "system", "entry": "/subapp/sub-system/", "activeRule": "/system", "rootId": "sub-app"}',
+      },
+    ],
   },
 ];
 

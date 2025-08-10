@@ -18,6 +18,15 @@ sdk.register({
   app: {
     antdConfig: {
       prefixCls: 'zxs',
+      theme: {
+        token: {
+          colorPrimary: '#1e90ff',
+          colorInfo: '#1e90ff',
+          colorSuccess: '#2ed573',
+          colorWarning: '#ffa502',
+          colorError: '#ff4757',
+        },
+      },
     },
   },
   components: {
