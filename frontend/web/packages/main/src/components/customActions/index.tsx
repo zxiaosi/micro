@@ -1,7 +1,7 @@
 import { useGlobalFullscreen } from '@/hooks/useGlobalFullscreen';
 import {
-  FullscreenExitOutlined,
-  FullscreenOutlined,
+  CompressOutlined,
+  ExpandOutlined,
   GlobalOutlined,
   MoonOutlined,
   SunOutlined,
@@ -15,14 +15,9 @@ import './index.less';
 
 /** Layout的操作功能列表，不同的 layout 会放到不同的位置 */
 const CustomActions = (props) => {
-  const [theme, setTheme, locale, setLocale] = useStore(
+  const [theme, setTheme, setLocale] = useStore(
     sdk.store,
-    useShallow((state) => [
-      state.theme,
-      state.setTheme,
-      state.locale,
-      state.setLocale,
-    ]),
+    useShallow((state) => [state.theme, state.setTheme, state.setLocale]),
   );
 
   const { isFullscreen, toggleFullscreen } = useGlobalFullscreen();
@@ -41,8 +36,6 @@ const CustomActions = (props) => {
   const handleFullscreenChange = () => {
     toggleFullscreen?.();
   };
-
-  console.log('locale', locale);
 
   if (props.isMobile) return [];
 
@@ -81,7 +74,7 @@ const CustomActions = (props) => {
         className="custom-actions-fullscreen"
         onClick={handleFullscreenChange}
       >
-        {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+        {isFullscreen ? <CompressOutlined /> : <ExpandOutlined />}
       </span>
     </Space>
   );

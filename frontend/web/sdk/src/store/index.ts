@@ -82,7 +82,7 @@ const createStore = (sdk: SdkResult, opt: Props = {}) => {
       antdConfig: {},
       setAntdConfig: (antdConfig) => {
         set((state) => {
-          const newAntdConfig = merge({}, state.antdConfig, antdConfig); // 合并新的 antdConfig 对象
+          const newAntdConfig = merge({}, state.antdConfig, antdConfig); // 合并并创建新的 antdConfig 对象
           return { ...state, antdConfig: newAntdConfig };
         });
 

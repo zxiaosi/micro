@@ -94,6 +94,25 @@ export const transformRoutesUtil = (
 };
 
 /**
+ * 递归去掉 path 中的 /*
+ * - 匹配整个路由时，如 path=/user/*，会导致 prolayout pathname 匹配不到，导致不能高亮
+ * - 生成路由时需要，菜单不需要带 /*
+ * @param routes 路由
+ */
+export function replacePathUtil(routes: any[]) {
+  return routes.map((item) => {
+    const { path } = item;
+    if (path) {
+      item.path = path.replace(/\/\*$/, '');
+    }
+    if (item.children) {
+      item.children = replacePathUtil(item.children);
+    }
+    return item;
+  });
+}
+
+/**
  * 获取第一个页面的路径
  * @param routes 路由数据
  */

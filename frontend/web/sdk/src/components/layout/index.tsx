@@ -1,4 +1,5 @@
 import { useRoot } from '@/hooks/useRoot';
+import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-components';
 import { memo, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -30,7 +31,7 @@ const BaseLayout = () => {
       location={{ pathname: location.pathname }}
       menu={{
         request: async () => {
-          return sdk.router.menuData || [];
+          return replacePathUtil(sdk.router.menuData) || [];
         },
       }}
       menuItemRender={(item, dom) => (

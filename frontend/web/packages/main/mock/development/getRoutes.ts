@@ -6,14 +6,14 @@ const routes = [
     path: '/dashboard',
     component: 'Dashboard',
     icon: 'DashboardOutlined',
-    hidden: false,
+    hideInMenu: false,
   },
   {
     name: '拓扑图模块',
-    path: '/flow',
-    component: 'Microapp',
+    path: '/flow/*',
+    component: 'Outlet',
     icon: 'NodeIndexOutlined',
-    hidden: false,
+    hideInMenu: false,
     routeAttr:
       '{"name": "flow", "entry": "http://localhost:8002", "activeRule": "/flow", "rootId": "sub-app"}',
   },
@@ -22,14 +22,14 @@ const routes = [
     path: '/system',
     component: 'Outlet',
     icon: 'SettingOutlined',
-    hidden: false,
+    hideInMenu: false,
     children: [
       {
         name: '用户管理',
         path: '/system/user',
         component: 'Microapp',
         icon: 'UserOutlined',
-        hidden: false,
+        hideInMenu: false,
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
       },
@@ -38,7 +38,7 @@ const routes = [
         path: '/system/role',
         component: 'Microapp',
         icon: 'DeploymentUnitOutlined',
-        hidden: false,
+        hideInMenu: false,
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
       },
@@ -47,7 +47,7 @@ const routes = [
         path: '/system/resource',
         component: 'Microapp',
         icon: 'FundViewOutlined',
-        hidden: false,
+        hideInMenu: false,
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
       },

@@ -1,4 +1,5 @@
-import Home from '@/pages/Home';
+import Detail from '@/pages/detail';
+import Home from '@/pages/home';
 import sdk from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
 import {
@@ -9,7 +10,10 @@ import {
 import { useStore } from 'zustand';
 
 function App({ basename }: any) {
-  const routes: RouteObject[] = [{ path: '/', element: <Home /> }];
+  const routes: RouteObject[] = [
+    { path: '/', element: <Home /> },
+    { path: '/detail', element: <Detail /> },
+  ];
 
   const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
 
