@@ -11,7 +11,7 @@ const routes = [
   {
     name: '拓扑图模块',
     path: '/flow/*',
-    component: 'Outlet',
+    component: 'Microapp',
     icon: 'NodeIndexOutlined',
     hideInMenu: false,
     routeAttr:
