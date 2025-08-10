@@ -7,6 +7,7 @@
     "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules && npx rimraf ./pnpm-lock.yaml",
     "dev:main": "pnpm -F main run dev",
     "dev:user": "pnpm -F sub-user run dev",
+    "dev:flow": "pnpm -F sub-flow run dev",
     "postinstall": "npx only-allow pnpm"
   },
   "dependencies": {},
