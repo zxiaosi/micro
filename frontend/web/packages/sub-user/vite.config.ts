@@ -39,9 +39,6 @@ export default ({ mode }) => {
     build: {
       emptyOutDir: true,
       outDir: resolve(__dirname, `../../deploy/subapp/${name}`),
-      // rollupOptions: {
-      //   external: ['@zxiaosi/sdk'],
-      // },
     },
   });
 };

@@ -22,7 +22,7 @@ const createClient = (sdk: SdkResult, opt: Props = {}): Props => {
   };
 
   // 合并属性
-  return merge(result, opt);
+  return merge(result, sdk.client, opt);
 };
 
 export { Props as ClientProps, Result as ClientResult, createClient };

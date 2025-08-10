@@ -64,7 +64,7 @@ const createApi = (sdk: SdkResult, opt: Props = {}): Result => {
   };
 
   // 合并属性
-  return merge(result, restOpt);
+  return merge(result, sdk.api, restOpt);
 };
 
 export { Props as ApiProps, Result as ApiResult, createApi };

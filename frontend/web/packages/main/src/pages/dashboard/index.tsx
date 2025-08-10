@@ -1,4 +1,5 @@
 import sdk from '@zxiaosi/sdk';
+import { DatePicker } from 'antd';
 import './index.less';
 /** 首页 */
 const Dashboard = () => {
@@ -12,6 +13,10 @@ const Dashboard = () => {
       >
         跳转到 user 子应用
       </button>
+
+      <div style={{ marginTop: 20 }}>
+        <DatePicker />
+      </div>
     </div>
   );
 };

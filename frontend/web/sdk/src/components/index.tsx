@@ -3,17 +3,20 @@ import get from 'lodash/get';
 import merge from 'lodash/merge';
 import set from 'lodash/set';
 
-import { SdkResult } from '@/global';
-import { MicroStateProvider } from '@/hooks/useMicroState';
-import { RootProvider } from '@/hooks/useRoot';
-import React, { ComponentType } from 'react';
-
-import { ThemeProvider } from '@/hooks/useTheme';
 import Layout from './layout';
 import Microapp from './microapp';
+import Root from './root';
 const Login = React.lazy(() => import('@/components/login/index'));
 const NotFound = React.lazy(() => import('@/components/notFound/index'));
-const Root = React.lazy(() => import('@/components/root/index'));
+// const Root = React.lazy(() => import('@/components/root/index'));
+
+import { SdkResult } from '@/global';
+import { AntdConfigProvider } from '@/hooks/useAntdConfig';
+import { LocaleProvider } from '@/hooks/useLocale';
+import { MicroStateProvider } from '@/hooks/useMicroState';
+import { RootProvider } from '@/hooks/useRoot';
+import { ThemeProvider } from '@/hooks/useTheme';
+import React, { ComponentType } from 'react';
 
 interface Props {
   /** 组件 */
@@ -65,9 +68,13 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
       return () => (
         <RootProvider sdk={sdk}>
           <ThemeProvider>
-            <MicroStateProvider>
-              <Root />
-            </MicroStateProvider>
+            <LocaleProvider>
+              <AntdConfigProvider>
+                <MicroStateProvider>
+                  <Root />
+                </MicroStateProvider>
+              </AntdConfigProvider>
+            </LocaleProvider>
           </ThemeProvider>
         </RootProvider>
       );
@@ -75,7 +82,7 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
   };
 
   // 合并属性
-  return merge(result, opt);
+  return merge(result, sdk.components, opt);
 };
 
 export {

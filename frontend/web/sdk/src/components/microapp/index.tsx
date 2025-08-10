@@ -3,11 +3,11 @@ import { memo } from 'react';
 
 /** 渲染微应用 */
 const Microapp = ({ rootId }) => {
-  const { loading } = useMicroState();
+  const { microAppState } = useMicroState();
 
   return (
     <>
-      {loading && <div>Loading...</div>}
+      {microAppState && <div>Loading...</div>}
       <main id={rootId}></main>
     </>
   );

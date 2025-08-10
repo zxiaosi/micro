@@ -21,7 +21,7 @@ import {
 const Root = () => {
   const sdk = useRoot();
 
-  const { loading, setLoading } = useMicroState();
+  const { setMicroAppState } = useMicroState();
 
   const [router, setRouter] =
     useState<RouterProviderProps['router']>(undefined);
@@ -37,7 +37,7 @@ const Root = () => {
 
       // 子应用添加 loader
       const newMicroApps = microApps.map((item) => {
-        return { ...item, loader: (loading) => setLoading(loading) };
+        return { ...item, loader: (loading) => setMicroAppState(loading) };
       });
 
       // 获取首页路径
@@ -60,7 +60,11 @@ const Root = () => {
       registerMicroApps(newMicroApps, lifeCyclesUtil);
 
       // 启动 qiankun
-      start({ sandbox: { experimentalStyleIsolation: true } });
+      start({
+        sandbox: { experimentalStyleIsolation: true },
+        singular: true,
+        urlRerouteOnly: true,
+      });
 
       let newRouter = undefined;
       switch (sdk.app.routerMode) {
@@ -84,7 +88,6 @@ const Root = () => {
         router: {
           routes: allRoutes,
           microApps: newMicroApps,
-          microAppState: loading,
           menuData: subRoutes,
         },
       });

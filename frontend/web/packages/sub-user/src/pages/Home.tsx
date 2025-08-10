@@ -1,4 +1,5 @@
 import sdk from '@zxiaosi/sdk';
+import { DatePicker } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
@@ -26,6 +27,7 @@ function Home() {
         更新主题
       </button>
       <span style={{ marginLeft: 20 }}>{JSON.stringify(initialState)}</span>
+      <DatePicker />
     </>
   );
 }

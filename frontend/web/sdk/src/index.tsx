@@ -94,11 +94,16 @@ class Sdk implements SdkResult {
       Object.defineProperty(window, name, {
         value: instance,
         writable: false, // 禁止修改
-        configurable: false, // 禁止删除
+        configurable: true, // 禁止删除
       });
 
       return instance;
     }
+  }
+
+  /** 卸载sdk */
+  unmount() {
+    delete window[this.name];
   }
 }
 

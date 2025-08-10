@@ -61,7 +61,7 @@ const createStorage = (sdk: SdkResult, opt: Props = {}): Result => {
   };
 
   // 合并属性
-  return merge(result, opt);
+  return merge(result, sdk.storage, opt);
 };
 
 export { createStorage, Props as StorageProps, Result as StorageResult };

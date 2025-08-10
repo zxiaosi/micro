@@ -1,11 +1,15 @@
 import { SdkResult } from '@/global';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 
 /** 根组件上下文 */
 const RootConext = createContext<SdkResult>(null);
 
 /** 根组件 Provider */
 export const RootProvider = ({ sdk, children }) => {
+  useEffect(() => {
+    return () => sdk.unmount();
+  }, []);
+
   return <RootConext.Provider value={sdk}>{children}</RootConext.Provider>;
 };
 

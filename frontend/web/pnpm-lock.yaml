@@ -38,6 +38,9 @@ importers:
       antd:
         specifier: ^5.26.7
         version: 5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       qiankun:
         specifier: ^2.10.16
         version: 2.10.16
@@ -105,12 +108,18 @@ importers:
 
   packages/sub-user:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.6.1
+        version: 5.6.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@ant-design/v5-patch-for-react-19':
         specifier: ^1.0.3
         version: 1.0.3(antd@5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@zxiaosi/sdk':
         specifier: workspace:*
         version: link:../../sdk
+      antd:
+        specifier: ^5.26.7
+        version: 5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: ^19.1.0
         version: 19.1.1
@@ -178,12 +187,18 @@ importers:
       '@ant-design/pro-components':
         specifier: ^2.8.10
         version: 2.8.10(antd@5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(rc-field-form@2.7.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@ant-design/v5-patch-for-react-19':
+        specifier: ^1.0.3
+        version: 1.0.3(antd@5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       antd:
         specifier: ^5.26.7
         version: 5.26.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       axios:
         specifier: ^1.10.0
         version: 1.11.0
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       lodash:
         specifier: ^4.17.21
         version: 4.17.21

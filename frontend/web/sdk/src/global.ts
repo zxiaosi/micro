@@ -8,6 +8,10 @@ import { StorageProps, StorageResult } from '@/storage';
 import { StoreProps, StoreResult } from '@/store';
 import { UIProps, UIResult } from '@/ui';
 
+export type ThemeProps = 'light' | 'dark';
+
+export type LocaleProps = 'zh_CN' | 'en_US';
+
 export interface SdkProps {
   /** sdk 名称 */
   name?: string;

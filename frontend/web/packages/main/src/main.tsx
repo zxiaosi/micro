@@ -15,6 +15,11 @@ sdk.register({
     },
     getRoutesApi,
   },
+  app: {
+    antdConfig: {
+      prefixCls: 'zxs',
+    },
+  },
   components: {
     Dashboard,
     NotFound,

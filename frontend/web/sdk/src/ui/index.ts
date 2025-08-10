@@ -16,7 +16,7 @@ const createUI = (sdk: SdkResult, opt: Props | any = {}): Result => {
   };
 
   // 合并属性
-  return merge(result, opt);
+  return merge(result, sdk.ui, opt);
 };
 
 export { createUI, Props as UIProps, Result as UIResult };

@@ -39,7 +39,7 @@ const createRouter = (sdk: SdkResult, opt: Props = {}): Result => {
   };
 
   // 合并属性
-  return merge(result, opt);
+  return merge(result, sdk.router, opt);
 };
 
 export { createRouter, Props as RouterProps, Result as RouterResult };

@@ -110,3 +110,24 @@ export const getFirstPagePathUtil = (routes: any[]) => {
 
   return firstPagePath;
 };
+
+/** 获取语言包 */
+export const getLocaleUtil = async (locale: string) => {
+  // 语言前缀
+  const localePrefix = locale.split('_')[0] || 'zh';
+  // 语言包
+  let antdLocale = null;
+
+  switch (localePrefix) {
+    case 'zh':
+      antdLocale = await import(`antd/es/locale/zh_CN`);
+      await import(`dayjs/locale/zh`);
+      break;
+    case 'en':
+      antdLocale = await import(`antd/es/locale/en_US`);
+      await import(`dayjs/locale/en`);
+      break;
+  }
+
+  return antdLocale.default;
+};
