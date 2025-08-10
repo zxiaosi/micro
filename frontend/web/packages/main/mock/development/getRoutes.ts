@@ -9,10 +9,28 @@ const routes = [
     hidden: false,
   },
   {
-    name: '测试页',
+    name: '系统模块',
     path: '/user',
     component: 'Microapp',
     icon: 'ControlOutlined',
+    hidden: false,
+    children: [
+      {
+        name: '用户管理',
+        path: '/dashboard',
+        component: 'Dashboard',
+        icon: 'DashboardOutlined',
+        hidden: false,
+        routeAttr:
+          '{"name": "user", "entry": "http://localhost:8001", "activeRule": "/user", "rootId": "sub-app"}',
+      },
+    ],
+  },
+  {
+    name: '拓扑图模块',
+    path: '/flow',
+    component: 'Microapp',
+    icon: 'BranchesOutlined',
     hidden: false,
     routeAttr:
       '{"name": "user", "entry": "http://localhost:8001", "activeRule": "/user", "rootId": "sub-app"}',
