@@ -8,24 +8,33 @@ import {
 } from '@ant-design/icons';
 import sdk from '@zxiaosi/sdk';
 import { Dropdown, Segmented, Space } from 'antd';
+import { memo } from 'react';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 import './index.less';
 
 /** Layout的操作功能列表，不同的 layout 会放到不同的位置 */
 const CustomActions = (props) => {
-  const { useTheme, useLocale } = sdk.hooks;
+  const [theme, setTheme, locale, setLocale] = useStore(
+    sdk.store,
+    useShallow((state) => [
+      state.theme,
+      state.setTheme,
+      state.locale,
+      state.setLocale,
+    ]),
+  );
 
-  const { theme, setTheme } = useTheme();
-  const { locale, setLocale } = useLocale();
   const { isFullscreen, toggleFullscreen } = useGlobalFullscreen();
 
   /** 主题切换事件 */
   const handleThemeChange = (key: any) => {
-    setTheme(key);
+    setTheme?.(key);
   };
 
   /** 语言切换事件 */
   const handleLocaleChange = ({ key }: any) => {
-    setLocale(key);
+    setLocale?.(key);
   };
 
   /** 全屏切换事件 */
@@ -78,4 +87,4 @@ const CustomActions = (props) => {
   );
 };
 
-export default CustomActions;
+export default memo(CustomActions);

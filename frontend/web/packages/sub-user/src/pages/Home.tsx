@@ -4,12 +4,9 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 function Home() {
-  const { initialState, setInitialState } = useStore(
+  const [theme, setTheme] = useStore(
     sdk.store,
-    useShallow((state) => ({
-      initialState: state.initialState,
-      setInitialState: state.setInitialState,
-    })),
+    useShallow((state) => [state.theme, state.setTheme]),
   );
 
   return (
@@ -19,15 +16,14 @@ function Home() {
 
       <button
         onClick={() => {
-          setInitialState?.({
-            theme: initialState.theme === 'light' ? 'dark' : 'light',
-          });
+          setTheme?.(theme === 'light' ? 'dark' : 'light');
         }}
       >
         更新主题
       </button>
-      <span style={{ marginLeft: 20 }}>{JSON.stringify(initialState)}</span>
-      <DatePicker />
+      <div>
+        <DatePicker />
+      </div>
     </>
   );
 }

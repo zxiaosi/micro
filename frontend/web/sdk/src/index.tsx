@@ -28,7 +28,7 @@ class Sdk implements SdkResult {
 
   constructor(name: string) {
     this.register({ name });
-    this.mountSdk();
+    this.mount();
   }
 
   /** 注册属性 */
@@ -68,7 +68,7 @@ class Sdk implements SdkResult {
   }
 
   /** 挂载sdk */
-  mountSdk() {
+  mount() {
     const name = this.name;
 
     if (name && window[name]) {
@@ -107,6 +107,6 @@ class Sdk implements SdkResult {
   }
 }
 
-const sdk: SdkResult = new Sdk('sdk').mountSdk();
+const sdk: SdkResult = new Sdk('sdk').mount();
 
 export default sdk;

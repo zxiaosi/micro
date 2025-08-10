@@ -1,7 +1,7 @@
 // 使用按需加载的方式引入 lodash
 import isEmpty from 'lodash/isEmpty';
 
-import { SdkResult } from '@/global';
+import { LocaleProps, SdkResult, ThemeProps } from '@/global';
 import * as Icons from '@ant-design/icons';
 import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
 import { createElement } from 'react';
@@ -130,4 +130,44 @@ export const getLocaleUtil = async (locale: string) => {
   }
 
   return antdLocale.default;
+};
+
+/** 获取主题默认值 */
+export const getDefaultThemeUtil = (sdk): ThemeProps => {
+  // localStorage > sdk中主题 > 系统主题 > 默认
+
+  // 1. localStorage
+  const localTheme = localStorage.getItem('theme') as ThemeProps;
+  if (localTheme) return localTheme;
+
+  // 2. sdk中主题
+  const sdkTheme = sdk.app.theme;
+  if (sdkTheme) return sdkTheme;
+
+  // 3. 系统主题
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  if (media.matches) return media.matches ? 'dark' : 'light';
+
+  // 4. 默认
+  return 'light';
+};
+
+/** 获取国际化默认值 */
+export const getDefaultLocaleUtil = (sdk): LocaleProps => {
+  // localStorage > sdk中主题 > 浏览器语言 > 默认
+
+  // 1. localStorage
+  const localLocale = localStorage.getItem('locale') as LocaleProps;
+  if (localLocale) return localLocale;
+
+  // 2. sdk中主题
+  const sdkLocale = sdk.app.locale;
+  if (sdkLocale) return sdkLocale;
+
+  // 3. 浏览器语言
+  const browserLocale = navigator.language.replace('-', '_') as LocaleProps;
+  if (browserLocale) return browserLocale;
+
+  // 4. 默认
+  return 'zh_CN';
 };

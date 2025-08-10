@@ -1,75 +1,95 @@
-import { SdkResult } from '@/global';
-import { createStore as createStoreZustand, StoreApi } from 'zustand';
+// 使用按需加载的方式引入 lodash
+import merge from 'lodash/merge';
+
+import { LocaleProps, SdkResult, ThemeProps } from '@/global';
+import { ConfigProviderProps, theme as antdTheme } from 'antd';
+import { createStore as createStoreZustand } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+
+import enUS from 'antd/es/locale/en_US';
+import zhCN from 'antd/es/locale/zh_CN';
+import dayjs from 'dayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/zh';
 
 interface Props {}
 
-/** 变量类型 */
-interface InitialStateProps {
-  name?: string;
-  theme?: 'light' | 'dark';
-  [key: string]: any;
-}
+type Result = ReturnType<typeof createStore>;
 
-/** 全局变量类型 */
 interface GlobalStoreProps {
-  /** 初始化变量 */
-  initialState: InitialStateProps;
-  /**
-   * 设置初始化变量
-   * @param initialState 初始化变量(自定合并)
-   * @param replace 是否替换(关闭自动合并)
-   */
-  setInitialState: (initialState: InitialStateProps, replace?: boolean) => void;
+  /** 主题 */
+  theme?: ThemeProps;
+  /** 设置主题 */
+  setTheme?: (theme: ThemeProps) => void;
+  /** 国际化 */
+  locale?: LocaleProps;
+  /** 设置国际化 */
+  setLocale?: (locale: LocaleProps) => void;
+  /** Antd配置 */
+  antdConfig?: ConfigProviderProps;
+  /** 设置Antd配置 */
+  setAntdConfig?: (antdConfig: ConfigProviderProps) => void;
 }
-
-/** zustand Write 类型 */
-type Write<T, U> = Omit<T, keyof U> & U;
-
-/** zustand subscribeWithSelector 类型 */
-type StoreSubscribeWithSelector<T> = {
-  subscribe: {
-    (
-      listener: (selectedState: T, previousSelectedState: T) => void,
-    ): () => void;
-    <U>(
-      selector: (state: T) => U,
-      listener: (selectedState: U, previousSelectedState: U) => void,
-      options?: {
-        equalityFn?: (a: U, b: U) => boolean;
-        fireImmediately?: boolean;
-      },
-    ): () => void;
-  };
-};
-
-type Result = Write<
-  StoreApi<GlobalStoreProps>,
-  StoreSubscribeWithSelector<GlobalStoreProps>
->;
 
 /**
- * @name 全局状态
- * @example const { initialState } = useStore(globalStore, (state)=> state.initialState)
- * @example globalStore?.getState()?.setInitialState({})
- * @example globalStore.subscribe((state) => state.initialState, (initialState) => { console.log('initialState', initialState) }, { fireImmediately: true })
+ * 全局 Store
+ * @description 不要多次创建！！！
+ * @param sdk sdk 实例
+ * @param options 配置项
+ * @example const setTheme = useStore(globalStore, (state) => state.setTheme)
+ * @example const { theme, setTheme } = useStore(globalStore, useShallow((state) => { theme: state.theme, setTheme: state.setTheme }))
+ * @example const [theme, setTheme] = useStore(globalStore, useShallow((state) => [state.theme, state.setTheme]))
+ * @example globalStore?.getState()?.setTheme('light')
+ * @example globalStore.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
  */
-const globalStore = createStoreZustand<GlobalStoreProps>()(
-  subscribeWithSelector((set) => ({
-    initialState: {},
-    setInitialState: (newInitialState, replace = false) =>
-      set((state) => ({
-        initialState: {
-          ...(!replace ? state.initialState : {}),
-          ...newInitialState,
-        },
-      })),
-  })),
-);
+const createStore = (sdk: SdkResult, opt: Props = {}) => {
+  return createStoreZustand<GlobalStoreProps>()(
+    subscribeWithSelector((set, get) => ({
+      theme: 'light',
+      setTheme: (theme) => {
+        set(() => ({ theme })); // 自动合并其他
+        sdk.register({ app: { theme } }); // 注入属性
 
-/** 全局 Store */
-const createStore = (sdk: SdkResult, opt: Props = {}): Result => {
-  return globalStore;
+        // 设置Antd配置
+        const algorithm =
+          theme === 'light'
+            ? antdTheme.defaultAlgorithm
+            : antdTheme.darkAlgorithm;
+        get().setAntdConfig({ theme: { algorithm } });
+
+        // 设置属性
+        document.documentElement.setAttribute('theme', theme);
+        localStorage.setItem('theme', theme);
+      },
+
+      locale: 'zh_CN',
+      setLocale: (locale) => {
+        set(() => ({ locale })); // 自动合并其他
+        sdk.register({ app: { locale } }); // 注入属性
+
+        // 语言前缀
+        const localePrefix = locale.split('_')[0] || 'zh';
+        dayjs.locale(localePrefix);
+
+        // 语言包
+        let localeData = locale === 'en_US' ? enUS : zhCN;
+        get().setAntdConfig({ locale: localeData });
+
+        // 设置属性
+        localStorage.setItem('locale', locale);
+      },
+
+      antdConfig: {},
+      setAntdConfig: (antdConfig) => {
+        set((state) => {
+          const newAntdConfig = merge({}, state.antdConfig, antdConfig); // 合并新的 antdConfig 对象
+          return { ...state, antdConfig: newAntdConfig };
+        });
+
+        sdk.register({ app: { antdConfig } }); // 注入属性
+      },
+    })),
+  );
 };
 
-export { createStore, Props as StoreProps, Result as StoreResult };
+export { Props as StoreProps, Result as StoreResult, createStore };

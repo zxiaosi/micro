@@ -61,6 +61,16 @@ export interface SdkResult extends SdkProps {
    * 注册属性
    */
   readonly register: (options?: SdkProps) => void;
+
+  /**
+   * 挂载sdk
+   */
+  readonly mount: () => void;
+
+  /**
+   * 卸载sdk
+   */
+  readonly unmount: () => void;
 }
 
 export interface ModuleProps {

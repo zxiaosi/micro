@@ -6,13 +6,16 @@ import {
   RouterProvider,
   type RouteObject,
 } from 'react-router-dom';
+import { useStore } from 'zustand';
 
 function App({ basename }: any) {
   const routes: RouteObject[] = [{ path: '/', element: <Home /> }];
 
+  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
+
   return (
     <ConfigProvider
-      {...sdk.app.antdConfig}
+      {...antdConfig}
       getPopupContainer={(node) =>
         (node ? node?.parentNode : document.body) as HTMLElement
       }

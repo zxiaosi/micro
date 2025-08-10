@@ -5,6 +5,7 @@ import {
   handleRoutesUtil,
   lifeCyclesUtil,
 } from '@/utils';
+import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
 import { memo, useEffect, useState } from 'react';
 import {
@@ -16,11 +17,13 @@ import {
   RouterProvider,
   RouterProviderProps,
 } from 'react-router-dom';
+import { useStore } from 'zustand';
 
 /** 根组件 */
 const Root = () => {
   const sdk = useRoot();
 
+  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
   const { setMicroAppState } = useMicroState();
 
   const [router, setRouter] =
@@ -102,7 +105,11 @@ const Root = () => {
 
   if (!router) return <>Loading...</>;
 
-  return <RouterProvider router={router} />;
+  return (
+    <ConfigProvider {...antdConfig}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
 };
 
 export default memo(Root);

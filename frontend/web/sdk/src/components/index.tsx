@@ -11,11 +11,8 @@ const NotFound = React.lazy(() => import('@/components/notFound/index'));
 // const Root = React.lazy(() => import('@/components/root/index'));
 
 import { SdkResult } from '@/global';
-import { AntdConfigProvider } from '@/hooks/useAntdConfig';
-import { LocaleProvider } from '@/hooks/useLocale';
 import { MicroStateProvider } from '@/hooks/useMicroState';
 import { RootProvider } from '@/hooks/useRoot';
-import { ThemeProvider } from '@/hooks/useTheme';
 import React, { ComponentType } from 'react';
 
 interface Props {
@@ -67,15 +64,9 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
     getRootComponent: () => {
       return () => (
         <RootProvider sdk={sdk}>
-          <ThemeProvider>
-            <LocaleProvider>
-              <AntdConfigProvider>
-                <MicroStateProvider>
-                  <Root />
-                </MicroStateProvider>
-              </AntdConfigProvider>
-            </LocaleProvider>
-          </ThemeProvider>
+          <MicroStateProvider>
+            <Root />
+          </MicroStateProvider>
         </RootProvider>
       );
     },
