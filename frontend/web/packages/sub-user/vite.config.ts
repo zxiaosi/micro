@@ -6,12 +6,16 @@ import { name } from './package.json';
 
 // https://vite.dev/config/
 export default ({ mode }) => {
+  /** 静态资源路径 */
+  const prodBase = `/subapp/${name}`;
+
   // 环境变量文件夹
   const envDir = resolve(__dirname, 'env');
   // 加载环境变量
   const env = loadEnv(mode, envDir);
 
   return defineConfig({
+    base: mode === 'production' ? prodBase : '/',
     envDir: envDir,
     server: {
       port: Number(env.VITE_PORT),
@@ -38,7 +42,7 @@ export default ({ mode }) => {
     },
     build: {
       emptyOutDir: true,
-      outDir: resolve(__dirname, `../../deploy/subapp/${name}`),
+      outDir: resolve(__dirname, `../../deploy${prodBase}`),
     },
   });
 };

@@ -2,6 +2,7 @@ import sdk from '@zxiaosi/sdk';
 import { DatePicker } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import './index.less';
 
 function Home() {
   const [theme, setTheme] = useStore(
@@ -11,7 +12,7 @@ function Home() {
 
   return (
     <>
-      <div style={{ fontSize: 24 }}>user 子应用</div>
+      <div className="sub-app-title">user 子应用</div>
       <div className="test-css-variable">测试css变量</div>
 
       <button

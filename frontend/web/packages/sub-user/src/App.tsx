@@ -21,7 +21,9 @@ function App({ basename }: any) {
       }
     >
       <RouterProvider
-        router={createBrowserRouter(routes, { basename: `/${basename}` })}
+        router={createBrowserRouter(routes, {
+          basename: basename ? `/${basename}` : '/',
+        })}
       />
     </ConfigProvider>
   );

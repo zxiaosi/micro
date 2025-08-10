@@ -14,6 +14,8 @@ const Dashboard = () => {
         跳转到 user 子应用
       </button>
 
+      <div className="test-css-variable">测试 css 变量</div>
+
       <div style={{ marginTop: 20 }}>
         <DatePicker />
       </div>
