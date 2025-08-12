@@ -4,7 +4,7 @@
   "scripts": {
     "build:all": "pnpm -r run build",
     "build:sdk": "pnpm -F sdk run build",
-    "clean": "pnpm -r exec rimraf ./node_modules && npx rimraf ./node_modules && npx rimraf ./pnpm-lock.yaml",
+    "clean": "pnpm -r exec rimraf node_modules && npx rimraf node_modules pnpm-lock.yaml",
     "dev:main": "pnpm -F main run dev",
     "dev:system": "pnpm -F sub-system run dev",
     "dev:flow": "pnpm -F sub-flow run dev",
