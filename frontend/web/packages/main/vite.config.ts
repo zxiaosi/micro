@@ -1,11 +1,11 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, type ConfigEnv } from 'vite';
 import { viteMockServe } from 'vite-plugin-mock';
 import { name } from './package.json';
 
 // https://vite.dev/config/
-export default ({ mode }) => {
+export default ({ mode }: ConfigEnv) => {
   // 环境变量文件夹
   const envDir = resolve(__dirname, 'env');
   // 加载环境变量
