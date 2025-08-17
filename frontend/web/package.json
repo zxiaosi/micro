@@ -5,16 +5,12 @@
     "build:all": "pnpm -r run build",
     "build:sdk": "pnpm -F sdk run build",
     "clean": "pnpm -r exec rimraf node_modules && npx rimraf node_modules pnpm-lock.yaml",
+    "dev:flow": "pnpm -F sub-flow run dev",
     "dev:main": "pnpm -F main run dev",
     "dev:system": "pnpm -F sub-system run dev",
-    "dev:flow": "pnpm -F sub-flow run dev",
-    "plugin:oxc": "code --install-extension oxc.oxc-vscode",
-    "postinstall": "npx only-allow pnpm & npm run plugin:oxc"
+    "postinstall": "npx only-allow pnpm & npm run plugin:oxc",
+    "plugin:oxc": "code --install-extension oxc.oxc-vscode"
   },
   "dependencies": {},
-  "devDependencies": {
-    "prettier": "^3.5.3",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "prettier-plugin-packagejson": "^2.5.15"
-  }
+  "devDependencies": {}
 }
