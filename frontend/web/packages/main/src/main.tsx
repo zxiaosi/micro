@@ -31,7 +31,7 @@ sdk.register({
   },
   components: {
     Dashboard,
-    NotFound,
+    // NotFound,
   },
   ui: {
     title: import.meta.env.VITE_APP_TITLE,

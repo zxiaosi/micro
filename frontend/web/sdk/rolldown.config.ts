@@ -2,6 +2,15 @@ import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel';
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import LightningCSS from 'unplugin-lightningcss/rolldown';
+import { injectCssImport } from './rolldown-plugin';
+
+/** lightningcss 配置   */
+const lightningCSSOptions = {
+  options: {
+    minify: true,
+  },
+};
 
 /** babel 配置 */
 const babelOptions: RollupBabelInputPluginOptions = {
@@ -19,7 +28,6 @@ const babelOptions: RollupBabelInputPluginOptions = {
   ], // 使用 React 和 ES6+ 预设
   exclude: 'node_modules/**', // 排除 node_modules 中的文件
   babelHelpers: 'bundled', // 使用打包的 Babel 辅助函数, 避免重复打包
-  plugins: ['@emotion/babel-plugin'], // 使用 emotion 的 babel 插件
 };
 
 /** 通用配置 */
@@ -31,7 +39,7 @@ const common = defineConfig({
     tsconfigFilename: './tsconfig.json', // 指定 TypeScript 配置文件
   },
   output: {
-    sourcemap: true, // 生成 sourcemap 文件
+    // sourcemap: true, // 生成 sourcemap 文件
     minify: true, // 启用代码压缩, 调试时可以关闭
   },
 });
@@ -39,7 +47,13 @@ const common = defineConfig({
 const config = defineConfig([
   {
     ...common,
-    plugins: [peerDepsExternal(), babel(babelOptions), dts()],
+    plugins: [
+      peerDepsExternal(),
+      babel(babelOptions),
+      LightningCSS(lightningCSSOptions),
+      injectCssImport(),
+      dts(),
+    ],
     output: {
       dir: 'dist/esm',
       format: 'es',
@@ -50,7 +64,12 @@ const config = defineConfig([
   },
   {
     ...common,
-    plugins: [peerDepsExternal(), babel(babelOptions)],
+    plugins: [
+      peerDepsExternal(),
+      babel(babelOptions),
+      LightningCSS(lightningCSSOptions),
+      injectCssImport(),
+    ],
     output: {
       dir: 'dist/cjs',
       format: 'cjs',
