@@ -8,7 +8,7 @@
     "dev:flow": "pnpm -F sub-flow run dev",
     "dev:main": "pnpm -F main run dev",
     "dev:system": "pnpm -F sub-system run dev",
-    "postinstall": "npx only-allow pnpm & npm run plugin:oxc",
+    "postinstall": "npx only-allow pnpm",
     "plugin:oxc": "code --install-extension oxc.oxc-vscode"
   },
   "dependencies": {},
