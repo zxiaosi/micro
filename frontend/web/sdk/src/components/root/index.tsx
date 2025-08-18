@@ -1,4 +1,4 @@
-import { useMicroState } from '@/hooks/useMicroState';
+import { MicroStateProvider, useMicroState } from '@/hooks/useMicroState';
 import { useRoot } from '@/hooks/useRoot';
 import {
   getFirstPagePathUtil,
@@ -7,7 +7,8 @@ import {
 } from '@/utils';
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { IntlProvider } from 'react-intl';
 import {
   createBrowserRouter,
   createHashRouter,
@@ -18,12 +19,12 @@ import {
   RouterProviderProps,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 
 /** 根组件 */
 const Root = () => {
   const sdk = useRoot();
 
-  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
   const { setMicroAppState } = useMicroState();
 
   const [router, setRouter] =
@@ -105,11 +106,31 @@ const Root = () => {
 
   if (!router) return <>Loading...</>;
 
+  return <RouterProvider router={router} />;
+};
+
+const RootWrapper = () => {
+  const sdk = useRoot();
+
+  const [antdConfig, locale] = useStore(
+    sdk.store,
+    useShallow((state) => [state.antdConfig, state.locale])
+  );
+
+  if (!antdConfig || Object.keys(antdConfig).length === 0)
+    return <>Loading...</>;
+
+  console.log('antdConfig', locale, sdk.i18n[locale]);
+
   return (
-    <ConfigProvider {...antdConfig}>
-      <RouterProvider router={router} />
-    </ConfigProvider>
+    <IntlProvider locale={locale} messages={sdk.i18n[locale]}>
+      <ConfigProvider {...antdConfig}>
+        <MicroStateProvider>
+          <Root />
+        </MicroStateProvider>
+      </ConfigProvider>
+    </IntlProvider>
   );
 };
 
-export default memo(Root);
+export default RootWrapper;

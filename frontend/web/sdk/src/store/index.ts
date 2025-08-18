@@ -18,17 +18,17 @@ type Result = ReturnType<typeof createStore>;
 
 interface GlobalStoreProps {
   /** 主题 */
-  theme?: ThemeProps;
+  theme: ThemeProps;
   /** 设置主题 */
-  setTheme?: (theme: ThemeProps) => void;
+  setTheme: (theme: ThemeProps) => void;
   /** 国际化 */
-  locale?: LocaleProps;
+  locale: LocaleProps;
   /** 设置国际化 */
-  setLocale?: (locale: LocaleProps) => void;
+  setLocale: (locale: LocaleProps) => void;
   /** Antd配置 */
-  antdConfig?: ConfigProviderProps;
+  antdConfig: ConfigProviderProps;
   /** 设置Antd配置 */
-  setAntdConfig?: (antdConfig: ConfigProviderProps) => void;
+  setAntdConfig: (antdConfig: ConfigProviderProps) => void;
 }
 
 /**
@@ -62,17 +62,17 @@ const createStore = (sdk: SdkResult, opt: Props = {}) => {
         localStorage.setItem('theme', theme);
       },
 
-      locale: 'zh_CN',
+      locale: 'zh-CN',
       setLocale: (locale) => {
         set(() => ({ locale })); // 自动合并其他
         sdk.register({ app: { locale } }); // 注入属性
 
         // 语言前缀
-        const localePrefix = locale.split('_')[0] || 'zh';
+        const localePrefix = locale.split('-')[0] || 'zh';
         dayjs.locale(localePrefix);
 
         // 语言包
-        let localeData = locale === 'en_US' ? enUS : zhCN;
+        let localeData = locale === 'en-US' ? enUS : zhCN;
         get().setAntdConfig({ locale: localeData });
 
         // 设置属性

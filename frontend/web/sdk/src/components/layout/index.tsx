@@ -37,8 +37,7 @@ const BaseLayout = () => {
       menuItemRender={(item, dom) => (
         <div onClick={() => handleMenuClick(item)}>{dom}</div>
       )}
-      onMenuHeaderClick={handleMenuHeaderClick}
-    >
+      onMenuHeaderClick={handleMenuHeaderClick}>
       <Outlet />
     </ProLayout>
   );

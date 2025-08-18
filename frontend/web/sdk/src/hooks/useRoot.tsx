@@ -22,7 +22,7 @@ export const RootProvider = ({ sdk, children }: Props) => {
       state.setTheme,
       state.setLocale,
       state.setAntdConfig,
-    ]),
+    ])
   );
 
   useEffect(() => {

@@ -57,8 +57,8 @@ const CustomActions = (props) => {
         key={'i18n'}
         menu={{
           items: [
-            { key: 'zh_CN', label: '中文' },
-            { key: 'en_US', label: '英文' },
+            { key: 'zh-CN', label: '中文' },
+            { key: 'en-US', label: '英文' },
           ],
           onClick: handleLocaleChange,
         }}

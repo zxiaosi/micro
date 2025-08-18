@@ -139,11 +139,11 @@ export const getLocaleUtil = async (locale: string) => {
 
   switch (localePrefix) {
     case 'zh':
-      antdLocale = await import(`antd/es/locale/zh_CN`);
+      antdLocale = await import(`antd/es/locale/zh-CN`);
       await import(`dayjs/locale/zh`);
       break;
     case 'en':
-      antdLocale = await import(`antd/es/locale/en_US`);
+      antdLocale = await import(`antd/es/locale/en-US`);
       await import(`dayjs/locale/en`);
       break;
   }
@@ -184,9 +184,9 @@ export const getDefaultLocaleUtil = (sdk): LocaleProps => {
   if (sdkLocale) return sdkLocale;
 
   // 3. 浏览器语言
-  const browserLocale = navigator.language.replace('-', '_') as LocaleProps;
+  const browserLocale = navigator.language as LocaleProps;
   if (browserLocale) return browserLocale;
 
   // 4. 默认
-  return 'zh_CN';
+  return 'zh-CN';
 };

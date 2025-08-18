@@ -8,10 +8,8 @@ import Microapp from './microapp';
 import Root from './root';
 const Login = React.lazy(() => import('@/components/login/index'));
 const NotFound = React.lazy(() => import('@/components/notFound/index'));
-// const Root = React.lazy(() => import('@/components/root/index'));
 
 import { SdkResult } from '@/global';
-import { MicroStateProvider } from '@/hooks/useMicroState';
 import { RootProvider } from '@/hooks/useRoot';
 import React, { ComponentType } from 'react';
 
@@ -64,9 +62,7 @@ const createComponents = (sdk: SdkResult, opt: Props = {}): Result => {
     getRootComponent: () => {
       return () => (
         <RootProvider sdk={sdk}>
-          <MicroStateProvider>
-            <Root />
-          </MicroStateProvider>
+          <Root />
         </RootProvider>
       );
     },

@@ -8,7 +8,7 @@ interface Props {
   tokenName?: string;
 }
 
-interface Result extends Props {
+interface Result extends Required<Readonly<Props>> {
   /**
    * 设置缓存
    * @param key 缓存键

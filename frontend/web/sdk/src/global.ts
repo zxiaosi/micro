@@ -7,10 +7,11 @@ import { RouterProps, RouterResult } from '@/router';
 import { StorageProps, StorageResult } from '@/storage';
 import { StoreProps, StoreResult } from '@/store';
 import { UIProps, UIResult } from '@/ui';
+import { I18nProps, I18nResult } from '@/i18n';
 
 export type ThemeProps = 'light' | 'dark';
 
-export type LocaleProps = 'zh_CN' | 'en_US';
+export type LocaleProps = 'zh-CN' | 'en-US';
 
 export interface SdkProps {
   /** sdk 名称 */
@@ -25,6 +26,8 @@ export interface SdkProps {
   components?: ComponentsProps;
   /** Hooks */
   hooks?: HooksProps;
+  /** 国际化 */
+  i18n?: I18nProps;
   /** 路由 配置 */
   router?: RouterProps;
   /** localStorage */
@@ -48,6 +51,8 @@ export interface SdkResult extends SdkProps {
   components: ComponentsResult;
   /** Hooks */
   hooks: HooksResult;
+  /** 国际化 */
+  i18n?: I18nResult;
   /** 路由 配置 */
   router: RouterResult;
   /** localStorage */

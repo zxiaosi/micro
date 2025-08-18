@@ -12,6 +12,7 @@ import { createRouter } from '@/router';
 import { createStorage } from '@/storage';
 import { createStore } from '@/store';
 import { createUI } from '@/ui';
+import { createI18n } from '@/i18n';
 
 class Sdk implements SdkResult {
   /** sdk 实例 */
@@ -39,6 +40,7 @@ class Sdk implements SdkResult {
       client,
       components,
       hooks,
+      i18n,
       router,
       storage,
       store,
@@ -52,6 +54,7 @@ class Sdk implements SdkResult {
       { key: 'client', value: client, creator: createClient },
       { key: 'components', value: components, creator: createComponents },
       { key: 'hooks', value: hooks, creator: createHooks },
+      { key: 'i18n', value: i18n, creator: createI18n },
       { key: 'router', value: router, creator: createRouter },
       { key: 'storage', value: storage, creator: createStorage },
       { key: 'store', value: store, creator: createStore },

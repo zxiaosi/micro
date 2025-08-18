@@ -3,11 +3,14 @@ import { Button, Card, DatePicker, Space } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.less';
+import { useIntl } from 'react-intl';
 
 const { RangePicker } = DatePicker;
 
 /** 首页 */
 const Home = () => {
+  const intl = useIntl();
+
   const [theme, setTheme, locale, setLocale] = useStore(
     sdk.store,
     useShallow((state) => [
@@ -30,7 +33,7 @@ const Home = () => {
 
   /** 更新语言包 */
   const handleUpdateLocale = () => {
-    setLocale?.(locale === 'zh_CN' ? 'en_US' : 'zh_CN');
+    setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
   };
 
   return (
@@ -64,6 +67,7 @@ const Home = () => {
             <Button type="dashed" danger onClick={handleUpdateLocale}>
               更新语言包
             </Button>
+            {intl.formatMessage({ id: 'test' })}
           </Space>
         </Card>
       </Space>

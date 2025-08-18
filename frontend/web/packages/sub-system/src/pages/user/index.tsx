@@ -25,7 +25,7 @@ const User = () => {
 
   /** 更新语言包 */
   const handleUpdateLocale = () => {
-    setLocale?.(locale === 'zh_CN' ? 'en_US' : 'zh_CN');
+    setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
   };
 
   return (

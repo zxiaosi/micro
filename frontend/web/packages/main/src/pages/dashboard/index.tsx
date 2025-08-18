@@ -1,10 +1,13 @@
 import sdk from '@zxiaosi/sdk';
-import { Alert, Button, Card, DatePicker, Pagination, Space } from 'antd';
+import { Alert, Button, Card, DatePicker, Space } from 'antd';
+import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.less';
 /** 首页 */
 const Dashboard = () => {
+  const intl = useIntl();
+
   const [theme, setTheme, locale, setLocale] = useStore(
     sdk.store,
     useShallow((state) => [
@@ -22,7 +25,7 @@ const Dashboard = () => {
 
   /** 更新语言包 */
   const handleUpdateLocale = () => {
-    setLocale?.(locale === 'zh_CN' ? 'en_US' : 'zh_CN');
+    setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
   };
 
   return (
@@ -42,7 +45,7 @@ const Dashboard = () => {
         <Card title="测试 国际化">
           <Space>
             <DatePicker />
-            <Pagination defaultCurrent={1} total={50} showSizeChanger />
+            {intl.formatMessage({ id: 'test' })}
           </Space>
         </Card>
 

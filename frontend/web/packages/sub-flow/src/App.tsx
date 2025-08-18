@@ -2,12 +2,14 @@ import Detail from '@/pages/detail';
 import Home from '@/pages/home';
 import sdk from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
+import { IntlProvider } from 'react-intl';
 import {
   createBrowserRouter,
   RouterProvider,
   type RouteObject,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 
 function App({ basename }: any) {
   const routes: RouteObject[] = [
@@ -15,21 +17,26 @@ function App({ basename }: any) {
     { path: '/detail', element: <Detail /> },
   ];
 
-  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
+  const [antdConfig, locale] = useStore(
+    sdk.store,
+    useShallow((state) => [state.antdConfig, state.locale]),
+  );
 
   return (
-    <ConfigProvider
-      {...antdConfig}
-      getPopupContainer={(node) =>
-        (node ? node?.parentNode : document.body) as HTMLElement
-      }
-    >
-      <RouterProvider
-        router={createBrowserRouter(routes, {
-          basename: basename ? `/${basename}` : '/',
-        })}
-      />
-    </ConfigProvider>
+    <IntlProvider locale={locale} messages={sdk.i18n?.[locale]}>
+      <ConfigProvider
+        {...antdConfig}
+        getPopupContainer={(node) =>
+          (node ? node?.parentNode : document.body) as HTMLElement
+        }
+      >
+        <RouterProvider
+          router={createBrowserRouter(routes, {
+            basename: basename ? `/${basename}` : '/',
+          })}
+        />
+      </ConfigProvider>
+    </IntlProvider>
   );
 }
 
