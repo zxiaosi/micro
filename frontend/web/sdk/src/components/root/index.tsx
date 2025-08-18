@@ -64,11 +64,7 @@ const Root = () => {
       registerMicroApps(newMicroApps, lifeCyclesUtil);
 
       // 启动 qiankun
-      start({
-        sandbox: { experimentalStyleIsolation: true },
-        singular: true,
-        urlRerouteOnly: true,
-      });
+      start({ sandbox: true, singular: true, urlRerouteOnly: true });
 
       let newRouter = undefined;
       switch (sdk.app.routerMode) {

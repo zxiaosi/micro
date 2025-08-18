@@ -1,9 +1,9 @@
 import sdk from '@zxiaosi/sdk';
 import { Button, Card, DatePicker, Space } from 'antd';
+import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.less';
-import { useIntl } from 'react-intl';
 
 const { RangePicker } = DatePicker;
 
@@ -69,6 +69,10 @@ const Home = () => {
             </Button>
             {intl.formatMessage({ id: 'test' })}
           </Space>
+        </Card>
+
+        <Card title="测试 CSS 变量">
+          <div className="test-css-variable">啦啦啦</div>
         </Card>
       </Space>
     </div>
