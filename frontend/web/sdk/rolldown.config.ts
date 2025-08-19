@@ -1,7 +1,7 @@
 import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel';
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import nodeExternals from 'rollup-plugin-node-externals'
 import LightningCSS from 'unplugin-lightningcss/rolldown';
 import { injectCssImport } from './rolldown-plugin';
 
@@ -48,7 +48,7 @@ const config = defineConfig([
   {
     ...common,
     plugins: [
-      peerDepsExternal(),
+      nodeExternals(), // 排除 deps、peerDeps 中的依赖
       babel(babelOptions),
       LightningCSS(lightningCSSOptions),
       injectCssImport(),
@@ -65,7 +65,7 @@ const config = defineConfig([
   {
     ...common,
     plugins: [
-      peerDepsExternal(),
+      nodeExternals(), // 排除 deps、peerDeps 中的依赖
       babel(babelOptions),
       LightningCSS(lightningCSSOptions),
       injectCssImport(),

@@ -27,7 +27,7 @@
     "lodash": "^4.17.21",
     "rolldown": "^1.0.0-beta.32",
     "rolldown-plugin-dts": "^0.15.6",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-node-externals": "^8.0.1",
     "unplugin-lightningcss": "^0.4.1"
   },
   "peerDependencies": {
