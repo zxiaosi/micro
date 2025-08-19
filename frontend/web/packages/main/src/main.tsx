@@ -8,6 +8,12 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// TODO: 兼容以前系统, 后续删除
+const locale = localStorage.getItem('locale')
+if(locale?.includes('_')){
+  localStorage.setItem('locale', locale.split('_').join('-'))
+}
+
 sdk.register({
   api: {
     config: {
