@@ -53,7 +53,7 @@ const getWeappQrcode = async () => {
  * @name 登录页
  * @see 流动波浪页脚 https://www.bilibili.com/video/BV1Ax4y157AB/
  */
-const Login: React.FC = () => {
+const Login = () => {
   const navicate = useNavigate();
   const eventRef = useRef<EventSource>(null);
 

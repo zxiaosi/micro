@@ -48,23 +48,21 @@ const Router = () => {
       // 获取首页路径
       const firstPath = getFirstPagePathUtil(subRoutes);
 
+      const Login = sdk.app.getComponent('Login');
+      const Layout = sdk.app.getComponent('Layout'); // 使用懒加载会导致 Root 组件渲染多次
+      const NotFound = sdk.app.getComponent('NotFound');
+
       // 合并所有路由
       const allRoutes: RouteObject[] = [
-        {
-          path: '/login',
-          Component: sdk.app.getComponent('Login'),
-        },
+        { path: '/login', element: <Login /> },
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          Component: sdk.app.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
+          element: <Layout />,
           children: subRoutes,
           errorElement: <>找不到页面</>,
         },
-        {
-          path: '*',
-          Component: sdk.app.getComponent('NotFound'),
-        },
+        { path: '*', element: <NotFound /> },
         ...sdk.router.routes,
       ];
 
