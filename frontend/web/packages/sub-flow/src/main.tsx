@@ -1,3 +1,4 @@
+import { sdk } from '@zxiaosi/sdk';
 import { createRoot, type Root } from 'react-dom/client';
 import { name } from '../package.json';
 import App from './App.tsx';
@@ -25,6 +26,7 @@ export async function bootstrap() {
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function mount(props: any) {
   console.log(`${name} mount`, props);
+  sdk.mount(props?.sdk?.name);
   render(props);
 }
 

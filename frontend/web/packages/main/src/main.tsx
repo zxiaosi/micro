@@ -2,19 +2,31 @@ import CustomActions from '@/components/customActions';
 import CustomMenuFooter from '@/components/customMenuFooter';
 import Dashboard from '@/pages/dashboard/index.tsx';
 import { getRoutesApi } from '@/service/index.ts';
-import sdk from '@zxiaosi/sdk';
+import {
+  ApiPlugin,
+  AppPlugin,
+  ClientPlugin,
+  ComponentsPlugin,
+  HooksPlugin,
+  I18nPlugin,
+  LayoutPlugin,
+  RouterPlugin,
+  sdk,
+  StoragePlugin,
+  StorePlugin,
+} from '@zxiaosi/sdk';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-sdk.register({
-  api: {
+sdk
+  .use(ApiPlugin, {
     config: {
       baseURL: '/api',
     },
     getRoutesApi,
-  },
-  app: {
+  })
+  .use(AppPlugin, {
     antdConfig: {
       prefixCls: 'zxs',
       theme: {
@@ -27,18 +39,24 @@ sdk.register({
         },
       },
     },
-  },
-  components: {
+  })
+  .use(ClientPlugin)
+  .use(ComponentsPlugin, {
     Dashboard,
     // NotFound,
-  },
-  ui: {
+  })
+  .use(HooksPlugin)
+  .use(I18nPlugin)
+  .use(LayoutPlugin, {
     title: import.meta.env.VITE_APP_TITLE,
     layout: 'mix',
     actionsRender: (props) => <CustomActions {...props} />,
     menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     logo: <img src="/logo.svg" style={{ height: 20 }} />,
-  },
-});
+  })
+  .use(RouterPlugin)
+  .use(StoragePlugin)
+  .use(StorePlugin)
+  .mount('sdk');
 
 createRoot(document.getElementById('root')!).render(<App />);

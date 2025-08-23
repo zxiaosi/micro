@@ -1,4 +1,4 @@
-import { useMicroState } from '@/hooks/useMicroState';
+import { useMicroState } from '@/plugins/hooks/useMicroState';
 import { memo } from 'react';
 
 /** 渲染微应用 */

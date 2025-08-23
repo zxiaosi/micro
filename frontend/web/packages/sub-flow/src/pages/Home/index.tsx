@@ -1,4 +1,4 @@
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { Button, Card, DatePicker, Space } from 'antd';
 import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
@@ -12,7 +12,7 @@ const Home = () => {
   const intl = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.store,
+    sdk.instance.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,
@@ -23,7 +23,7 @@ const Home = () => {
 
   /** 跳转 */
   const handlePageTo = (url: string) => {
-    sdk.client.navigate(url);
+    sdk.instance.client.navigate(url);
   };
 
   /** 更新主题 */

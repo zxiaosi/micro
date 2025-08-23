@@ -1,7 +1,7 @@
-// 使用按需加载的方式引入 lodash
+// 按需引入
 import merge from 'lodash/merge';
 
-import { LocaleProps, SdkResult, ThemeProps } from '@/global';
+import { LocaleProps, Plugin, SdkProps, ThemeProps } from '@/types';
 import { ConfigProviderProps, theme as antdTheme } from 'antd';
 import { createStore as createStoreZustand } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
@@ -14,7 +14,7 @@ import 'dayjs/locale/zh';
 
 interface Props {}
 
-type Result = ReturnType<typeof createStore>;
+type Result = ReturnType<typeof globalStore>;
 
 interface GlobalStoreProps {
   /** 主题 */
@@ -42,8 +42,8 @@ interface GlobalStoreProps {
  * @example globalStore?.getState()?.setTheme('light')
  * @example globalStore.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
  */
-const createStore = (sdk: SdkResult, opt: Props = {}) => {
-  return createStoreZustand<GlobalStoreProps>()(
+const globalStore = (sdk: SdkProps) =>
+  createStoreZustand<GlobalStoreProps>()(
     subscribeWithSelector((set, get) => ({
       theme: 'light',
       setTheme: (theme) => {
@@ -90,6 +90,16 @@ const createStore = (sdk: SdkResult, opt: Props = {}) => {
       },
     })),
   );
+
+/** 插件名称 */
+const pluginName = 'store';
+
+/**  插件 */
+const StorePlugin: Plugin<'store'> = {
+  name: pluginName,
+  install(sdk: SdkProps, options: Props = {}) {
+    sdk.instance[pluginName] = globalStore(sdk) satisfies Result;
+  },
 };
 
-export { Props as StoreProps, Result as StoreResult, createStore };
+export { StorePlugin, Props as StoreProps, Result as StoreResult };

@@ -28,12 +28,12 @@ export function injectCssImport() {
 
         if (fileName.endsWith('.mjs')) {
           // 在 js chunk 开头插入 import css
-          chunk.code = `import './${cssImportPath}';\n${chunk.code}`;
+          chunk.code = `import './${cssImportPath}';${chunk.code}`;
         }
 
         if (fileName.endsWith('.cjs')) {
           // CommonJS 模块需要使用 require
-          chunk.code = `require('./${cssImportPath}');\n${chunk.code}`;
+          chunk.code = `require('./${cssImportPath}');${chunk.code}`;
         }
       }
     },

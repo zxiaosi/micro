@@ -1,4 +1,4 @@
-import { useRoot } from '@/hooks/useRoot';
+import { useRoot } from '@/plugins/hooks/useRoot';
 import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-components';
 import { memo, useEffect } from 'react';
@@ -27,17 +27,18 @@ const BaseLayout = () => {
 
   return (
     <ProLayout
-      {...sdk.ui}
+      {...sdk.instance.layout}
       location={{ pathname: location.pathname }}
       menu={{
         request: async () => {
-          return replacePathUtil(sdk.router.menuData) || [];
+          return replacePathUtil(sdk.instance.router.menuData) || [];
         },
       }}
       menuItemRender={(item, dom) => (
         <div onClick={() => handleMenuClick(item)}>{dom}</div>
       )}
-      onMenuHeaderClick={handleMenuHeaderClick}>
+      onMenuHeaderClick={handleMenuHeaderClick}
+    >
       <Outlet />
     </ProLayout>
   );

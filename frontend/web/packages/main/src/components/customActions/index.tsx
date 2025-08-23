@@ -6,7 +6,7 @@ import {
   MoonOutlined,
   SunOutlined,
 } from '@ant-design/icons';
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { Dropdown, Segmented, Space } from 'antd';
 import { memo } from 'react';
 import { useStore } from 'zustand';
@@ -16,7 +16,7 @@ import './index.less';
 /** Layout的操作功能列表，不同的 layout 会放到不同的位置 */
 const CustomActions = (props) => {
   const [theme, setTheme, setLocale] = useStore(
-    sdk.store,
+    sdk.instance.store,
     useShallow((state) => [state.theme, state.setTheme, state.setLocale]),
   );
 

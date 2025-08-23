@@ -58,7 +58,7 @@ export interface ApiRequestOption extends AxiosRequestConfig {
 }
 
 /** 请求类 */
-class Api {
+class Http {
   instance: AxiosInstance;
 
   constructor(options: ApiConfig = {}) {
@@ -141,4 +141,4 @@ class Api {
   }
 }
 
-export default Api;
+export default Http;

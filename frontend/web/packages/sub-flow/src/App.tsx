@@ -1,6 +1,6 @@
 import Detail from '@/pages/detail';
 import Home from '@/pages/home';
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
 import {
@@ -18,12 +18,12 @@ function App({ basename }: any) {
   ];
 
   const [antdConfig, locale] = useStore(
-    sdk.store,
+    sdk.instance.store,
     useShallow((state) => [state.antdConfig, state.locale]),
   );
 
   return (
-    <IntlProvider locale={locale} messages={sdk.i18n?.[locale]}>
+    <IntlProvider locale={locale} messages={sdk.instance.i18n?.[locale]}>
       <ConfigProvider
         {...antdConfig}
         getPopupContainer={(node) =>

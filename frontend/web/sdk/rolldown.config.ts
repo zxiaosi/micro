@@ -40,7 +40,7 @@ const common = defineConfig({
   },
   output: {
     // sourcemap: true, // 生成 sourcemap 文件
-    minify: true, // 启用代码压缩, 调试时可以关闭
+    // minify: true, // 启用代码压缩, 调试时可以关闭
   },
 });
 

@@ -1,4 +1,4 @@
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
@@ -9,7 +9,7 @@ const Dashboard = () => {
   const intl = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.store,
+    sdk.instance.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,

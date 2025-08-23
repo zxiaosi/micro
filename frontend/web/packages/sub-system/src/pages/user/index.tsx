@@ -1,4 +1,4 @@
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { Button, Card, DatePicker, Space } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker;
 /** 用户管理页面 */
 const User = () => {
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.store,
+    sdk.instance.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,

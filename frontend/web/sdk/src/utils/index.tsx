@@ -1,7 +1,7 @@
 // 使用按需加载的方式引入 lodash
 import isEmpty from 'lodash/isEmpty';
 
-import { LocaleProps, SdkResult, ThemeProps } from '@/global';
+import { LocaleProps, SdkProps, ThemeProps } from '@/types';
 import * as Icons from '@ant-design/icons';
 import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
 import { createElement } from 'react';
@@ -37,7 +37,7 @@ export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
  * @param routes 路由数据
  * @param sdk sdk
  */
-export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
+export const handleRoutesUtil = (routes: any[], sdk: SdkProps) => {
   const microApps: RegistrableApp<ObjectType>[] = [];
   const subRoutes = transformRoutesUtil(routes, microApps, sdk);
   return { microApps, subRoutes };
@@ -52,7 +52,7 @@ export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
 export const transformRoutesUtil = (
   routes: any[],
   microApps: RegistrableApp<ObjectType>[],
-  sdk: SdkResult,
+  sdk: SdkProps,
 ) => {
   return routes.map((item) => {
     let element = null; //
@@ -68,14 +68,14 @@ export const transformRoutesUtil = (
         microApps.push({ name, container: `#${rootId}`, ...rest });
       }
 
-      const Microapp: any = sdk.components.getComponent('Microapp');
+      const Microapp: any = sdk.instance.components.getComponent('Microapp');
       element = <Microapp rootId={rootId} />;
     } else if (component === 'Outlet') {
       // 处理路由出口
       element = <Outlet />;
     } else {
       // 处理普通组件
-      const Element = sdk.components.getComponent(component) || null;
+      const Element = sdk.instance.components.getComponent(component) || null;
       element = <Element />;
     }
 

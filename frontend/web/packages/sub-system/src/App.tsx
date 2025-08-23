@@ -1,7 +1,7 @@
 import Resource from '@/pages/resource';
 import Role from '@/pages/role';
 import User from '@/pages/user';
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
 import {
   createBrowserRouter,
@@ -19,7 +19,7 @@ function App({ basename }: any) {
     { path: '/resource', element: <Resource /> },
   ];
 
-  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
+  const antdConfig = useStore(sdk.instance.store, (state) => state.antdConfig);
 
   return (
     <ConfigProvider
