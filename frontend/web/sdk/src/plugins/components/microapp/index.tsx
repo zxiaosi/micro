@@ -1,10 +1,9 @@
+import sdk from '@/core';
 import { memo } from 'react';
 import { useStore } from 'zustand';
-import { useRoot } from '../rootProvider';
 
 /** 渲染微应用 */
 const Microapp = ({ rootId }) => {
-  const sdk = useRoot();
   const microAppState = useStore(sdk.store, (state) => state.microAppState);
 
   return (

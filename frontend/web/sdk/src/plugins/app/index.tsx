@@ -4,6 +4,7 @@ import merge from 'lodash/merge';
 import set from 'lodash/set';
 
 import { LocaleProps, Plugin, ThemeProps } from '@/types';
+import { getDefaultThemeUtil } from '@/utils';
 import { ConfigProviderProps } from 'antd';
 import { ComponentType } from 'react';
 import { Location, NavigateFunction } from 'react-router-dom';
@@ -53,7 +54,7 @@ const AppPlugin: Plugin<'app'> = {
     // 默认插件配置
     const defaultOptions = {
       env: {},
-      theme: null,
+      theme: getDefaultThemeUtil(sdk),
       locale: null,
       routerMode: 'browser',
       antdConfig: {},
@@ -74,14 +75,7 @@ const AppPlugin: Plugin<'app'> = {
         return get(sdk.components, name);
       },
       getRootComponent: () => {
-        const Root = sdk.app.getComponent('Root');
-        const RootProvider = sdk.app.getComponent('RootProvider') as any;
-
-        return () => (
-          <RootProvider sdk={sdk}>
-            <Root />
-          </RootProvider>
-        );
+        return sdk.app.getComponent('Root');
       },
     } satisfies Result;
 

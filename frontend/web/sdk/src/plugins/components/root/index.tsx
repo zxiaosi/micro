@@ -1,142 +1,46 @@
-import {
-  getFirstPagePathUtil,
-  handleRoutesUtil,
-  lifeCyclesUtil,
-} from '@/utils';
+import sdk from '@/core';
+import { getDefaultLocaleUtil, getDefaultThemeUtil } from '@/utils';
 import { ConfigProvider } from 'antd';
-import { registerMicroApps, start } from 'qiankun';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
-import {
-  createBrowserRouter,
-  createHashRouter,
-  createMemoryRouter,
-  Navigate,
-  RouteObject,
-  RouterProvider,
-  RouterProviderProps,
-} from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { useRoot } from '../rootProvider';
 
 /** 根组件 */
 const Root = () => {
-  const sdk = useRoot();
+  const RooterProvider = sdk.app.getComponent('Router');
 
-  const setMicroAppState = useStore(
+  const [locale, setTheme, setLocale, antdConfig, setAntdConfig] = useStore(
     sdk.store,
-    (state) => state.setMicroAppState,
+    useShallow((state) => [
+      state.locale,
+      state.setTheme,
+      state.setLocale,
+      state.antdConfig,
+      state.setAntdConfig,
+    ]),
   );
 
-  const [router, setRouter] =
-    useState<RouterProviderProps['router']>(undefined);
-
-  /** 获取路由数据 */
-  const getRoutes = async () => {
-    try {
-      // 获取路由数据
-      const resp = await sdk.api.getRoutesApi();
-
-      // 处理路由数据
-      const { microApps, subRoutes } = handleRoutesUtil(resp?.data || [], sdk);
-
-      // 子应用添加 loader
-      const newMicroApps = microApps.map((item) => {
-        return {
-          ...item,
-          props: { sdk },
-          loader: (loading) => setMicroAppState(loading),
-        };
-      });
-
-      // 获取首页路径
-      const firstPath = getFirstPagePathUtil(subRoutes);
-
-      // 合并所有路由
-      const allRoutes: RouteObject[] = [
-        {
-          path: '/login',
-          Component: sdk.app.getComponent('Login'),
-        },
-        { path: '/', element: <Navigate to={firstPath} replace /> },
-        {
-          path: '/',
-          Component: sdk.app.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
-          children: subRoutes,
-          errorElement: <>找不到页面</>,
-        },
-        {
-          path: '*',
-          Component: sdk.app.getComponent('NotFound'),
-        },
-      ];
-
-      // 注册微应用
-      registerMicroApps(newMicroApps, lifeCyclesUtil);
-
-      // 启动 qiankun
-      start({ sandbox: true, singular: true, urlRerouteOnly: true });
-
-      let newRouter = undefined;
-      switch (sdk.app.routerMode) {
-        case 'browser':
-          newRouter = createBrowserRouter(allRoutes, { basename: '/' });
-          break;
-        case 'hash':
-          newRouter = createHashRouter(allRoutes, { basename: '/' });
-          break;
-        case 'memory':
-          newRouter = createMemoryRouter(allRoutes, { basename: '/' });
-          break;
-        default:
-          break;
-      }
-
-      setRouter(newRouter);
-
-      // 注入属性
-      sdk.register({
-        router: {
-          routes: allRoutes,
-          microApps: newMicroApps,
-          menuData: subRoutes,
-        },
-      });
-    } catch (error) {
-      console.error('获取路由信息错误, 请配置路由接口:', error);
-    }
-  };
-
+  // 设置初始值
   useEffect(() => {
-    getRoutes();
+    const deafultTheme = getDefaultThemeUtil(sdk);
+    setTheme(deafultTheme);
+
+    const deafultLocale = getDefaultLocaleUtil(sdk);
+    setLocale(deafultLocale);
+
+    setAntdConfig(sdk.app.antdConfig);
   }, []);
 
-  if (!router) return <>Loading...</>;
-
-  return <RouterProvider router={router} />;
-};
-
-const RootWrapper = () => {
-  const sdk = useRoot();
-
-  const [antdConfig, locale] = useStore(
-    sdk.store,
-    useShallow((state) => [state.antdConfig, state.locale]),
-  );
-
-  if (!antdConfig || Object.keys(antdConfig).length === 0)
-    return <>Loading...</>;
-
-  console.log('antdConfig', locale, sdk.i18n[locale]);
+  if (!locale || !antdConfig) return <>Loading...</>;
 
   return (
     <IntlProvider locale={locale} messages={sdk.i18n[locale]}>
       <ConfigProvider {...antdConfig}>
-        <Root />
+        <RooterProvider />
       </ConfigProvider>
     </IntlProvider>
   );
 };
 
-export default RootWrapper;
+export default Root;

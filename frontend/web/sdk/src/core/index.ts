@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { BaseProps, InstanceProps, Plugin } from '@/types';
+import { BaseProps, InstanceProps, Plugin, SdkResult } from '@/types';
 
 class Sdk implements BaseProps {
   name: BaseProps['name'];
@@ -71,4 +71,6 @@ class Sdk implements BaseProps {
   }
 }
 
-export default Sdk;
+const sdk = new Sdk() as SdkResult;
+
+export default sdk;

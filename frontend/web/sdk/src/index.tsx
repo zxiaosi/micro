@@ -1,5 +1,4 @@
-import Sdk from '@/core';
-
+import sdk from '@/core';
 import { ApiPlugin } from '@/plugins/api';
 import { AppPlugin } from '@/plugins/app';
 import { ComponentsPlugin } from '@/plugins/components';
@@ -8,9 +7,6 @@ import { LayoutPlugin } from '@/plugins/layout';
 import { RouterPlugin } from '@/plugins/router';
 import { StoragePlugin } from '@/plugins/storage';
 import { StorePlugin } from '@/plugins/store';
-import { SdkResult } from '@/types';
-
-const sdk: SdkResult = new Sdk();
 
 export {
   ApiPlugin,

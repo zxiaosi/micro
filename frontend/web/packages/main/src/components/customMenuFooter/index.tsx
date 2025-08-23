@@ -4,7 +4,7 @@ const CustomMenuFooter = (props) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      ©2020 - {new Date().getFullYear()} By Mr.XiaoSi
+      ©2020 - {new Date().getFullYear()} By ZXiaoSi
     </div>
   );
 };

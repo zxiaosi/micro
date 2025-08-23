@@ -1,12 +1,10 @@
+import sdk from '@/core';
 import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-components';
 import { memo, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useRoot } from '../rootProvider';
 /** 首页 */
 const BaseLayout = () => {
-  const sdk = useRoot();
-
   const navigate = useNavigate();
   const location = useLocation();
 

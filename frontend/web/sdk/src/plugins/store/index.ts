@@ -49,7 +49,7 @@ type Result = ReturnType<typeof initStore>;
 const initStore = (sdk: SdkResult) =>
   createStore<GlobalStoreProps>()(
     subscribeWithSelector((set, get) => ({
-      theme: 'light',
+      theme: null,
       setTheme: (theme) => {
         set(() => ({ theme })); // 自动合并其他
         sdk.register({ app: { theme } }); // 注入属性
@@ -66,7 +66,7 @@ const initStore = (sdk: SdkResult) =>
         localStorage.setItem('theme', theme);
       },
 
-      locale: 'zh-CN',
+      locale: null,
       setLocale: (locale) => {
         set(() => ({ locale })); // 自动合并其他
         sdk.register({ app: { locale } }); // 注入属性
@@ -83,7 +83,7 @@ const initStore = (sdk: SdkResult) =>
         localStorage.setItem('locale', locale);
       },
 
-      antdConfig: {},
+      antdConfig: null,
       setAntdConfig: (antdConfig) => {
         set((state) => {
           const newAntdConfig = merge({}, state.antdConfig, antdConfig); // 合并并创建新的 antdConfig 对象

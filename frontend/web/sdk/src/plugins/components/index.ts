@@ -9,7 +9,7 @@ import Login from './login';
 import Microapp from './microapp';
 import NotFound from './notFound';
 import Root from './root';
-import { RootProvider } from './rootProvider';
+import Router from './router';
 
 interface Props {
   /** 组件 */
@@ -30,10 +30,9 @@ const ComponentsPlugin: Plugin<'components'> = {
       Login,
       NotFound,
       Root,
+      Router,
       Layout, // 不使用懒加载 - 防止多次渲染
       Microapp, // 不使用懒加载 - 防止qiankun挂载不上
-
-      RootProvider,
     } satisfies Result;
 
     sdk[pluginName] = merge({}, defaultOptions, options);
