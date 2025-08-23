@@ -5,7 +5,6 @@ import { getRoutesApi } from '@/service/index.ts';
 import {
   ApiPlugin,
   AppPlugin,
-  ClientPlugin,
   ComponentsPlugin,
   HooksPlugin,
   I18nPlugin,
@@ -40,7 +39,6 @@ sdk
       },
     },
   })
-  .use(ClientPlugin)
   .use(ComponentsPlugin, {
     Dashboard,
     // NotFound,

@@ -3,6 +3,7 @@ import merge from 'lodash/merge';
 
 import { LocaleProps, Plugin, SdkProps, ThemeProps } from '@/types';
 import { ConfigProviderProps } from 'antd';
+import { Location, NavigateFunction } from 'react-router-dom';
 
 interface Props {
   /** 环境变量 */
@@ -15,6 +16,10 @@ interface Props {
   routerMode?: 'browser' | 'hash' | 'memory';
   /** Antd 配置 */
   antdConfig?: ConfigProviderProps;
+  /** 主应用 location */
+  location?: Location;
+  /** 主应用navigate（解决子应用跳转问题） */
+  navigate?: NavigateFunction;
 }
 
 interface Result extends Required<Readonly<Props>> {}
@@ -33,6 +38,8 @@ const AppPlugin: Plugin<'app'> = {
       locale: null,
       routerMode: 'browser',
       antdConfig: {},
+      location: null,
+      navigate: null,
     } satisfies Result;
 
     sdk.instance[pluginName] = merge({}, defaultOptions, options);

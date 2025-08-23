@@ -22,7 +22,7 @@ const BaseLayout = () => {
 
   useEffect(() => {
     // 注入父组件的 navigate 方法到 SDK
-    sdk.register({ client: { navigate, location } });
+    sdk.register({ app: { navigate, location } });
   }, [location]);
 
   return (

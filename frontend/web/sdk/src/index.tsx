@@ -2,7 +2,6 @@ import Sdk from '@/core';
 
 import { ApiPlugin } from '@/plugins/api';
 import { AppPlugin } from '@/plugins/app';
-import { ClientPlugin } from '@/plugins/client';
 import { ComponentsPlugin } from '@/plugins/components';
 import { HooksPlugin } from '@/plugins/hooks';
 import { I18nPlugin } from '@/plugins/i18n';
@@ -16,7 +15,6 @@ const sdk = new Sdk();
 export {
   ApiPlugin,
   AppPlugin,
-  ClientPlugin,
   ComponentsPlugin,
   HooksPlugin,
   I18nPlugin,

@@ -1,6 +1,5 @@
 import { ApiProps, ApiResult } from '@/plugins/api';
 import { AppProps, AppResult } from '@/plugins/app';
-import { ClientProps, ClientResult } from '@/plugins/client';
 import { ComponentsProps, ComponentsResult } from '@/plugins/components';
 import { HooksProps, HooksResult } from '@/plugins/hooks';
 import { I18nProps, I18nResult } from '@/plugins/i18n';
@@ -20,8 +19,6 @@ export interface InstanceProps {
   api?: ApiProps;
   /** 应用 配置 */
   app?: AppProps;
-  /** 客户端 配置 */
-  client?: ClientProps;
   /** 公用组件 */
   components?: ComponentsProps;
   /** Hooks */
@@ -43,8 +40,6 @@ export interface InstanceResult extends InstanceProps {
   api: ApiResult;
   /** 应用 配置 */
   app: AppResult;
-  /** 客户端 配置 */
-  client: ClientResult;
   /** 公用组件 */
   components: ComponentsResult;
   /** Hooks */

@@ -10,11 +10,9 @@
 
 - `env` 环境变量
 
-- 其他通用配置
-
-### client 模块
-
 - `location`、`navigate`, 解决应用之间跳转问题
+
+- 其他通用配置
 
 ### components 模块
 
