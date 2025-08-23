@@ -6,7 +6,7 @@ import { ProLayoutProps } from '@ant-design/pro-components';
 
 interface Props extends ProLayoutProps {}
 
-interface Result extends Partial<Props> {}
+interface Result extends Readonly<Props> {}
 
 /** 插件名称 */
 const pluginName = 'layout';
@@ -14,13 +14,13 @@ const pluginName = 'layout';
 /** 布局 插件 */
 const LayoutPlugin: Plugin<'layout'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
+  install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
       title: 'Demo',
     } satisfies Result;
 
-    sdk.instance[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 

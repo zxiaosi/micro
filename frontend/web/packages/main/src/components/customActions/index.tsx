@@ -16,7 +16,7 @@ import './index.less';
 /** Layout的操作功能列表，不同的 layout 会放到不同的位置 */
 const CustomActions = (props) => {
   const [theme, setTheme, setLocale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [state.theme, state.setTheme, state.setLocale]),
   );
 

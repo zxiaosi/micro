@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkProps } from '@/types';
+import { Plugin, SdkResult } from '@/types';
 import { AxiosResponse } from 'axios';
 import Http, { ApiConfig, ApiRequestOption } from './http';
 
@@ -24,18 +24,19 @@ interface Result extends Required<Readonly<Props>> {
    * @param  url 请求地址
    * @param options 自定义配置项
    */
-  readonly request: (
+  request: (
     url: string,
     options?: ApiRequestOption,
   ) => Promise<AxiosResponse<any, any>>;
 }
+
 /** 插件名称 */
 const pluginName = 'api';
 
 /** Api 插件 */
 const ApiPlugin: Plugin<'api'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
+  install(sdk: SdkResult, options: Props = {}) {
     // Axios 配置
     const axiosConfig = {
       baseURL: '/api',
@@ -50,10 +51,10 @@ const ApiPlugin: Plugin<'api'> = {
     const defaultOptions = {
       config: axiosConfig,
       getUserInfoApi: async () => {
-        return await sdk.instance.api.request('/userInfo');
+        return await sdk.api.request('/userInfo');
       },
       getRoutesApi: async () => {
-        return await sdk.instance.api.request('/routes');
+        return await sdk.api.request('/routes');
       },
       request: async (url, options = {}) => {
         return await instance.request({
@@ -65,7 +66,7 @@ const ApiPlugin: Plugin<'api'> = {
       },
     } satisfies Result;
 
-    sdk.instance[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 

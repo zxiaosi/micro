@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkProps } from '@/types';
+import { Plugin } from '@/types';
 
 type KeyValue = Record<string, string>;
 
@@ -19,7 +19,7 @@ const pluginName = 'i18n';
 /** 国际化 插件 */
 const I18nPlugin: Plugin<'i18n'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
+  install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
       'zh-CN': {
@@ -30,7 +30,7 @@ const I18nPlugin: Plugin<'i18n'> = {
       },
     } satisfies Result;
 
-    sdk.instance[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 

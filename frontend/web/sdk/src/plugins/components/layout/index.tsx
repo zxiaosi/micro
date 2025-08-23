@@ -1,8 +1,8 @@
-import { useRoot } from '@/plugins/hooks/useRoot';
 import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-components';
 import { memo, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useRoot } from '../rootProvider';
 /** 首页 */
 const BaseLayout = () => {
   const sdk = useRoot();
@@ -27,11 +27,11 @@ const BaseLayout = () => {
 
   return (
     <ProLayout
-      {...sdk.instance.layout}
+      {...sdk.layout}
       location={{ pathname: location.pathname }}
       menu={{
         request: async () => {
-          return replacePathUtil(sdk.instance.router.menuData) || [];
+          return replacePathUtil(sdk.router.menuData) || [];
         },
       }}
       menuItemRender={(item, dom) => (

@@ -1,4 +1,4 @@
-import { SdkProps } from '@/types';
+import { SdkResult } from '@/types';
 import { getDefaultLocaleUtil, getDefaultThemeUtil } from '@/utils';
 import { createContext, useContext, useEffect } from 'react';
 import { useStore } from 'zustand';
@@ -6,23 +6,23 @@ import { useShallow } from 'zustand/shallow';
 
 interface Props {
   /** sdk */
-  sdk: SdkProps;
+  sdk: SdkResult;
   /** 子组件 */
   children: React.ReactNode;
 }
 
 /** 根组件上下文 */
-const RootConext = createContext<SdkProps>(null);
+const RootConext = createContext<SdkResult>(null);
 
 /** 根组件 Provider */
 export const RootProvider = ({ sdk, children }: Props) => {
   const [setTheme, setLocale, setAntdConfig] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [
       state.setTheme,
       state.setLocale,
       state.setAntdConfig,
-    ])
+    ]),
   );
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const RootProvider = ({ sdk, children }: Props) => {
     const deafultLocale = getDefaultLocaleUtil(sdk);
     setLocale(deafultLocale);
 
-    setAntdConfig(sdk.instance.app.antdConfig);
+    setAntdConfig(sdk.app.antdConfig);
 
     return () => {
       sdk.unmount();

@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker;
 /** 用户管理页面 */
 const User = () => {
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,

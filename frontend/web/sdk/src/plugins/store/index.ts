@@ -1,9 +1,9 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { LocaleProps, Plugin, SdkProps, ThemeProps } from '@/types';
-import { ConfigProviderProps, theme as antdTheme } from 'antd';
-import { createStore as createStoreZustand } from 'zustand';
+import { LocaleProps, Plugin, SdkResult, ThemeProps } from '@/types';
+import { theme as antdTheme, ConfigProviderProps } from 'antd';
+import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
 import enUS from 'antd/es/locale/en_US';
@@ -11,10 +11,6 @@ import zhCN from 'antd/es/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/zh';
-
-interface Props {}
-
-type Result = ReturnType<typeof globalStore>;
 
 interface GlobalStoreProps {
   /** 主题 */
@@ -29,7 +25,15 @@ interface GlobalStoreProps {
   antdConfig: ConfigProviderProps;
   /** 设置Antd配置 */
   setAntdConfig: (antdConfig: ConfigProviderProps) => void;
+  /** 子应用加载状态 */
+  microAppState: boolean;
+  /** 设置子应用加载状态 */
+  setMicroAppState: (state: boolean) => void;
 }
+
+interface Props {}
+
+type Result = ReturnType<typeof initStore>;
 
 /**
  * 全局 Store
@@ -42,8 +46,8 @@ interface GlobalStoreProps {
  * @example globalStore?.getState()?.setTheme('light')
  * @example globalStore.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
  */
-const globalStore = (sdk: SdkProps) =>
-  createStoreZustand<GlobalStoreProps>()(
+const initStore = (sdk: SdkResult) =>
+  createStore<GlobalStoreProps>()(
     subscribeWithSelector((set, get) => ({
       theme: 'light',
       setTheme: (theme) => {
@@ -88,6 +92,9 @@ const globalStore = (sdk: SdkProps) =>
 
         sdk.register({ app: { antdConfig } }); // 注入属性
       },
+
+      microAppState: false,
+      setMicroAppState: (microAppState) => set(() => ({ microAppState })),
     })),
   );
 
@@ -97,8 +104,8 @@ const pluginName = 'store';
 /**  插件 */
 const StorePlugin: Plugin<'store'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
-    sdk.instance[pluginName] = globalStore(sdk) satisfies Result;
+  install(sdk, options = {}) {
+    sdk[pluginName] = initStore(sdk) satisfies Result;
   },
 };
 

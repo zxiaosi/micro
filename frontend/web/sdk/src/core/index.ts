@@ -1,17 +1,15 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { InstanceProps, Plugin, SdkProps } from '@/types';
+import { BaseProps, InstanceProps, Plugin } from '@/types';
 
-class Sdk implements SdkProps {
-  name;
-  plugins;
-  instance;
+class Sdk implements BaseProps {
+  name: BaseProps['name'];
+  plugins: BaseProps['plugins'];
 
   constructor() {
     this.name = '';
     this.plugins = new Map();
-    this.instance = {};
   }
 
   mount(name: string) {
@@ -22,34 +20,28 @@ class Sdk implements SdkProps {
       // 否则创建一个新的sdk实例, 并手动挂载到window上 （主应用）
       this.name = name;
 
+      // 使用 new Proxy 禁止修改
       const _this = new Proxy(this, {
+        set: (target, key, value, receiver) => {
+          return Reflect.set(target, key, value, receiver);
+        },
         get: (target, key, receiver) => {
-          console.log('get', target, key, receiver);
-          
           if (!target) return null;
-
-          // sdk.plugins.xxx => sdk.plugins.xxx
-          if (key in target) return Reflect.get(target, key, receiver);
-
-          if (Object.keys(target.instance).length === 0) return null;
-
-          // sdk.instance.api.xxx => sdk.api.xxx
-          return Reflect.get(target.instance, key, receiver);
+          return Reflect.get(target, key, receiver);
+        },
+        deleteProperty: (target, key) => {
+          throw new Error('The SDK cannot be deleted.');
         },
       });
 
-      Object.defineProperty(window, this.name, {
-        value: _this,
-        writable: false, // 禁止修改
-        configurable: true, // 禁止删除
-      });
+      // 挂载到 Window 上
+      window[this.name] = _this;
     }
   }
 
   unmount() {
+    // 清空插件
     this.plugins.clear();
-    this.instance = {};
-
     // 删除window上的实例
     delete window[this.name];
   }
@@ -74,9 +66,8 @@ class Sdk implements SdkProps {
     // 链式调用
     return this;
   }
-
   register(args: InstanceProps) {
-    merge(this.instance, args);
+    merge(this, args);
   }
 }
 

@@ -32,7 +32,7 @@ const Resource = () => {
     setLoading(true);
     let resp = null;
     if (import.meta.env.DEV) {
-      resp = await sdk.instance.api.request('/getResources');
+      resp = await sdk.api.request('/getResources');
     } else {
       resp = resourcesData;
     }

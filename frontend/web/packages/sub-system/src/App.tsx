@@ -19,7 +19,7 @@ function App({ basename }: any) {
     { path: '/resource', element: <Resource /> },
   ];
 
-  const antdConfig = useStore(sdk.instance.store, (state) => state.antdConfig);
+  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
 
   return (
     <ConfigProvider

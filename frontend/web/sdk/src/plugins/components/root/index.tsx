@@ -1,9 +1,4 @@
 import {
-  MicroStateProvider,
-  useMicroState,
-} from '@/plugins/hooks/useMicroState';
-import { useRoot } from '@/plugins/hooks/useRoot';
-import {
   getFirstPagePathUtil,
   handleRoutesUtil,
   lifeCyclesUtil,
@@ -23,12 +18,16 @@ import {
 } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import { useRoot } from '../rootProvider';
 
 /** 根组件 */
 const Root = () => {
   const sdk = useRoot();
 
-  const { setMicroAppState } = useMicroState();
+  const setMicroAppState = useStore(
+    sdk.store,
+    (state) => state.setMicroAppState,
+  );
 
   const [router, setRouter] =
     useState<RouterProviderProps['router']>(undefined);
@@ -37,7 +36,7 @@ const Root = () => {
   const getRoutes = async () => {
     try {
       // 获取路由数据
-      const resp = await sdk.instance.api.getRoutesApi();
+      const resp = await sdk.api.getRoutesApi();
 
       // 处理路由数据
       const { microApps, subRoutes } = handleRoutesUtil(resp?.data || [], sdk);
@@ -58,18 +57,18 @@ const Root = () => {
       const allRoutes: RouteObject[] = [
         {
           path: '/login',
-          Component: sdk.instance.components.getComponent('Login'),
+          Component: sdk.app.getComponent('Login'),
         },
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          Component: sdk.instance.components.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
+          Component: sdk.app.getComponent('Layout'), // 使用懒加载会导致 Root 组件渲染多次
           children: subRoutes,
           errorElement: <>找不到页面</>,
         },
         {
           path: '*',
-          Component: sdk.instance.components.getComponent('NotFound'),
+          Component: sdk.app.getComponent('NotFound'),
         },
       ];
 
@@ -80,7 +79,7 @@ const Root = () => {
       start({ sandbox: true, singular: true, urlRerouteOnly: true });
 
       let newRouter = undefined;
-      switch (sdk.instance.app.routerMode) {
+      switch (sdk.app.routerMode) {
         case 'browser':
           newRouter = createBrowserRouter(allRoutes, { basename: '/' });
           break;
@@ -122,21 +121,19 @@ const RootWrapper = () => {
   const sdk = useRoot();
 
   const [antdConfig, locale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [state.antdConfig, state.locale]),
   );
 
   if (!antdConfig || Object.keys(antdConfig).length === 0)
     return <>Loading...</>;
 
-  console.log('antdConfig', locale, sdk.instance.i18n[locale]);
+  console.log('antdConfig', locale, sdk.i18n[locale]);
 
   return (
-    <IntlProvider locale={locale} messages={sdk.instance.i18n[locale]}>
+    <IntlProvider locale={locale} messages={sdk.i18n[locale]}>
       <ConfigProvider {...antdConfig}>
-        <MicroStateProvider>
-          <Root />
-        </MicroStateProvider>
+        <Root />
       </ConfigProvider>
     </IntlProvider>
   );

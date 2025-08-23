@@ -6,7 +6,6 @@ import {
   ApiPlugin,
   AppPlugin,
   ComponentsPlugin,
-  HooksPlugin,
   I18nPlugin,
   LayoutPlugin,
   RouterPlugin,
@@ -43,7 +42,6 @@ sdk
     Dashboard,
     // NotFound,
   })
-  .use(HooksPlugin)
   .use(I18nPlugin)
   .use(LayoutPlugin, {
     title: import.meta.env.VITE_APP_TITLE,

@@ -1,9 +1,11 @@
-import { useMicroState } from '@/plugins/hooks/useMicroState';
 import { memo } from 'react';
+import { useStore } from 'zustand';
+import { useRoot } from '../rootProvider';
 
 /** 渲染微应用 */
 const Microapp = ({ rootId }) => {
-  const { microAppState } = useMicroState();
+  const sdk = useRoot();
+  const microAppState = useStore(sdk.store, (state) => state.microAppState);
 
   return (
     <>

@@ -18,12 +18,12 @@ function App({ basename }: any) {
   ];
 
   const [antdConfig, locale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [state.antdConfig, state.locale]),
   );
 
   return (
-    <IntlProvider locale={locale} messages={sdk.instance.i18n?.[locale]}>
+    <IntlProvider locale={locale} messages={sdk.i18n?.[locale]}>
       <ConfigProvider
         {...antdConfig}
         getPopupContainer={(node) =>

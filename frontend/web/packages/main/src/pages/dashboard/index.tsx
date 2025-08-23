@@ -9,7 +9,7 @@ const Dashboard = () => {
   const intl = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,

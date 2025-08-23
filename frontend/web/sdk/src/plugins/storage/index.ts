@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkProps } from '@/types';
+import { Plugin } from '@/types';
 
 interface Props {
   /** Token 名称 */
@@ -36,7 +36,7 @@ const pluginName = 'storage';
 /** localStorage 插件 */
 const StoragePlugin: Plugin<'storage'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
+  install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
       tokenName: 'token',
@@ -64,7 +64,7 @@ const StoragePlugin: Plugin<'storage'> = {
       },
     } satisfies Result;
 
-    sdk.instance[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 

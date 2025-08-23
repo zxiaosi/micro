@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkProps } from '@/types';
+import { Plugin } from '@/types';
 import { ObjectType, RegistrableApp } from 'qiankun';
 import { RouteObject } from 'react-router-dom';
 
@@ -23,13 +23,14 @@ interface Result extends Required<Readonly<Props>> {
    */
   readonly addRoute: (route: RouteObject) => void;
 }
+
 /** 插件名称 */
 const pluginName = 'router';
 
 /** 路由 插件 */
 const RouterPlugin: Plugin<'router'> = {
   name: pluginName,
-  install(sdk: SdkProps, options: Props = {}) {
+  install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
       routes: [],
@@ -38,11 +39,11 @@ const RouterPlugin: Plugin<'router'> = {
       menuData: [],
 
       addRoute: (route: RouteObject) => {
-        sdk.instance.router.routes.push(route);
+        sdk.router.routes.push(route);
       },
     } satisfies Result;
 
-    sdk.instance[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 

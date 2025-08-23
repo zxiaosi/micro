@@ -12,7 +12,7 @@ const Home = () => {
   const intl = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
-    sdk.instance.store,
+    sdk.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,
@@ -23,7 +23,7 @@ const Home = () => {
 
   /** 跳转 */
   const handlePageTo = (url: string) => {
-    sdk.instance.client.navigate(url);
+    sdk.app.navigate(url);
   };
 
   /** 更新主题 */
