@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkResult } from '@/types';
+import { Plugin } from '@/types';
 import { AxiosResponse } from 'axios';
 import Http, { ApiConfig, ApiRequestOption } from './http';
 
@@ -36,7 +36,7 @@ const pluginName = 'api';
 /** Api 插件 */
 const ApiPlugin: Plugin<'api'> = {
   name: pluginName,
-  install(sdk: SdkResult, options: Props = {}) {
+  install(sdk, options = {}) {
     // Axios 配置
     const axiosConfig = {
       baseURL: '/api',

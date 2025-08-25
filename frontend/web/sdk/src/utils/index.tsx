@@ -1,7 +1,7 @@
 // 使用按需加载的方式引入 lodash
 import isEmpty from 'lodash/isEmpty';
 
-import { LocaleProps, SdkProps, SdkResult, ThemeProps } from '@/types';
+import { LocaleProps, SdkResult, ThemeProps } from '@/types';
 import * as Icons from '@ant-design/icons';
 import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
 import { createElement } from 'react';
@@ -37,7 +37,7 @@ export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
  * @param routes 路由数据
  * @param sdk sdk
  */
-export const handleRoutesUtil = (routes: any[], sdk: SdkProps) => {
+export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
   const microApps: RegistrableApp<ObjectType>[] = [];
   const subRoutes = transformRoutesUtil(routes, microApps, sdk);
   return { microApps, subRoutes };

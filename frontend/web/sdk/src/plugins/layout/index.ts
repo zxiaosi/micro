@@ -1,7 +1,7 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin, SdkProps } from '@/types';
+import { Plugin } from '@/types';
 import { ProLayoutProps } from '@ant-design/pro-components';
 
 interface Props extends ProLayoutProps {}

@@ -58,7 +58,7 @@ class Sdk implements BaseProps {
       throw new Error(`${name} plugin is not a function`);
 
     // 插件安装
-    install(this, options);
+    install(this as any, options);
 
     // 添加到插件列表
     this.plugins.set(name, { ...plugin, options });

@@ -54,7 +54,7 @@ const AppPlugin: Plugin<'app'> = {
     // 默认插件配置
     const defaultOptions = {
       env: {},
-      theme: getDefaultThemeUtil(sdk),
+      theme: null,
       locale: null,
       routerMode: 'browser',
       antdConfig: {},
