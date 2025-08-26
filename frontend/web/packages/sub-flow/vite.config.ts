@@ -26,7 +26,7 @@ export default ({ mode }: ConfigEnv) => {
           plugins: [['babel-plugin-react-compiler', { target: '19' }]],
         },
       }),
-      qiankun({ name: name, sandbox: true }),
+      qiankun({ name: name, sandbox: !!process.env.VITE_SANDBOX }),
     ],
     resolve: {
       alias: {

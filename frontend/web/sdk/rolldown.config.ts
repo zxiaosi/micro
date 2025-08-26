@@ -1,7 +1,7 @@
 import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel';
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
-import nodeExternals from 'rollup-plugin-node-externals'
+import nodeExternals from 'rollup-plugin-node-externals';
 import LightningCSS from 'unplugin-lightningcss/rolldown';
 import { injectCssImport } from './rolldown-plugin';
 
@@ -34,10 +34,7 @@ const babelOptions: RollupBabelInputPluginOptions = {
 const common = defineConfig({
   input: './src/index.tsx',
   platform: 'browser', // 作用于浏览器环境
-  resolve: {
-    alias: { '@': './src' }, // 设置别名
-    tsconfigFilename: './tsconfig.json', // 指定 TypeScript 配置文件
-  },
+  tsconfig: './tsconfig.json', // 指定 tsconfig 文件
   output: {
     // sourcemap: true, // 生成 sourcemap 文件
     minify: true, // 启用代码压缩, 调试时可以关闭
