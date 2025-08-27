@@ -31,10 +31,11 @@ const Dashboard = () => {
   return (
     <div className={styles.dashboard}>
       <Space direction="vertical" style={{ display: 'flex' }}>
-        <div className={styles.title}>我是主应用 main</div>
+        <div className={styles.title}>主应用-首页</div>
 
-        <Card title="Token 变量">
+        <Card title="CSS 变量、Token 变量">
           <Space wrap>
+            <div style={{ color: 'var(--primary)' }}>CSS 变量</div>
             <Alert message="品牌色" type="info" />
             <Alert message="成功色" type="success" />
             <Alert message="警戒色" type="warning" />

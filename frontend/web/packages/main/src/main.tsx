@@ -1,14 +1,15 @@
 import CustomActions from '@/components/customActions';
 import CustomMenuFooter from '@/components/customMenuFooter';
+import I18nConfig from '@/i18n/index';
 import Dashboard from '@/pages/dashboard/index.tsx';
 import { getRoutesApi } from '@/service/index.ts';
+import '@/theme/index.less';
+import theme from '@/theme/token';
 import {
   ApiPlugin,
   AppPlugin,
   ComponentsPlugin,
   I18nPlugin,
-  LayoutPlugin,
-  RouterPlugin,
   sdk,
   StoragePlugin,
   StorePlugin,
@@ -18,41 +19,19 @@ import App from './App';
 import './index.less';
 
 sdk
-  .use(ApiPlugin, {
-    config: {
-      baseURL: '/api',
-    },
-    getRoutesApi,
-  })
+  .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi })
   .use(AppPlugin, {
-    antdConfig: {
-      theme: {
-        token: {
-          colorPrimary: '#1e90ff',
-          colorInfo: '#1e90ff',
-          colorSuccess: '#2ed573',
-          colorWarning: '#ffa502',
-          colorError: '#ff4757',
-        },
-      },
+    antdConfig: { theme },
+    proLayoutConfig: {
+      layout: 'mix',
+      title: import.meta.env.VITE_APP_TITLE,
+      logo: <img src="/logo.svg" style={{ height: 20 }} />,
+      actionsRender: (props) => <CustomActions {...props} />,
+      menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     },
   })
-  .use(ComponentsPlugin, {
-    Dashboard,
-    // NotFound,
-  })
-  .use(I18nPlugin)
-  .use(LayoutPlugin, {
-    contentStyle: {
-      padding: 20,
-    },
-    title: import.meta.env.VITE_APP_TITLE,
-    layout: 'mix',
-    actionsRender: (props) => <CustomActions {...props} />,
-    menuFooterRender: (props) => <CustomMenuFooter {...props} />,
-    logo: <img src="/logo.svg" style={{ height: 20 }} />,
-  })
-  .use(RouterPlugin)
+  .use(ComponentsPlugin, { Dashboard })
+  .use(I18nPlugin, I18nConfig)
   .use(StoragePlugin)
   .use(StorePlugin)
   .mount('sdk');

@@ -1,16 +1,37 @@
 import sdk from '@/core';
-import { getDefaultLocaleUtil, getDefaultThemeUtil } from '@/utils';
+import {
+  getDefaultLocaleUtil,
+  getDefaultThemeUtil,
+  getFirstPagePathUtil,
+  handleRoutesUtil,
+  lifeCyclesUtil,
+} from '@/utils';
 import { ConfigProvider } from 'antd';
-import { useEffect } from 'react';
+import { registerMicroApps, start } from 'qiankun';
+import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import {
+  createBrowserRouter,
+  createHashRouter,
+  createMemoryRouter,
+  Navigate,
+  RouteObject,
+  RouterProvider,
+  RouterProviderProps,
+} from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 /** 根组件 */
 const Root = () => {
-  const RooterProvider = sdk.app.getComponent('Router');
-
-  const [locale, setTheme, setLocale, antdConfig, setAntdConfig] = useStore(
+  const [
+    locale,
+    setTheme,
+    setLocale,
+    antdConfig,
+    setAntdConfig,
+    setMicroAppState,
+  ] = useStore(
     sdk.store,
     useShallow((state) => [
       state.locale,
@@ -18,8 +39,86 @@ const Root = () => {
       state.setLocale,
       state.antdConfig,
       state.setAntdConfig,
+      state.setMicroAppState,
     ]),
   );
+
+  const [router, setRouter] =
+    useState<RouterProviderProps['router']>(undefined);
+
+  /** 获取路由数据 */
+  const getRoutes = async () => {
+    try {
+      // 获取路由数据
+      const resp = await sdk.api.getRoutesApi();
+
+      // 处理路由数据
+      const { microApps, subRoutes } = handleRoutesUtil(resp?.data || [], sdk);
+
+      // 子应用添加 loader
+      const newMicroApps = microApps.map((item) => {
+        return {
+          ...item,
+          props: { sdk },
+          loader: (loading) => setMicroAppState(loading),
+        };
+      });
+
+      // 获取首页路径
+      const firstPath = getFirstPagePathUtil(subRoutes);
+
+      const Login = sdk.app.getComponent('Login');
+      const Layout = sdk.app.getComponent('Layout'); // 使用懒加载会导致 Root 组件渲染多次
+      const NotFound = sdk.app.getComponent('NotFound');
+
+      // 合并所有路由
+      const allRoutes: RouteObject[] = [
+        { path: '/login', element: <Login /> },
+        { path: '/', element: <Navigate to={firstPath} replace /> },
+        {
+          path: '/',
+          element: <Layout />,
+          children: subRoutes,
+          errorElement: <>找不到页面</>,
+        },
+        { path: '*', element: <NotFound /> },
+      ];
+
+      // 注册微应用
+      registerMicroApps(newMicroApps, lifeCyclesUtil);
+
+      // 启动 qiankun
+      start({ sandbox: true, singular: true, urlRerouteOnly: true });
+
+      let newRouter = undefined;
+      switch (sdk.app.routerMode) {
+        case 'browser':
+          newRouter = createBrowserRouter(allRoutes, { basename: '/' });
+          break;
+        case 'hash':
+          newRouter = createHashRouter(allRoutes, { basename: '/' });
+          break;
+        case 'memory':
+          newRouter = createMemoryRouter(allRoutes, { basename: '/' });
+          break;
+        default:
+          break;
+      }
+
+      setRouter(newRouter);
+
+      // 注入属性
+      sdk.register({
+        app: {
+          routes: allRoutes,
+          microApps: newMicroApps,
+          menuData: subRoutes,
+        },
+      });
+    } catch (error) {
+      console.error('获取路由信息错误, 请配置路由接口:', error);
+    }
+  };
 
   // 设置初始值
   useEffect(() => {
@@ -30,14 +129,16 @@ const Root = () => {
     setLocale(deafultLocale);
 
     setAntdConfig(sdk.app.antdConfig);
+
+    getRoutes();
   }, []);
 
-  if (!locale || !antdConfig) return <>Loading...</>;
+  if (!router) return <>Loading...</>;
 
   return (
-    <IntlProvider locale={locale} messages={sdk.i18n[locale]}>
+    <IntlProvider locale={locale} messages={sdk.i18n.intlConfig[locale]}>
       <ConfigProvider {...antdConfig}>
-        <RooterProvider />
+        <RouterProvider router={router} />
       </ConfigProvider>
     </IntlProvider>
   );

@@ -1,6 +1,6 @@
 import sdk from '@/core';
 import { replacePathUtil } from '@/utils';
-import { ProLayout } from '@ant-design/pro-components';
+import { ProLayout } from '@ant-design/pro-layout';
 import { memo, Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 /** 首页 */
@@ -20,16 +20,16 @@ const BaseLayout = () => {
 
   useEffect(() => {
     // 注入父组件的 navigate 方法到 SDK
-    sdk.register({ app: { navigate, location } });
+    sdk.register({ client: { navigate, location } });
   }, [location]);
 
   return (
     <ProLayout
-      {...sdk.layout}
+      {...sdk.app.proLayoutConfig}
       location={{ pathname: location.pathname }}
       menu={{
         request: async () => {
-          return replacePathUtil(sdk.router.menuData) || [];
+          return replacePathUtil(sdk.app.menuData) || [];
         },
       }}
       menuItemRender={(item, dom) => (

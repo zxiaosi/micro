@@ -1,11 +1,9 @@
 import { sdk } from '@zxiaosi/sdk';
-import { Button, Card, DatePicker, Space } from 'antd';
+import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import './index.less';
-
-const { RangePicker } = DatePicker;
+import styles from './index.module.less';
 
 /** 首页 */
 const Home = () => {
@@ -21,59 +19,75 @@ const Home = () => {
     ]),
   );
 
-  /** 跳转 */
-  const handlePageTo = (url: string) => {
-    sdk.app.navigate(url);
-  };
-
   /** 更新主题 */
-  const handleUpdateTheme = () => {
+  const handleChangeTheme = () => {
     setTheme?.(theme === 'light' ? 'dark' : 'light');
   };
 
   /** 更新语言包 */
-  const handleUpdateLocale = () => {
+  const handleChangeLocale = () => {
     setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
   };
 
+  /** 应用跳转 */
+  const handlePageTo = (path) => {
+    sdk.client.navigate(path);
+  };
+
   return (
-    <div className="home-page">
-      <div className="home-page-title">子应用 Flow - 首页</div>
+    <div className={styles.home}>
+      <Space direction="vertical" style={{ display: 'flex' }}>
+        <div className={styles.title}>子应用-拓扑图模块</div>
 
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Card title="测试 弹框位置">
-          <RangePicker />
-        </Card>
-
-        <Card title="测试 跳转">
-          <Space>
-            <Button type="primary" onClick={() => handlePageTo('/')}>
-              跳转到主应用
-            </Button>
-            <Button type="primary" onClick={() => handlePageTo('/system/user')}>
-              跳转到子应用 System
-            </Button>
-            <Button type="primary" onClick={() => handlePageTo('/flow/detail')}>
-              跳转到详情页
-            </Button>
+        <Card title="CSS 变量、Token 变量">
+          <Space wrap>
+            <div style={{ color: 'var(--primary)' }}>CSS 变量</div>
+            <Alert message="品牌色" type="info" />
+            <Alert message="成功色" type="success" />
+            <Alert message="警戒色" type="warning" />
+            <Alert message="错误色" type="error" />
           </Space>
         </Card>
 
-        <Card title="测试 全局变量">
+        <Card title="全局样式、CSS Modules 样式隔离">
+          <Space wrap>
+            <div className="global-style">全局样式</div>
+            <div className={styles.cssModules}>CSS Modules 样式隔离</div>
+          </Space>
+        </Card>
+
+        <Card title="Antd 语言包、React Intl 国际化">
           <Space>
-            <Button type="dashed" danger onClick={handleUpdateTheme}>
+            <DatePicker />
+            {formatMessage({ id: 'test' })}
+            {formatMessage({ id: 'hello' })}
+          </Space>
+        </Card>
+
+        <Card title="全局状态管理">
+          <Space wrap>
+            <Button type="dashed" danger onClick={handleChangeTheme}>
               更新主题
             </Button>
-            <Button type="dashed" danger onClick={handleUpdateLocale}>
+
+            <Button type="dashed" danger onClick={handleChangeLocale}>
               更新语言包
             </Button>
-            {formatMessage({ id: 'test' })}
           </Space>
         </Card>
 
-        <Card title="测试 CSS 变量 和 样式隔离">
-          <div className="test-css-variable">CSS 变量</div>
-          <div className="test-style-isolation">样式隔离</div>
+        <Card title="应用跳转">
+          <Space wrap>
+            <Button type="primary" onClick={() => handlePageTo('/')}>
+              跳转首页
+            </Button>
+            <Button type="primary" onClick={() => handlePageTo('/system/user')}>
+              跳转系统模块
+            </Button>
+            <Button type="primary" onClick={() => handlePageTo('/flow/detail')}>
+              跳转详情页
+            </Button>
+          </Space>
         </Card>
       </Space>
     </div>

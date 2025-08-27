@@ -1,9 +1,8 @@
 import { ApiProps, ApiResult } from '@/plugins/api';
 import { AppProps, AppResult } from '@/plugins/app';
+import { ClientProps, ClientResult } from '@/plugins/client';
 import { ComponentsProps, ComponentsResult } from '@/plugins/components';
 import { I18nProps, I18nResult } from '@/plugins/i18n';
-import { LayoutProps, LayoutResult } from '@/plugins/layout';
-import { RouterProps, RouterResult } from '@/plugins/router';
 import { StorageProps, StorageResult } from '@/plugins/storage';
 import { StoreProps, StoreResult } from '@/plugins/store';
 
@@ -27,14 +26,12 @@ export interface InstanceProps {
   api?: ApiProps;
   /** 应用 配置 */
   app?: AppProps;
+  /** Client 配置 */
+  client?: ClientProps;
   /** 公用组件 */
   components?: ComponentsProps;
   /** 国际化 */
   i18n?: I18nProps;
-  /** ProLayout 配置 */
-  layout?: LayoutProps;
-  /** 路由 配置 */
-  router?: RouterProps;
   /** localStorage */
   storage?: StorageProps;
   /** 全局 Store */
@@ -46,14 +43,12 @@ export interface InstanceResult {
   api: ApiResult;
   /** 应用 配置 */
   app: AppResult;
+  /** Client 配置 */
+  client: ClientResult;
   /** 公用组件 */
   components: ComponentsResult;
   /** 国际化 */
   i18n: I18nResult;
-  /** ProLayout 配置 */
-  layout: LayoutResult;
-  /** 路由 配置 */
-  router: RouterResult;
   /** localStorage */
   storage: StorageResult;
   /** 全局 Store */

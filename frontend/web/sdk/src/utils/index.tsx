@@ -139,7 +139,7 @@ export const getDefaultThemeUtil = (sdk): ThemeProps => {
   if (localTheme) return localTheme;
 
   // 2. sdk中主题
-  const sdkTheme = sdk.app.theme;
+  const sdkTheme = sdk.app?.theme;
   if (sdkTheme) return sdkTheme;
 
   // 3. 系统主题
@@ -159,7 +159,7 @@ export const getDefaultLocaleUtil = (sdk): LocaleProps => {
   if (localLocale) return localLocale;
 
   // 2. sdk中主题
-  const sdkLocale = sdk.app.locale;
+  const sdkLocale = sdk.app?.locale;
   if (sdkLocale) return sdkLocale;
 
   // 3. 浏览器语言

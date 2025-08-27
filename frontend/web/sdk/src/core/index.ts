@@ -9,10 +9,9 @@ class Sdk implements SdkResult {
 
   api: SdkResult['api'];
   app: SdkResult['app'];
+  client: SdkResult['client'];
   components: SdkResult['components'];
   i18n: SdkResult['i18n'];
-  layout: SdkResult['layout'];
-  router: SdkResult['router'];
   storage: SdkResult['storage'];
   store: SdkResult['store'];
 

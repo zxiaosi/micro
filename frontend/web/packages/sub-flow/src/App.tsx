@@ -14,25 +14,20 @@ import './index.less';
 const Home = lazy(() => import('@/pages/home'));
 const Detail = lazy(() => import('@/pages/detail'));
 
-function App({ basename }: any) {
-  const routes: RouteObject[] = [
-    { path: '/', element: <Home /> },
-    { path: '/detail', element: <Detail /> },
-  ];
+const routes: RouteObject[] = [
+  { path: '/', element: <Home /> },
+  { path: '/detail', element: <Detail /> },
+];
 
+function App({ basename }: any) {
   const [antdConfig, locale] = useStore(
     sdk.store,
     useShallow((state) => [state.antdConfig, state.locale]),
   );
 
   return (
-    <IntlProvider locale={locale} messages={sdk.i18n?.[locale]}>
-      <ConfigProvider
-        {...antdConfig}
-        getPopupContainer={(node) =>
-          (node ? node?.parentNode : document.body) as HTMLElement
-        }
-      >
+    <IntlProvider locale={locale} messages={sdk.i18n.intlConfig[locale]}>
+      <ConfigProvider {...antdConfig}>
         <Suspense>
           <RouterProvider
             router={createBrowserRouter(routes, {

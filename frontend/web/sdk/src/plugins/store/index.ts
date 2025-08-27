@@ -6,11 +6,6 @@ import { theme as antdTheme, ConfigProviderProps } from 'antd';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
-import enUS from 'antd/es/locale/en_US';
-import zhCN from 'antd/es/locale/zh_CN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/en';
-import 'dayjs/locale/zh';
 
 interface GlobalStoreProps {
   /** 主题 */
@@ -29,6 +24,10 @@ interface GlobalStoreProps {
   microAppState: boolean;
   /** 设置子应用加载状态 */
   setMicroAppState: (state: boolean) => void;
+  /** 自定义状态 */
+  customState: Record<string, any>;
+  /** 设置自定义状态 */
+  setCustomState: (customState: Record<string, any>) => void;
 }
 
 interface Props {}
@@ -54,16 +53,16 @@ const initStore = (sdk: SdkResult) =>
         set(() => ({ theme })); // 自动合并其他
         sdk.register({ app: { theme } }); // 注入属性
 
+        // 设置属性
+        document.documentElement.setAttribute('theme', theme);
+        localStorage.setItem('theme', theme);
+
         // 设置Antd配置
         const algorithm =
           theme === 'light'
             ? antdTheme.defaultAlgorithm
             : antdTheme.darkAlgorithm;
         get().setAntdConfig({ theme: { algorithm } });
-
-        // 设置属性
-        document.documentElement.setAttribute('theme', theme);
-        localStorage.setItem('theme', theme);
       },
 
       locale: null,
@@ -71,16 +70,16 @@ const initStore = (sdk: SdkResult) =>
         set(() => ({ locale })); // 自动合并其他
         sdk.register({ app: { locale } }); // 注入属性
 
-        // 语言前缀
-        const localePrefix = locale.split('-')[0] || 'zh';
-        dayjs.locale(localePrefix);
-
-        // 语言包
-        let localeData = locale === 'en-US' ? enUS : zhCN;
-        get().setAntdConfig({ locale: localeData });
-
         // 设置属性
         localStorage.setItem('locale', locale);
+
+        try {
+          const localeData = sdk.i18n.loadLocale?.(locale);
+          if (!localeData) return;
+          get().setAntdConfig({ locale: localeData });
+        } catch (e) {
+          throw new Error('loadLocale -- 加载语言包失败', e);
+        }
       },
 
       antdConfig: null,
@@ -95,6 +94,14 @@ const initStore = (sdk: SdkResult) =>
 
       microAppState: false,
       setMicroAppState: (microAppState) => set(() => ({ microAppState })),
+
+      customState: {},
+      setCustomState: (customState) => {
+        set((state) => {
+          const newCustomState = merge({}, state.customState, customState); // 合并并创建新的 customState 对象
+          return { ...state, customState: newCustomState };
+        });
+      },
     })),
   );
 

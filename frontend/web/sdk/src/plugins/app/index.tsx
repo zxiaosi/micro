@@ -4,26 +4,34 @@ import merge from 'lodash/merge';
 import set from 'lodash/set';
 
 import { LocaleProps, Plugin, ThemeProps } from '@/types';
-import { getDefaultThemeUtil } from '@/utils';
+import { ProLayoutProps } from '@ant-design/pro-layout';
 import { ConfigProviderProps } from 'antd';
+import { ObjectType, RegistrableApp } from 'qiankun';
 import { ComponentType } from 'react';
-import { Location, NavigateFunction } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 
 interface Props {
   /** 环境变量 */
   env?: Record<string, any>;
+
   /** 主题 */
   theme?: ThemeProps;
   /** 国际化 */
   locale?: LocaleProps;
+
   /** 路由模式 */
   routerMode?: 'browser' | 'hash' | 'memory';
+  /** 路由信息 */
+  routes?: RouteObject[];
+  /** 微应用信息 */
+  microApps?: RegistrableApp<ObjectType>[];
+  /** 菜单数据 */
+  menuData?: any[];
+
   /** Antd 配置 */
   antdConfig?: ConfigProviderProps;
-  /** 主应用 location */
-  location?: Location;
-  /** 主应用navigate（解决子应用跳转问题） */
-  navigate?: NavigateFunction;
+  /** ProLayout 配置 */
+  proLayoutConfig?: ProLayoutProps;
 }
 
 interface Result extends Required<Readonly<Props>> {
@@ -54,12 +62,19 @@ const AppPlugin: Plugin<'app'> = {
     // 默认插件配置
     const defaultOptions = {
       env: {},
+
       theme: null,
       locale: null,
+
       routerMode: 'browser',
+      routes: [],
+      microApps: [],
+      menuData: [],
+
       antdConfig: {},
-      location: null,
-      navigate: null,
+      proLayoutConfig: {
+        title: 'Demo',
+      },
 
       setComponent: (component, name) => {
         if (!component) throw new Error('setComponent -- 组件不能为空');
