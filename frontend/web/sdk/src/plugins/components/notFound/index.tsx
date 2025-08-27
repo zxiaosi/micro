@@ -1,11 +1,15 @@
-import './index.css';
+import { Empty, Flex } from 'antd';
 
 /** 找不到页面 */
 const NotFound = () => {
   return (
-    <div className={'test'}>
-      <h1>404</h1>
-    </div>
+    <Flex
+      style={{ width: '100%', height: '100%' }}
+      justify={'center'}
+      align={'center'}
+    >
+      <Empty description={'找不到页面'} />
+    </Flex>
   );
 };
 

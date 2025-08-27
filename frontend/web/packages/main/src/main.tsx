@@ -2,7 +2,7 @@ import CustomActions from '@/components/customActions';
 import CustomMenuFooter from '@/components/customMenuFooter';
 import I18nConfig from '@/i18n/index';
 import Dashboard from '@/pages/dashboard/index.tsx';
-import { getRoutesApi } from '@/service/index.ts';
+import { getRoutesApi, loginApi } from '@/service/index.ts';
 import '@/theme/index.less';
 import theme from '@/theme/token';
 import {
@@ -19,7 +19,7 @@ import App from './App';
 import './index.less';
 
 sdk
-  .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi })
+  .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi, loginApi })
   .use(AppPlugin, {
     antdConfig: { theme },
     proLayoutConfig: {

@@ -2,15 +2,6 @@ import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel';
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 import nodeExternals from 'rollup-plugin-node-externals';
-import LightningCSS from 'unplugin-lightningcss/rolldown';
-import { injectCssImport } from './rolldown-plugin';
-
-/** lightningcss 配置   */
-const lightningCSSOptions = {
-  options: {
-    minify: true,
-  },
-};
 
 /** babel 配置 */
 const babelOptions: RollupBabelInputPluginOptions = {
@@ -47,8 +38,6 @@ const config = defineConfig([
     plugins: [
       nodeExternals(), // 排除 deps、peerDeps 中的依赖
       babel(babelOptions),
-      LightningCSS(lightningCSSOptions),
-      injectCssImport(),
       dts(),
     ],
     output: {
@@ -64,8 +53,6 @@ const config = defineConfig([
     plugins: [
       nodeExternals(), // 排除 deps、peerDeps 中的依赖
       babel(babelOptions),
-      LightningCSS(lightningCSSOptions),
-      injectCssImport(),
     ],
     output: {
       dir: 'dist/cjs',

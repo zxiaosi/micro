@@ -11,3 +11,14 @@ export const getRoutesApi = async () => {
     return mockRoutes;
   }
 };
+
+/** 获取路由 */
+export const loginApi = async (values: any) => {
+  console.log('loginApi', import.meta.env.MODE);
+
+  if (import.meta.env.MODE === 'development') {
+    return await sdk.api.request('/login', { method: 'post', data: values });
+  } else {
+    return { token: '123456' };
+  }
+};

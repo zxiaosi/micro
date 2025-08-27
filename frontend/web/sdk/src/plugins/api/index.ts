@@ -16,6 +16,10 @@ interface Props {
    * 获取路由数据
    */
   getRoutesApi?: () => Promise<any>;
+  /**
+   * 登录接口
+   */
+  loginApi?: (values: any) => Promise<any>;
 }
 
 interface Result extends Required<Readonly<Props>> {
@@ -55,6 +59,12 @@ const ApiPlugin: Plugin<'api'> = {
       },
       getRoutesApi: async () => {
         return await sdk.api.request('/routes');
+      },
+      loginApi: async (values) => {
+        return await sdk.api.request('/login', {
+          method: 'POST',
+          data: values,
+        });
       },
       request: async (url, options = {}) => {
         return await instance.request({

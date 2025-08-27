@@ -8,19 +8,34 @@ import {
 } from '@/utils';
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import {
-  createBrowserRouter,
-  createHashRouter,
-  createMemoryRouter,
+  BrowserRouter,
+  HashRouter,
+  MemoryRouter,
   Navigate,
   RouteObject,
-  RouterProvider,
-  RouterProviderProps,
+  useLocation,
+  useNavigate,
+  useRoutes,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+
+/** 路由渲染组件 */
+const Element = memo(({ router }: { router: RouteObject[] }) => {
+  const element = useRoutes(router || []);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 注入父组件的 navigate 方法到 SDK
+    sdk.register({ client: { navigate, location } });
+  }, [location]);
+
+  return <>{element}</>;
+});
 
 /** 根组件 */
 const Root = () => {
@@ -43,8 +58,7 @@ const Root = () => {
     ]),
   );
 
-  const [router, setRouter] =
-    useState<RouterProviderProps['router']>(undefined);
+  const [router, setRouter] = useState<RouteObject[]>(undefined);
 
   /** 获取路由数据 */
   const getRoutes = async () => {
@@ -90,22 +104,7 @@ const Root = () => {
       // 启动 qiankun
       start({ sandbox: true, singular: true, urlRerouteOnly: true });
 
-      let newRouter = undefined;
-      switch (sdk.app.routerMode) {
-        case 'browser':
-          newRouter = createBrowserRouter(allRoutes, { basename: '/' });
-          break;
-        case 'hash':
-          newRouter = createHashRouter(allRoutes, { basename: '/' });
-          break;
-        case 'memory':
-          newRouter = createMemoryRouter(allRoutes, { basename: '/' });
-          break;
-        default:
-          break;
-      }
-
-      setRouter(newRouter);
+      setRouter(allRoutes);
 
       // 注入属性
       sdk.register({
@@ -135,10 +134,20 @@ const Root = () => {
 
   if (!router) return <>Loading...</>;
 
+  const routerMode = sdk.app.routerMode || 'browser';
+  const RouterWrapper =
+    routerMode === 'memory'
+      ? MemoryRouter
+      : routerMode === 'hash'
+        ? HashRouter
+        : BrowserRouter;
+
   return (
     <IntlProvider locale={locale} messages={sdk.i18n.intlConfig[locale]}>
       <ConfigProvider {...antdConfig}>
-        <RouterProvider router={router} />
+        <RouterWrapper basename="/">
+          <Element router={router} />
+        </RouterWrapper>
       </ConfigProvider>
     </IntlProvider>
   );
