@@ -3,9 +3,18 @@ import merge from 'lodash/merge';
 
 import { BaseProps, InstanceProps, Plugin, SdkResult } from '@/types';
 
-class Sdk implements BaseProps {
+class Sdk implements SdkResult {
   name: BaseProps['name'];
   plugins: BaseProps['plugins'];
+
+  api: SdkResult['api'];
+  app: SdkResult['app'];
+  components: SdkResult['components'];
+  i18n: SdkResult['i18n'];
+  layout: SdkResult['layout'];
+  router: SdkResult['router'];
+  storage: SdkResult['storage'];
+  store: SdkResult['store'];
 
   constructor() {
     this.name = '';
@@ -66,11 +75,12 @@ class Sdk implements BaseProps {
     // 链式调用
     return this;
   }
+
   register(args: InstanceProps) {
     merge(this, args);
   }
 }
 
-const sdk = new Sdk() as SdkResult;
+const sdk = new Sdk();
 
 export default sdk;

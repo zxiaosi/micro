@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker;
 
 /** 首页 */
 const Home = () => {
-  const intl = useIntl();
+  const { formatMessage } = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
     sdk.store,
@@ -67,7 +67,7 @@ const Home = () => {
             <Button type="dashed" danger onClick={handleUpdateLocale}>
               更新语言包
             </Button>
-            {intl.formatMessage({ id: 'test' })}
+            {formatMessage({ id: 'test' })}
           </Space>
         </Card>
 

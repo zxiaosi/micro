@@ -3,10 +3,10 @@ import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import './index.less';
+import styles from './index.module.less';
 /** 首页 */
 const Dashboard = () => {
-  const intl = useIntl();
+  const { formatMessage } = useIntl();
 
   const [theme, setTheme, locale, setLocale] = useStore(
     sdk.store,
@@ -19,22 +19,22 @@ const Dashboard = () => {
   );
 
   /** 更新主题 */
-  const handleUpdateTheme = () => {
+  const handleChangeTheme = () => {
     setTheme?.(theme === 'light' ? 'dark' : 'light');
   };
 
   /** 更新语言包 */
-  const handleUpdateLocale = () => {
+  const handleChangeLocale = () => {
     setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
   };
 
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-page-title">我是主应用 main</div>
+    <div className={styles.dashboard}>
+      <Space direction="vertical" style={{ display: 'flex' }}>
+        <div className={styles.title}>我是主应用 main</div>
 
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Card title="测试 Token 变量">
-          <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Card title="Token 变量">
+          <Space wrap>
             <Alert message="品牌色" type="info" />
             <Alert message="成功色" type="success" />
             <Alert message="警戒色" type="warning" />
@@ -42,19 +42,27 @@ const Dashboard = () => {
           </Space>
         </Card>
 
-        <Card title="测试 国际化">
-          <Space>
-            <DatePicker />
-            {intl.formatMessage({ id: 'test' })}
+        <Card title="全局样式、CSS Modules 样式隔离">
+          <Space wrap>
+            <div className="global-style">全局样式</div>
+            <div className={styles.cssModules}>CSS Modules 样式隔离</div>
           </Space>
         </Card>
 
-        <Card title="测试 全局变量">
+        <Card title="Antd 语言包、React Intl 国际化">
           <Space>
-            <Button type="dashed" danger onClick={handleUpdateTheme}>
+            <DatePicker />
+            {formatMessage({ id: 'test' })}
+          </Space>
+        </Card>
+
+        <Card title="全局状态管理">
+          <Space wrap>
+            <Button type="dashed" danger onClick={handleChangeTheme}>
               更新主题
             </Button>
-            <Button type="dashed" danger onClick={handleUpdateLocale}>
+
+            <Button type="dashed" danger onClick={handleChangeLocale}>
               更新语言包
             </Button>
           </Space>

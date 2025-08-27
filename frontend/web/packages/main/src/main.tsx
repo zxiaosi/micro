@@ -15,7 +15,7 @@ import {
 } from '@zxiaosi/sdk';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import './index.css';
+import './index.less';
 
 sdk
   .use(ApiPlugin, {
@@ -26,7 +26,6 @@ sdk
   })
   .use(AppPlugin, {
     antdConfig: {
-      prefixCls: 'zxs',
       theme: {
         token: {
           colorPrimary: '#1e90ff',
@@ -44,6 +43,9 @@ sdk
   })
   .use(I18nPlugin)
   .use(LayoutPlugin, {
+    contentStyle: {
+      padding: 20,
+    },
     title: import.meta.env.VITE_APP_TITLE,
     layout: 'mix',
     actionsRender: (props) => <CustomActions {...props} />,
