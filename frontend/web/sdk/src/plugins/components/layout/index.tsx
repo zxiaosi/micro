@@ -1,7 +1,7 @@
 import sdk from '@/core';
 import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-components';
-import { memo, useEffect } from 'react';
+import { memo, Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 /** 首页 */
 const BaseLayout = () => {
@@ -37,7 +37,9 @@ const BaseLayout = () => {
       )}
       onMenuHeaderClick={handleMenuHeaderClick}
     >
-      <Outlet />
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </ProLayout>
   );
 };

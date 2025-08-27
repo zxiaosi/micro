@@ -1,8 +1,6 @@
-import Resource from '@/pages/resource';
-import Role from '@/pages/role';
-import User from '@/pages/user';
 import { sdk } from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
+import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   Navigate,
@@ -10,6 +8,11 @@ import {
   type RouteObject,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
+import './index.less';
+
+const User = lazy(() => import('@/pages/user'));
+const Role = lazy(() => import('@/pages/role'));
+const Resource = lazy(() => import('@/pages/resource'));
 
 function App({ basename }: any) {
   const routes: RouteObject[] = [
@@ -28,11 +31,13 @@ function App({ basename }: any) {
         (node ? node?.parentNode : document.body) as HTMLElement
       }
     >
-      <RouterProvider
-        router={createBrowserRouter(routes, {
-          basename: basename ? `/${basename}` : '/',
-        })}
-      />
+      <Suspense>
+        <RouterProvider
+          router={createBrowserRouter(routes, {
+            basename: basename ? `/${basename}` : '/',
+          })}
+        />
+      </Suspense>
     </ConfigProvider>
   );
 }

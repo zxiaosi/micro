@@ -1,8 +1,7 @@
+import { sdk } from '@zxiaosi/sdk';
 import { createRoot, type Root } from 'react-dom/client';
 import { name } from '../package.json';
 import App from './App.tsx';
-import './index.css';
-import { sdk } from '@zxiaosi/sdk';
 
 let root: Root;
 const render = (props: any = {}) => {

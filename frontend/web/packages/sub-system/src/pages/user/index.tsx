@@ -33,8 +33,9 @@ const User = () => {
       <div className="user-page-title">子应用 System - 用户管理</div>
 
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Card title="测试 css 变量">
-          <div className="user-page-test">啦啦啦</div>
+        <Card title="测试 CSS 变量 和 样式隔离">
+          <div className="test-css-variable">CSS 变量</div>
+          <div className="test-style-isolation">样式隔离</div>
         </Card>
 
         <Card title="测试 全局变量">

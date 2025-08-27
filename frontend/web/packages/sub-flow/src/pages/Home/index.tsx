@@ -71,8 +71,9 @@ const Home = () => {
           </Space>
         </Card>
 
-        <Card title="测试 CSS 变量">
-          <div className="test-css-variable">啦啦啦</div>
+        <Card title="测试 CSS 变量 和 样式隔离">
+          <div className="test-css-variable">CSS 变量</div>
+          <div className="test-style-isolation">样式隔离</div>
         </Card>
       </Space>
     </div>
