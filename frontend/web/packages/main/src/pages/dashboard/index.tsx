@@ -1,20 +1,18 @@
 import { sdk } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
-import { useIntl } from 'react-intl';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import styles from './index.module.less';
+import './index.less';
 /** 首页 */
 const Dashboard = () => {
-  const { formatMessage } = useIntl();
-
-  const [theme, setTheme, locale, setLocale] = useStore(
+  const [theme, setTheme, locale, setLocale, intl] = useStore(
     sdk.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,
       state.locale,
       state.setLocale,
+      state.intl,
     ]),
   );
 
@@ -29,9 +27,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={styles.dashboard}>
+    <div className="dashboard">
       <Space direction="vertical" style={{ display: 'flex' }}>
-        <div className={styles.title}>主应用-首页</div>
+        <div className="title">主应用-首页</div>
 
         <Card title="CSS 变量、Token 变量">
           <Space wrap>
@@ -43,17 +41,17 @@ const Dashboard = () => {
           </Space>
         </Card>
 
-        <Card title="全局样式、CSS Modules 样式隔离">
+        <Card title="全局样式、样式隔离">
           <Space wrap>
             <div className="global-style">全局样式</div>
-            <div className={styles.cssModules}>CSS Modules 样式隔离</div>
+            <div className="css-modules">样式隔离</div>
           </Space>
         </Card>
 
         <Card title="Antd 语言包、React Intl 国际化">
           <Space>
             <DatePicker />
-            {formatMessage({ id: 'test' })}
+            {intl.formatMessage({ id: 'test' })}
           </Space>
         </Card>
 

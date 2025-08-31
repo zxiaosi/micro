@@ -106,7 +106,7 @@ const Resource = () => {
 
   return (
     <div className="resource-page">
-      <div className="resource-page-title">子应用 System - 资源管理</div>
+      <div className="resource-page-title">子应用-系统模块-资源管理</div>
 
       <Button type="primary" onClick={getResources}>
         测试接口

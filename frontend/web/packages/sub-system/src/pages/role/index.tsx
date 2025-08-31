@@ -5,7 +5,7 @@ import './index.less';
 const Role = () => {
   return (
     <div className="role-page">
-      <div className="role-page-title">子应用 System - 角色管理</div>
+      <div className="role-page-title">子应用-系统模块-角色管理</div>
 
       <div className="role-page-content">
         <div style={{ width: 'calc(100% - 200px)' }}>

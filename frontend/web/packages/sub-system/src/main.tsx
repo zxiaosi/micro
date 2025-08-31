@@ -9,6 +9,12 @@ const render = (props: any = {}) => {
     ? props.container.querySelector('#root')
     : document.getElementById('root');
 
+  /**
+   * 添加属性，用于样式隔离
+   * 注意：这里的属性名要和 postcss-prefix-selector 插件中的 prefix 保持一致
+   */
+  container.setAttribute(`data-qiankun-${name}`, 'true');
+
   root = createRoot(container);
 
   root.render(<App basename={props?.name} />);
