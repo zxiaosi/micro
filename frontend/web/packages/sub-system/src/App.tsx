@@ -31,6 +31,7 @@ function App({ basename }: any) {
           router={createBrowserRouter(routes, {
             basename: basename ? `/${basename}` : '/',
           })}
+          future={{ v7_startTransition: true }}
         />
       </Suspense>
     </ConfigProvider>

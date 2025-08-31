@@ -147,7 +147,10 @@ const Root = () => {
   return (
     <RawIntlProvider value={intl}>
       <ConfigProvider {...antdConfig}>
-        <RouterWrapper basename="/">
+        <RouterWrapper
+          basename="/"
+          future={{ v7_startTransition: true, v7_relativeSplatPath: false }}
+        >
           <Element router={router} />
         </RouterWrapper>
       </ConfigProvider>
