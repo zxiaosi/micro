@@ -6,6 +6,7 @@ const routes = [
     path: '/dashboard',
     component: 'Dashboard',
     icon: 'DashboardOutlined',
+    locale: 'menu.home',
     hideInMenu: false,
   },
   {
@@ -13,6 +14,7 @@ const routes = [
     path: '/flow/*',
     component: 'Microapp',
     icon: 'NodeIndexOutlined',
+    locale: 'menu.flow',
     hideInMenu: false,
     routeAttr:
       '{"name": "flow", "entry": "http://localhost:8002", "activeRule": "/flow", "rootId": "sub-app"}',
@@ -22,6 +24,7 @@ const routes = [
     path: '/system',
     component: 'Outlet',
     icon: 'SettingOutlined',
+    locale: 'menu.system',
     hideInMenu: false,
     children: [
       {
@@ -29,6 +32,7 @@ const routes = [
         path: '/system/user',
         component: 'Microapp',
         icon: 'UserOutlined',
+        locale: 'menu.system.user',
         hideInMenu: false,
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
@@ -39,6 +43,7 @@ const routes = [
         component: 'Microapp',
         icon: 'DeploymentUnitOutlined',
         hideInMenu: false,
+        locale: 'menu.system.role',
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
       },
@@ -47,6 +52,7 @@ const routes = [
         path: '/system/resource',
         component: 'Microapp',
         icon: 'FundViewOutlined',
+        locale: 'menu.system.resource',
         hideInMenu: false,
         routeAttr:
           '{"name": "system", "entry": "http://localhost:8001", "activeRule": "/system", "rootId": "sub-app"}',
