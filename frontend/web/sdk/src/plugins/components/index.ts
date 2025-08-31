@@ -10,17 +10,21 @@ import Microapp from './microapp';
 import NotFound from './notFound';
 import Root from './root';
 
-interface Props {
+interface ComponentsProps {
   /** 组件 */
   [key: string]: ComponentType;
 }
 
-interface Result extends Required<Readonly<Props>> {}
+interface ComponentsResult extends Required<Readonly<ComponentsProps>> {}
 
 /** 插件名称 */
 const pluginName = 'components';
 
-/** 组件库 插件 */
+/**
+ * 组件 插件
+ * - 详情参考 {@link ComponentsProps} {@link ComponentsResult}
+ * - 内置了登录组件, 404组件等常用组件, 可传入覆盖
+ */
 const ComponentsPlugin: Plugin<'components'> = {
   name: pluginName,
   install(sdk, options = {}) {
@@ -31,14 +35,10 @@ const ComponentsPlugin: Plugin<'components'> = {
       Root,
       Layout, // 不使用懒加载 - 防止多次渲染
       Microapp, // 不使用懒加载 - 防止qiankun挂载不上
-    } satisfies Result;
+    } satisfies ComponentsResult;
 
     sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 
-export {
-  ComponentsPlugin,
-  Props as ComponentsProps,
-  Result as ComponentsResult,
-};
+export { ComponentsPlugin, ComponentsProps, ComponentsResult };

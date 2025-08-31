@@ -10,7 +10,7 @@ import { ObjectType, RegistrableApp } from 'qiankun';
 import { ComponentType } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-interface Props {
+interface AppProps {
   /** 环境变量 */
   env?: Record<string, any>;
 
@@ -34,7 +34,7 @@ interface Props {
   proLayoutConfig?: ProLayoutProps;
 }
 
-interface Result extends Required<Readonly<Props>> {
+interface AppResult extends Required<Readonly<AppProps>> {
   /**
    * 设置组件
    * @param component 组件
@@ -55,7 +55,10 @@ interface Result extends Required<Readonly<Props>> {
 /** 插件名称 */
 const pluginName = 'app';
 
-/** App 插件 */
+/**
+ * 常用配置 插件
+ * - 详情参考 {@link AppProps} {@link AppResult}
+ */
 const AppPlugin: Plugin<'app'> = {
   name: pluginName,
   install(sdk, options = {}) {
@@ -92,10 +95,10 @@ const AppPlugin: Plugin<'app'> = {
       getRootComponent: () => {
         return sdk.app.getComponent('Root');
       },
-    } satisfies Result;
+    } satisfies AppResult;
 
     sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 
-export { AppPlugin, Props as AppProps, Result as AppResult };
+export { AppPlugin, AppProps, AppResult };

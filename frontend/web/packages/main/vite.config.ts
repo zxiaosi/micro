@@ -19,7 +19,7 @@ export default ({ mode }: ConfigEnv) => {
     plugins: [
       react({
         babel: {
-          plugins: [['babel-plugin-react-compiler', { target: '19' }]],
+          plugins: [['babel-plugin-react-compiler', { target: '18' }]],
         },
       }),
       viteMockServe({

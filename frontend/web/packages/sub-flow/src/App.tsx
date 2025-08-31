@@ -1,14 +1,12 @@
 import { sdk } from '@zxiaosi/sdk';
 import { ConfigProvider } from 'antd';
 import { lazy, Suspense } from 'react';
-import { IntlProvider } from 'react-intl';
 import {
   createBrowserRouter,
   RouterProvider,
   type RouteObject,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import './index.less';
 
 const Home = lazy(() => import('@/pages/home'));
@@ -20,23 +18,18 @@ const routes: RouteObject[] = [
 ];
 
 function App({ basename }: any) {
-  const [antdConfig, locale] = useStore(
-    sdk.store,
-    useShallow((state) => [state.antdConfig, state.locale]),
-  );
+  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
 
   return (
-    <IntlProvider locale={locale} messages={sdk.i18n.intlConfig[locale]}>
-      <ConfigProvider {...antdConfig}>
-        <Suspense>
-          <RouterProvider
-            router={createBrowserRouter(routes, {
-              basename: basename ? `/${basename}` : '/',
-            })}
-          />
-        </Suspense>
-      </ConfigProvider>
-    </IntlProvider>
+    <ConfigProvider {...antdConfig}>
+      <Suspense>
+        <RouterProvider
+          router={createBrowserRouter(routes, {
+            basename: basename ? `/${basename}` : '/',
+          })}
+        />
+      </Suspense>
+    </ConfigProvider>
   );
 }
 

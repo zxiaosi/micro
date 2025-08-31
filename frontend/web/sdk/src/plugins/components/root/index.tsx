@@ -9,7 +9,7 @@ import {
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
 import { memo, useEffect, useState } from 'react';
-import { IntlProvider } from 'react-intl';
+import { RawIntlProvider } from 'react-intl';
 import {
   BrowserRouter,
   HashRouter,
@@ -46,6 +46,7 @@ const Root = () => {
     antdConfig,
     setAntdConfig,
     setMicroAppState,
+    intl,
   ] = useStore(
     sdk.store,
     useShallow((state) => [
@@ -55,6 +56,7 @@ const Root = () => {
       state.antdConfig,
       state.setAntdConfig,
       state.setMicroAppState,
+      state.intl,
     ]),
   );
 
@@ -143,13 +145,13 @@ const Root = () => {
         : BrowserRouter;
 
   return (
-    <IntlProvider locale={locale} messages={sdk.i18n.intlConfig[locale]}>
+    <RawIntlProvider value={intl}>
       <ConfigProvider {...antdConfig}>
         <RouterWrapper basename="/">
           <Element router={router} />
         </RouterWrapper>
       </ConfigProvider>
-    </IntlProvider>
+    </RawIntlProvider>
   );
 };
 

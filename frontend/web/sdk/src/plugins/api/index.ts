@@ -5,24 +5,35 @@ import { Plugin } from '@/types';
 import { AxiosResponse } from 'axios';
 import Http, { ApiConfig, ApiRequestOption } from './http';
 
-interface Props {
+interface ApiProps {
   /** Axios配置 */
   config?: ApiConfig;
+
+  /**
+   * 自定义请求实例
+   * - 将替代 SDK 内置的请求实例
+   * @example instance = axios.create(options)
+   */
+  instance?: any;
+
   /**
    * 获取用户信息
+   * @example { data: { ... }, code: 200 }
    */
   getUserInfoApi?: () => Promise<any>;
   /**
    * 获取路由数据
+   * @example { data: [{path: '/', name: '首页', element: 'Home'}], code: 200 }
    */
   getRoutesApi?: () => Promise<any>;
   /**
    * 登录接口
+   * @example { data: { token: 'xxxx' }, code: 200 }
    */
   loginApi?: (values: any) => Promise<any>;
 }
 
-interface Result extends Required<Readonly<Props>> {
+interface ApiResult extends Required<Readonly<ApiProps>> {
   /**
    * 请求
    * @param  url 请求地址
@@ -37,7 +48,13 @@ interface Result extends Required<Readonly<Props>> {
 /** 插件名称 */
 const pluginName = 'api';
 
-/** Api 插件 */
+/**
+ * 请求 插件
+ * - 详情参考 {@link ApiProps} {@link ApiResult}
+ * - 内置了请求, 通过 sdk.api.request 发起请求
+ * - 可通过外部传入 instance 自定义请求实例
+ * - 预置了获取用户信息, 获取路由, 登录接口等接口, 以便组件使用
+ */
 const ApiPlugin: Plugin<'api'> = {
   name: pluginName,
   install(sdk, options = {}) {
@@ -46,14 +63,15 @@ const ApiPlugin: Plugin<'api'> = {
       baseURL: '/api',
       timeout: 0,
       ...options.config,
-    } satisfies Props['config'];
+    } satisfies ApiProps['config'];
 
     // 创建 Axios 实例
-    const instance = new Http(axiosConfig).getInstance();
+    const instance = options?.instance || new Http(axiosConfig).getInstance();
 
     // 默认插件配置
     const defaultOptions = {
       config: axiosConfig,
+      instance: null,
       getUserInfoApi: async () => {
         return await sdk.api.request('/userInfo');
       },
@@ -74,10 +92,10 @@ const ApiPlugin: Plugin<'api'> = {
           ...options,
         });
       },
-    } satisfies Result;
+    } satisfies ApiResult;
 
     sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 
-export { ApiPlugin, Props as ApiProps, Result as ApiResult };
+export { ApiPlugin, ApiProps, ApiResult };

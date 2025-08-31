@@ -3,12 +3,12 @@ import merge from 'lodash/merge';
 
 import { Plugin } from '@/types';
 
-interface Props {
+interface StorageProps {
   /** Token 名称 */
   tokenName?: string;
 }
 
-interface Result extends Required<Readonly<Props>> {
+interface StorageResult extends Required<Readonly<StorageProps>> {
   /**
    * 设置缓存
    * @param key 缓存键
@@ -33,7 +33,10 @@ interface Result extends Required<Readonly<Props>> {
 /** 插件名称 */
 const pluginName = 'storage';
 
-/** localStorage 插件 */
+/**
+ * localStorage 插件
+ * - 详情参考 {@link StorageProps} {@link StorageResult}
+ */
 const StoragePlugin: Plugin<'storage'> = {
   name: pluginName,
   install(sdk, options = {}) {
@@ -62,10 +65,10 @@ const StoragePlugin: Plugin<'storage'> = {
       clear: () => {
         return localStorage.clear();
       },
-    } satisfies Result;
+    } satisfies StorageResult;
 
     sdk[pluginName] = merge({}, defaultOptions, options);
   },
 };
 
-export { StoragePlugin, Props as StorageProps, Result as StorageResult };
+export { StoragePlugin, StorageProps, StorageResult };

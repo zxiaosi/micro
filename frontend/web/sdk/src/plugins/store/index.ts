@@ -3,11 +3,11 @@ import merge from 'lodash/merge';
 
 import { LocaleProps, Plugin, SdkResult, ThemeProps } from '@/types';
 import { theme as antdTheme, ConfigProviderProps } from 'antd';
+import { createIntl, IntlShape } from 'react-intl';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
-
-interface GlobalStoreProps {
+interface StoreProps {
   /** 主题 */
   theme: ThemeProps;
   /** 设置主题 */
@@ -24,29 +24,20 @@ interface GlobalStoreProps {
   microAppState: boolean;
   /** 设置子应用加载状态 */
   setMicroAppState: (state: boolean) => void;
-  /** 自定义状态 */
-  customState: Record<string, any>;
-  /** 设置自定义状态 */
-  setCustomState: (customState: Record<string, any>) => void;
+  /**
+   * React Intl
+   * - 如果项目不使用 React Compiler, 可以直接使用 sdk.i18n.intl
+   * - 默认应该在根组件去监听 locale, 然后传给 IntlProvider, 但是 IntlProvider 不能有多个
+   * - 直接返回 sdk.i18n.intl 会被 React Compiler 优化, 导致组件不刷新, 使用 sdk.store.intl 代替
+   */
+  intl: IntlShape;
 }
 
-interface Props {}
+type StoreResult = ReturnType<typeof initStore>;
 
-type Result = ReturnType<typeof initStore>;
-
-/**
- * 全局 Store
- * @description 不要多次创建！！！
- * @param sdk sdk 实例
- * @param options 配置项
- * @example const setTheme = useStore(globalStore, (state) => state.setTheme)
- * @example const { theme, setTheme } = useStore(globalStore, useShallow((state) => { theme: state.theme, setTheme: state.setTheme }))
- * @example const [theme, setTheme] = useStore(globalStore, useShallow((state) => [state.theme, state.setTheme]))
- * @example globalStore?.getState()?.setTheme('light')
- * @example globalStore.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
- */
+/** 初始化 Store */
 const initStore = (sdk: SdkResult) =>
-  createStore<GlobalStoreProps>()(
+  createStore<StoreProps>()(
     subscribeWithSelector((set, get) => ({
       theme: null,
       setTheme: (theme) => {
@@ -68,7 +59,17 @@ const initStore = (sdk: SdkResult) =>
       locale: null,
       setLocale: (locale) => {
         set(() => ({ locale })); // 自动合并其他
-        sdk.register({ app: { locale } }); // 注入属性
+
+        // intl 实例
+        const intl = createIntl(
+          { locale, messages: sdk.i18n.intlConfig[locale] },
+          sdk.i18n.cache,
+        );
+
+        // 直接设置 intl
+        get().intl = intl;
+
+        sdk.register({ app: { locale }, i18n: { intl } }); // 注入属性
 
         // 设置属性
         localStorage.setItem('locale', locale);
@@ -95,25 +96,28 @@ const initStore = (sdk: SdkResult) =>
       microAppState: false,
       setMicroAppState: (microAppState) => set(() => ({ microAppState })),
 
-      customState: {},
-      setCustomState: (customState) => {
-        set((state) => {
-          const newCustomState = merge({}, state.customState, customState); // 合并并创建新的 customState 对象
-          return { ...state, customState: newCustomState };
-        });
-      },
+      intl: null,
     })),
   );
 
 /** 插件名称 */
 const pluginName = 'store';
 
-/**  插件 */
+/**
+ * 全局状态管理 插件
+ * - 详情参考 {@link StoreProps} {@link StoreResult}
+ * - 此插件不会合并属性
+ * @example const setTheme = useStore(sdk.store, (state) => state.setTheme)
+ * @example const { theme, setTheme } = useStore(sdk.store, useShallow((state) => { theme: state.theme, setTheme: state.setTheme }))
+ * @example const [theme, setTheme] = useStore(sdk.store, useShallow((state) => [state.theme, state.setTheme]))
+ * @example sdk.store?.getState()?.setTheme('light')
+ * @example sdk.store.subscribe((state) => state.theme, (theme) => { console.log('theme', theme) }, { fireImmediately: true }) // fireImmediately 立即变更
+ */
 const StorePlugin: Plugin<'store'> = {
   name: pluginName,
   install(sdk, options = {}) {
-    sdk[pluginName] = initStore(sdk) satisfies Result;
+    sdk[pluginName] = initStore(sdk) satisfies StoreResult;
   },
 };
 
-export { StorePlugin, Props as StoreProps, Result as StoreResult };
+export { StorePlugin, StoreProps, StoreResult };
