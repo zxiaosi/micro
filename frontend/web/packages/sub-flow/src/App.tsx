@@ -17,17 +17,20 @@ const routes: RouteObject[] = [
   { path: '/detail', element: <Detail /> },
 ];
 
-function App({ basename }: any) {
+function App({ basename, container }: any) {
   const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
 
   return (
-    <ConfigProvider {...antdConfig}>
+    <ConfigProvider
+      {...antdConfig}
+      getPopupContainer={() => container || document.body}
+    >
       <Suspense>
         <RouterProvider
           router={createBrowserRouter(routes, {
             basename: basename ? `/${basename}` : '/',
           })}
-          future={{ v7_startTransition: true }}
+          future={{ v7_startTransition: false }}
         />
       </Suspense>
     </ConfigProvider>

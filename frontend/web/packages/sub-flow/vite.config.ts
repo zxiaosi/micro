@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import prefixer from 'postcss-prefix-selector';
 import { ConfigEnv, defineConfig, loadEnv } from 'vite';
 import qiankun from 'vite-plugin-qiankun-lite';
 import { name } from './package.json';
@@ -34,6 +35,13 @@ export default ({ mode }: ConfigEnv) => {
       },
     },
     css: {
+      postcss: {
+        plugins: [
+          prefixer({
+            prefix: `[data-qiankun-${name}]`, // 添加作用域
+          }),
+        ],
+      },
       preprocessorOptions: {
         less: {
           javascriptEnabled: true,

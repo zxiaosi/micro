@@ -149,7 +149,7 @@ const Root = () => {
       <ConfigProvider {...antdConfig}>
         <RouterWrapper
           basename="/"
-          future={{ v7_startTransition: true, v7_relativeSplatPath: false }}
+          future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
         >
           <Element router={router} />
         </RouterWrapper>
