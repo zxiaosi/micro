@@ -1,7 +1,7 @@
 import beian from '@/assets/beian.png';
-import sdk from '@zxiaosi/sdk';
+import { sdk } from '@zxiaosi/sdk';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import './index.less';
 import { qrcodeBase } from './qrcode';
 
@@ -43,7 +43,7 @@ const scene = 1749756926882;
 
 /** 获取小程序二维码 */
 const getWeappQrcode = async () => {
-  return await sdk.api.get('http://localhost:8080/api/weapp/qrcode', {
+  return await sdk.api.request('http://localhost:8080/api/weapp/qrcode', {
     params: { scene },
   });
 };
@@ -155,7 +155,7 @@ const Login = () => {
             className="login-page-footer-bg-waves"
             viewBox="0 24 150 28"
             preserveAspectRatio="none"
-            shape-rendering="auto"
+            shapeRendering="auto"
           >
             <defs>
               <path
