@@ -8,7 +8,12 @@ import './index.less';
 
 /** Layout的操作功能列表，不同的 layout 会放到不同的位置 */
 const CustomActions = (props) => {
-  if (props.isMobile) return [];
+  if (props.isMobile)
+    return (
+      <Space>
+        <HeaderUser key="user" />
+      </Space>
+    );
 
   if (typeof window === 'undefined') return [];
 
