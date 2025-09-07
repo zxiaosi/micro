@@ -96,8 +96,13 @@ export default defineFakeRoute([
     url: '/getResources',
     method: 'get',
     timeout: 1000, // 模拟延时
-    response: ({ query }) => {
-      return { code: 200, data: resources, msg: 'success' };
+    response: ({ query, headers }, req, res) => {
+      if (!headers.authorization) {
+        res.statusCode = 401;
+        return { code: 401, data: null, msg: '请先登录' };
+      } else {
+        return { code: 200, data: resources, msg: 'success' };
+      }
     },
   },
 ]);

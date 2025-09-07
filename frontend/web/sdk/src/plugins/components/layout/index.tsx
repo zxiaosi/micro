@@ -1,7 +1,7 @@
 import sdk from '@/core';
 import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-layout';
-import { memo, Suspense } from 'react';
+import { memo, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
 /** 布局组件 */
@@ -10,6 +10,11 @@ const BaseLayout = () => {
   const location = useLocation();
 
   const locale = useStore(sdk.store, (state) => state.locale);
+
+  // 是否有权限
+  const isAuth = useMemo(() => {
+    return sdk.app.permissions.includes(location.pathname);
+  }, [location.pathname]);
 
   /** 菜单点击事件 */
   const handleMenuClick = (item: any) => {
@@ -37,9 +42,7 @@ const BaseLayout = () => {
       locale={locale}
       formatMessage={sdk.i18n.intl.formatMessage}
     >
-      <Suspense>
-        <Outlet />
-      </Suspense>
+      {isAuth ? <Outlet /> : <>无权限</>}
     </ProLayout>
   );
 };

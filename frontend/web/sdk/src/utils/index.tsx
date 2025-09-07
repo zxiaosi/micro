@@ -7,6 +7,8 @@ import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
 import { createElement } from 'react';
 import { Outlet } from 'react-router-dom';
 
+type MicroAppsMap = Map<string, RegistrableApp<ObjectType>>;
+
 /** 动态创建Icon */
 export const dynamicIcon = (icon: string) => {
   const antIcon: { [key: string]: any } = Icons; // 防止类型报错
@@ -38,9 +40,10 @@ export const lifeCyclesUtil: FrameworkLifeCycles<ObjectType> = {
  * @param sdk sdk
  */
 export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
-  const microApps: RegistrableApp<ObjectType>[] = [];
-  const subRoutes = transformRoutesUtil(routes, microApps, sdk);
-  return { microApps, subRoutes };
+  const microAppsMap: MicroAppsMap = new Map();
+  const menuData = transformRoutesUtil(routes, microAppsMap, sdk);
+  const microApps = [...microAppsMap.values()];
+  return { microApps, menuData };
 };
 
 /**
@@ -51,7 +54,7 @@ export const handleRoutesUtil = (routes: any[], sdk: SdkResult) => {
  */
 export const transformRoutesUtil = (
   routes: any[],
-  microApps: RegistrableApp<ObjectType>[],
+  microAppsMap: MicroAppsMap,
   sdk: SdkResult,
 ) => {
   return routes.map((item) => {
@@ -63,25 +66,31 @@ export const transformRoutesUtil = (
     if (routeAttr) {
       const { name, rootId, ...rest } = JSON.parse(routeAttr);
 
-      // 避免重复注册
-      if (!microApps.some((app) => app.name === name)) {
-        microApps.push({ name, container: `#${rootId}`, ...rest });
-      }
+      // 子应用信息
+      const microAppInfo = {
+        name,
+        container: `#${rootId}`,
+        props: { sdk },
+        loader: (loading) => sdk.store.getState().setMicroAppState(loading),
+        ...rest,
+      };
 
-      const Microapp: any = sdk.app.getComponent('Microapp');
-      element = <Microapp rootId={rootId} />;
+      // 添加子应用信息
+      microAppsMap.set(name, microAppInfo);
+
+      // 处理子应用挂载组件
+      element = sdk.app.renderComponent('Microapp', { rootId });
     } else if (component === 'Outlet') {
       // 处理路由出口
       element = <Outlet />;
     } else {
       // 处理普通组件
-      const Element = sdk.app.getComponent(component) || null;
-      element = <Element />;
+      element = sdk.app.renderComponent(component);
     }
 
     // 转换子路由
     const processedChildren = children?.length
-      ? transformRoutesUtil(children, microApps, sdk)
+      ? transformRoutesUtil(children, microAppsMap, sdk)
       : [];
 
     return {

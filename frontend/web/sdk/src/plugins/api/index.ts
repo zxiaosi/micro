@@ -1,8 +1,9 @@
 // 按需引入
 import merge from 'lodash/merge';
 
-import { Plugin } from '@/types';
+import { Plugin, UserInfo } from '@/types';
 import { AxiosResponse } from 'axios';
+import { RouteObject } from 'react-router-dom';
 import Http, { ApiConfig, ApiRequestOption } from './http';
 
 interface ApiProps {
@@ -18,14 +19,14 @@ interface ApiProps {
 
   /**
    * 获取用户信息
-   * @example { data: { ... }, code: 200 }
+   * @example { data: { user: { ... }, permissions: [], roles: [], settings: {} }, code: 200 }
    */
-  getUserInfoApi?: () => Promise<any>;
+  getUserInfoApi?: () => Promise<AxiosResponse<UserInfo>>;
   /**
    * 获取路由数据
    * @example { data: [{path: '/', name: '首页', element: 'Home'}], code: 200 }
    */
-  getRoutesApi?: () => Promise<any>;
+  getRoutesApi?: () => Promise<AxiosResponse<RouteObject[]>>;
   /**
    * 登录接口
    * @example { data: { token: 'xxxx' }, code: 200 }
@@ -73,7 +74,7 @@ const ApiPlugin: Plugin<'api'> = {
       config: axiosConfig,
       instance: null,
       getUserInfoApi: async () => {
-        return await sdk.api.request('/userInfo');
+        return await sdk.api.request('/getUserInfo');
       },
       getRoutesApi: async () => {
         return await sdk.api.request('/routes');

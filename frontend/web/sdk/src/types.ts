@@ -76,3 +76,13 @@ export interface BaseProps {
 export type SdkProps = BaseProps & InstanceProps;
 
 export type SdkResult = BaseProps & InstanceResult;
+
+export interface UserInfo {
+  user?: any;
+  /** 用户权限 */
+  permissions?: string[];
+  /** 用户角色 */
+  roles?: string[];
+  /** 用户设置 */
+  settings?: { theme?: ThemeProps; locale?: LocaleProps };
+}

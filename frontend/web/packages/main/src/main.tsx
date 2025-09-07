@@ -29,6 +29,7 @@ sdk
       layout: 'mix',
       title: import.meta.env.VITE_APP_TITLE,
       logo: <img src="/logo.svg" style={{ height: 20 }} />,
+      contentStyle: { height: 'calc(100vh - 56px)', overflowY: 'auto' },
       actionsRender: (props) => <CustomActions {...props} />,
       menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     },

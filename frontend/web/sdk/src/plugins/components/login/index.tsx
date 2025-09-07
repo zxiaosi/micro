@@ -10,8 +10,8 @@ const Login = () => {
       const resp = await sdk.api.loginApi?.(values);
       const token = resp?.data?.token || '';
       if (token) {
-        sdk.client.navigate('/');
         localStorage.setItem('token', token);
+        sdk.client.navigate('/');
       } else {
         message.error('登录失败');
       }

@@ -67,11 +67,14 @@ export default defineFakeRoute([
     url: '/getRoutes',
     method: 'get',
     timeout: 1000, // 模拟延时
-    response: ({ query }) => {
-      console.log("query", query);
-      
-      const routes = handleRoutesData(query['isDev'] === 'true');
-      return { code: 200, data: routes, msg: 'success' };
+    response: ({ query, headers }, req, res) => {
+      if (!headers.authorization) {
+        res.statusCode = 401;
+        return { code: 401, data: null, msg: '请先登录' };
+      } else {
+        const routes = handleRoutesData(query['isDev'] === 'true');
+        return { code: 200, data: routes, msg: 'success' };
+      }
     },
   },
 ]);

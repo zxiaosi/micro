@@ -14,21 +14,21 @@ interface StorageResult extends Required<Readonly<StorageProps>> {
    * @param key 缓存键
    * @param value 缓存值
    */
-  readonly setItem: (key: string, value: any) => void;
+  setItem: (key: string, value: any) => void;
   /**
    * 获取缓存
    * @param key 缓存键
    */
-  readonly getItem: (key: string) => any;
+  getItem: (key: string) => any;
   /**
    * 删除缓存
    * @param key 缓存键
    */
-  readonly removeItem: (key: string) => void;
+  removeItem: (key: string) => void;
   /**
    * 清除所有缓存
    */
-  readonly clear: () => void;
+  clear: () => void;
 }
 /** 插件名称 */
 const pluginName = 'storage';

@@ -3,7 +3,7 @@ import { sdk } from '@zxiaosi/sdk';
 import { ComponentType } from 'react';
 
 function App() {
-  const Root = sdk.app.getRootComponent?.() as ComponentType;
+  const Root = sdk.app.getComponent?.('Root') as ComponentType;
 
   return (
     <GlobalFullscreenProvider>

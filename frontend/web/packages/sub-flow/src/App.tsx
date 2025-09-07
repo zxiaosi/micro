@@ -25,7 +25,7 @@ function App({ basename, container }: any) {
       {...antdConfig}
       getPopupContainer={() => container || document.body}
     >
-      <Suspense>
+      <Suspense fallback={<>Loading...</>}>
         <RouterProvider
           router={createBrowserRouter(routes, {
             basename: basename ? `/${basename}` : '/',

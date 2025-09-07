@@ -1,7 +1,10 @@
 import beian from '@/assets/beian.png';
+import { loginApi } from '@/service';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { sdk } from '@zxiaosi/sdk';
+import { Button, ConfigProvider, Form, Input, message, theme } from 'antd';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './index.less';
 import { qrcodeBase } from './qrcode';
 
@@ -58,6 +61,7 @@ const Login = () => {
 
   const [qrCode, setQrCode] = useState('');
   const [qrcodeStatus, setQrcodeStatus] = useState('-1');
+  const [loading, setLoading] = useState(false);
 
   /** 跳转去外部链接 */
   const handleWindowOpen = (url?: string) => {
@@ -88,37 +92,91 @@ const Login = () => {
     //   setQrCode(res.data.data);
     // });
     setQrCode(qrcodeBase);
-    subscribeQrcodeStatus();
+    // subscribeQrcodeStatus();
 
     return () => {
       eventRef.current?.close();
     };
   }, []);
 
+  /** 登录成功 */
+  const handleFinish = async (values: any) => {
+    try {
+      setLoading(() => true);
+      const resp = await loginApi(values);
+      setLoading(() => false);
+
+      const token = resp?.data?.token;
+      if (!token) return message.error('缺少token');
+
+      localStorage.setItem('token', token);
+      sdk.client.navigate('/'); // 防止页面重新加载
+      await sdk.app.initData();
+    } catch (err) {
+      setLoading(() => false);
+      console.error('登录异常---', err);
+      message.error('登录异常');
+    }
+  };
+
   return (
     <div className="login-page">
       {/* 内容 */}
       <div className="login-page-content-wapper">
         <div className="login-page-content">
-          <Link to={'/'}>回首页</Link>
-          <div className="login-page-content-header">小四先生的栈</div>
-
-          <div className="login-page-content-form">
-            <div>用户名</div>
-            <div>密码</div>
+          <div className="login-page-content-header">
+            {import.meta.env.VITE_APP_TITLE}
           </div>
 
-          <div className="login-page-content-button">立即登录</div>
+          <div className="login-page-content-form">
+            <ConfigProvider theme={{ algorithm: theme.defaultAlgorithm }}>
+              <Form autoComplete="off" onFinish={handleFinish}>
+                <Form.Item
+                  name="username"
+                  initialValue={'admin'}
+                  required={false}
+                  rules={[{ required: true, message: '请输入用户名!' }]}
+                >
+                  <Input prefix={<UserOutlined />} placeholder="用户名" />
+                </Form.Item>
+
+                <Form.Item
+                  name="password"
+                  initialValue={'123456'}
+                  required={false}
+                  rules={[{ required: true, message: '请输入密码!' }]}
+                >
+                  <Input.Password
+                    prefix={<LockOutlined />}
+                    placeholder="密码"
+                  />
+                </Form.Item>
+
+                <Form.Item label={null}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    loading={loading}
+                  >
+                    立即登录
+                  </Button>
+                </Form.Item>
+              </Form>
+            </ConfigProvider>
+          </div>
+
+          <div className="login-page-content-button"></div>
 
           <div className="login-page-content-tip">
             <span>忘记密码？</span>
             <span>注册账号</span>
           </div>
 
-          <div className="login-page-content-qrcode">
+          {/* <div className="login-page-content-qrcode">
             {loginStatus[qrcodeStatus]}
             {qrCode && <img src={'data:image/jpeg;base64,' + qrCode} />}
-          </div>
+          </div> */}
         </div>
       </div>
 

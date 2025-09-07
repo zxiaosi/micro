@@ -1,4 +1,5 @@
 import sdk from '@/core';
+import { LocaleProps, ThemeProps } from '@/types';
 import {
   getDefaultLocaleUtil,
   getDefaultThemeUtil,
@@ -8,12 +9,10 @@ import {
 } from '@/utils';
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
-import { memo, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { RawIntlProvider } from 'react-intl';
 import {
   BrowserRouter,
-  HashRouter,
-  MemoryRouter,
   Navigate,
   RouteObject,
   useLocation,
@@ -23,22 +22,14 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-/** 路由渲染组件 */
-const Element = memo(({ router }: { router: RouteObject[] }) => {
-  const element = useRoutes(router || []);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // 注入父组件的 navigate 方法到 SDK
-    sdk.register({ client: { navigate, location } });
-  }, [location]);
-
-  return <>{element}</>;
-});
-
 /** 根组件 */
 const Root = () => {
+  const defaulRoutes: RouteObject[] = [
+    { path: '/login', element: sdk.app.renderComponent('Login') },
+    { path: '*', element: sdk.app.renderComponent('NotFound') },
+    ...sdk.app.customRoutes,
+  ];
+
   const [
     locale,
     setTheme,
@@ -60,102 +51,110 @@ const Root = () => {
     ]),
   );
 
-  const [router, setRouter] = useState<RouteObject[]>(undefined);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  /** 获取路由数据 */
-  const getRoutes = async () => {
+  const [loading, setLoading] = useState(false);
+  const [router, setRouter] = useState<RouteObject[]>(defaulRoutes);
+
+  const element = useRoutes(router || []);
+
+  /** 设置图标组件 */
+
+  /** 设置主题和国际化 */
+  const setThemeLocale = (apiTheme?: ThemeProps, apiLocale?: LocaleProps) => {
+    setTheme(apiTheme || getDefaultThemeUtil(sdk));
+    setLocale(apiLocale || getDefaultLocaleUtil(sdk));
+    setAntdConfig(sdk.app.antdConfig);
+  };
+
+  /** 初始化数据方法 */
+  const initData = async () => {
     try {
-      // 获取路由数据
-      const resp = await sdk.api.getRoutesApi();
+      // 获取数据
+      setLoading(() => true);
+      const [{ data: userInfo = {} }, { data: routes = [] }] =
+        await Promise.all([sdk.api.getUserInfoApi(), sdk.api.getRoutesApi()]);
+      setLoading(() => false);
+
+      // 设置主题和语言
+      const { theme, locale } = userInfo?.settings || {};
+      setThemeLocale(theme, locale);
 
       // 处理路由数据
-      const { microApps, subRoutes } = handleRoutesUtil(resp?.data || [], sdk);
+      const { microApps, menuData } = handleRoutesUtil(routes, sdk);
 
-      // 子应用添加 loader
-      const newMicroApps = microApps.map((item) => {
-        return {
-          ...item,
-          props: { sdk },
-          loader: (loading) => setMicroAppState(loading),
-        };
-      });
+      // 注册微应用
+      registerMicroApps(microApps, lifeCyclesUtil);
+
+      // 启动 qiankun
+      start();
 
       // 获取首页路径
-      const firstPath = getFirstPagePathUtil(subRoutes);
-
-      const Login = sdk.app.getComponent('Login');
-      const Layout = sdk.app.getComponent('Layout'); // 使用懒加载会导致 Root 组件渲染多次
-      const NotFound = sdk.app.getComponent('NotFound');
+      const firstPath = getFirstPagePathUtil(menuData);
 
       // 合并所有路由
       const allRoutes: RouteObject[] = [
-        { path: '/login', element: <Login /> },
+        ...defaulRoutes,
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          element: <Layout />,
-          children: subRoutes,
+          element: sdk.app.renderComponent('Layout'),
+          children: menuData,
           errorElement: <>找不到页面</>,
         },
-        { path: '*', element: <NotFound /> },
       ];
-
-      // 注册微应用
-      registerMicroApps(newMicroApps, lifeCyclesUtil);
-
-      // 启动 qiankun
-      start({ sandbox: true, singular: true, urlRerouteOnly: true });
 
       setRouter(allRoutes);
 
       // 注入属性
-      sdk.register({
-        app: {
-          routes: allRoutes,
-          microApps: newMicroApps,
-          menuData: subRoutes,
-        },
-      });
+      sdk.register({ app: { allRoutes, microApps, menuData, ...userInfo } });
     } catch (error) {
-      console.error('获取路由信息错误, 请配置路由接口:', error);
+      setLoading(() => false);
+      console.error('初始化数据错误:', error);
     }
   };
 
   // 设置初始值
   useEffect(() => {
-    const deafultTheme = getDefaultThemeUtil(sdk);
-    setTheme(deafultTheme);
+    sdk.register({ app: { initData } });
 
-    const deafultLocale = getDefaultLocaleUtil(sdk);
-    setLocale(deafultLocale);
-
-    setAntdConfig(sdk.app.antdConfig);
-
-    getRoutes();
+    // 如果时登录页面
+    if (window.location.pathname === '/login') {
+      setThemeLocale();
+    } else {
+      initData();
+    }
   }, []);
 
-  if (!router) return <>Loading...</>;
+  useEffect(() => {
+    // 注入父组件的 navigate 方法到 SDK
+    sdk.register({ client: { navigate, location } });
+  }, [location]);
 
-  const routerMode = sdk.app.routerMode || 'browser';
-  const RouterWrapper =
-    routerMode === 'memory'
-      ? MemoryRouter
-      : routerMode === 'hash'
-        ? HashRouter
-        : BrowserRouter;
+  if (loading) return <>Loading...</>;
 
   return (
     <RawIntlProvider value={intl}>
       <ConfigProvider {...antdConfig}>
-        <RouterWrapper
-          basename="/"
-          future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
-        >
-          <Element router={router} />
-        </RouterWrapper>
+        <Suspense fallback={<>Loading...</>}>{element}</Suspense>
       </ConfigProvider>
     </RawIntlProvider>
   );
 };
 
-export default Root;
+/**
+ * 根组件Provider
+ * - 为什么要用 Provider 包一层？
+ * - 要在 sdk 中注入 navigate 方法, 防止 login、404 等页面获取不到 navigate 方法
+ */
+const RootProvider = () => (
+  <BrowserRouter
+    basename="/"
+    future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
+  >
+    <Root />
+  </BrowserRouter>
+);
+
+export default RootProvider;

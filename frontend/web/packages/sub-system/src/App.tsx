@@ -26,7 +26,7 @@ function App({ basename }: any) {
 
   return (
     <ConfigProvider {...antdConfig}>
-      <Suspense>
+      <Suspense fallback={<>Loading...</>}>
         <RouterProvider
           router={createBrowserRouter(routes, {
             basename: basename ? `/${basename}` : '/',

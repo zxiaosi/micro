@@ -1,6 +1,7 @@
 // 使用按需加载的方式引入 lodash
 import isEmpty from 'lodash/isEmpty';
 
+import sdk from '@/core';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -75,6 +76,9 @@ class Http {
   defaultRequestInterceptor() {
     this.instance.interceptors.request.use(
       function (config: InternalAxiosRequestConfig) {
+        const authorization = localStorage.getItem('token');
+        config.headers.Authorization = authorization;
+        config.headers.lang = sdk.app.locale;
         return config;
       },
       function (error: AxiosError) {
@@ -105,10 +109,18 @@ class Http {
           const { status, data } = response as AxiosResponse;
 
           if (status == 401) {
-            localStorage.clear(); // 清除本地存储
-            window.location.href = '/login';
+            sdk.register({
+              app: {
+                settings: {},
+                roles: [],
+                permissions: [],
+                user: {},
+              },
+            });
+            localStorage.removeItem('token'); // 清除本地存储
+            sdk.client.navigate('/login'); // 跳转登录页
           }
-          if (isShowFailMsg) console.error(data.msg);
+          if (isShowFailMsg) console.error('请求出错--', config.url, data.msg);
         } else {
           if (isShowFailMsg)
             console.error(`请求超时或服务器异常，请检查网络或联系管理员！`);
