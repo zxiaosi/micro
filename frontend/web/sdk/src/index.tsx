@@ -8,6 +8,8 @@ import { I18nPlugin } from '@/plugins/i18n';
 import { StoragePlugin } from '@/plugins/storage';
 import { StorePlugin } from '@/plugins/store';
 
+import { useIntl } from '@/common/useIntl';
+
 export {
   ApiPlugin,
   AppPlugin,
@@ -17,4 +19,5 @@ export {
   sdk,
   StoragePlugin,
   StorePlugin,
+  useIntl,
 };

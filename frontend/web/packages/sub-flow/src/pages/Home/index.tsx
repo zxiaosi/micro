@@ -1,4 +1,4 @@
-import { sdk } from '@zxiaosi/sdk';
+import { sdk, useIntl } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -6,16 +6,17 @@ import './index.less';
 
 /** 首页 */
 const Home = () => {
-  const [theme, setTheme, locale, setLocale, intl] = useStore(
+  const [theme, setTheme, locale, setLocale] = useStore(
     sdk.store,
     useShallow((state) => [
       state.theme,
       state.setTheme,
       state.locale,
       state.setLocale,
-      state.intl,
     ]),
   );
+
+  const { formatMessage } = useIntl();
 
   /** 更新主题 */
   const handleChangeTheme = () => {
@@ -57,8 +58,8 @@ const Home = () => {
         <Card title="Antd 语言包、React Intl 国际化">
           <Space>
             <DatePicker />
-            {intl.formatMessage({ id: 'test' })}
-            {intl.formatMessage({ id: 'hello' })}
+            {formatMessage({ id: 'test' })}
+            {formatMessage({ id: 'hello' })}
           </Space>
         </Card>
 

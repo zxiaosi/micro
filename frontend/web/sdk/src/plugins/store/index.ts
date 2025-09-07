@@ -3,7 +3,6 @@ import merge from 'lodash/merge';
 
 import { LocaleProps, Plugin, SdkResult, ThemeProps } from '@/types';
 import { theme as antdTheme, ConfigProviderProps } from 'antd';
-import { createIntl, IntlShape } from 'react-intl';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
@@ -24,13 +23,6 @@ interface StoreProps {
   microAppState: boolean;
   /** 设置子应用加载状态 */
   setMicroAppState: (state: boolean) => void;
-  /**
-   * React Intl
-   * - 如果项目不使用 React Compiler, 可以直接使用 sdk.i18n.intl
-   * - 默认应该在根组件去监听 locale, 然后传给 IntlProvider, 但是 IntlProvider 不能有多个
-   * - 直接返回 sdk.i18n.intl 会被 React Compiler 优化, 导致组件不刷新, 使用 sdk.store.intl 代替
-   */
-  intl: IntlShape;
 }
 
 type StoreResult = ReturnType<typeof initStore>;
@@ -59,17 +51,7 @@ const initStore = (sdk: SdkResult) =>
       locale: null,
       setLocale: (locale) => {
         set(() => ({ locale })); // 自动合并其他
-
-        // intl 实例
-        const intl = createIntl(
-          { locale, messages: sdk.i18n.intlConfig[locale] },
-          sdk.i18n.cache,
-        );
-
-        // 直接设置 intl
-        get().intl = intl;
-
-        sdk.register({ app: { locale }, i18n: { intl } }); // 注入属性
+        sdk.register({ app: { locale } }); // 注入属性
 
         // 设置属性
         localStorage.setItem('locale', locale);
@@ -95,8 +77,6 @@ const initStore = (sdk: SdkResult) =>
 
       microAppState: false,
       setMicroAppState: (microAppState) => set(() => ({ microAppState })),
-
-      intl: null,
     })),
   );
 

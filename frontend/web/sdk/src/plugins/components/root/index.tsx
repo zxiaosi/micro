@@ -10,7 +10,7 @@ import {
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
 import { Suspense, useEffect, useState } from 'react';
-import { RawIntlProvider } from 'react-intl';
+import { createIntl, RawIntlProvider } from 'react-intl';
 import {
   BrowserRouter,
   Navigate,
@@ -30,15 +30,7 @@ const Root = () => {
     ...sdk.app.customRoutes,
   ];
 
-  const [
-    locale,
-    setTheme,
-    setLocale,
-    antdConfig,
-    setAntdConfig,
-    setMicroAppState,
-    intl,
-  ] = useStore(
+  const [locale, setTheme, setLocale, antdConfig, setAntdConfig] = useStore(
     sdk.store,
     useShallow((state) => [
       state.locale,
@@ -46,8 +38,6 @@ const Root = () => {
       state.setLocale,
       state.antdConfig,
       state.setAntdConfig,
-      state.setMicroAppState,
-      state.intl,
     ]),
   );
 
@@ -117,6 +107,7 @@ const Root = () => {
 
   // 设置初始值
   useEffect(() => {
+    // 注入属性
     sdk.register({ app: { initData } });
 
     // 如果时登录页面
@@ -132,7 +123,16 @@ const Root = () => {
     sdk.register({ client: { navigate, location } });
   }, [location]);
 
-  if (loading) return <>Loading...</>;
+  if (!locale || loading) return <>Loading...</>;
+
+  // 创建 Intl 对象
+  const intl = createIntl(
+    { locale, messages: sdk.i18n.intlConfig[locale] },
+    sdk.i18n.cache,
+  );
+
+  // 注入属性
+  sdk.register({ i18n: { intl } });
 
   return (
     <RawIntlProvider value={intl}>

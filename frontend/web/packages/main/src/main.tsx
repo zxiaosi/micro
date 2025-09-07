@@ -20,10 +20,12 @@ import './index.less';
 
 const Login = lazy(() => import('@/pages/login'));
 const Dashboard = lazy(() => import('@/pages/dashboard/index.tsx'));
+const Guide = lazy(() => import('@/pages/guide'));
 
 sdk
   .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi, loginApi })
   .use(AppPlugin, {
+    customRoutes: [{ path: '/guide', element: <Guide /> }],
     antdConfig: { theme },
     proLayoutConfig: {
       layout: 'mix',
