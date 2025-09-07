@@ -1,3 +1,5 @@
+import { defineFakeRoute } from 'vite-plugin-fake-server/client';
+
 const resources = [
   {
     key: '1',
@@ -89,4 +91,13 @@ const resources = [
   },
 ];
 
-export default { code: 200, data: resources, msg: 'success' };
+export default defineFakeRoute([
+  {
+    url: '/getResources',
+    method: 'get',
+    timeout: 1000, // 模拟延时
+    response: ({ query }) => {
+      return { code: 200, data: resources, msg: 'success' };
+    },
+  },
+]);

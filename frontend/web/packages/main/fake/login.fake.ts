@@ -1,8 +1,8 @@
-import { MockMethod } from 'vite-plugin-mock';
+import { defineFakeRoute } from 'vite-plugin-fake-server/client';
 
-export default [
+export default defineFakeRoute([
   {
-    url: '/api/login',
+    url: '/login',
     method: 'post',
     timeout: 1000, // 模拟延时
     response: ({ query }) => {
@@ -15,4 +15,4 @@ export default [
       };
     },
   },
-] as MockMethod[];
+]);

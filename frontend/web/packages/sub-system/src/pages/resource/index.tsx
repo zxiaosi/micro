@@ -1,7 +1,6 @@
 import { sdk } from '@zxiaosi/sdk';
 import { Button, Spin, Tree, type TreeDataNode, type TreeProps } from 'antd';
 import { useState } from 'react';
-import resourcesData from './getResource';
 import './index.less';
 
 // 递归获取所有 key
@@ -30,12 +29,7 @@ const Resource = () => {
   /** 获取接口 */
   const getResources = async () => {
     setLoading(true);
-    let resp = null;
-    if (import.meta.env.DEV) {
-      resp = await sdk.api.request('/getResources');
-    } else {
-      resp = resourcesData;
-    }
+    const resp = await sdk.api.request('/getResources');
     const data = resp?.data || ([] as any);
     setTreeData(data);
     setExpandedKeys(getAllKeys(data));
