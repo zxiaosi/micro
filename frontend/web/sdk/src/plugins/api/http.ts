@@ -108,7 +108,7 @@ class Http {
         if (response) {
           const { status, data } = response as AxiosResponse;
 
-          if (status == 401) {
+          if (data.code == 401) {
             sdk.register({
               app: {
                 settings: {},
