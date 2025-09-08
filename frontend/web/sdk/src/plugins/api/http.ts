@@ -76,9 +76,28 @@ class Http {
   defaultRequestInterceptor() {
     this.instance.interceptors.request.use(
       function (config: InternalAxiosRequestConfig) {
-        const authorization = localStorage.getItem('token');
-        config.headers.Authorization = authorization;
-        config.headers.lang = sdk.app.locale;
+        const token = localStorage.getItem('token');
+
+        // 设置请求唯一标识
+        const requestId = [
+          config.url,
+          config.method,
+          JSON.stringify(config.params),
+          JSON.stringify(config.data),
+        ].join('&');
+
+        // 取消重复请求
+        const oldController = sdk.api.controllers.get(requestId);
+        if (oldController) oldController.abort();
+
+        // 创建取消请求控制器
+        const controller = new AbortController();
+        sdk.api.controllers.set(requestId, controller);
+
+        config['requestId'] = requestId; // 记录请求id
+        config.signal = controller.signal; // 取消请求标识
+        config.headers.Authorization = token; // 添加token到请求头
+        config.headers.lang = sdk.app.locale; // 添加语言到请求头
         return config;
       },
       function (error: AxiosError) {
@@ -97,7 +116,9 @@ class Http {
 
         const { code, msg } = data;
 
-        if (code !== 200 && isShowFailMsg) console.error(msg);
+        if (code !== 200 && isShowFailMsg) {
+          console.error('response error: ', config.url, msg);
+        }
 
         if (code == 401) {
           sdk.register({
@@ -112,19 +133,24 @@ class Http {
           sdk.client.navigate(sdk.app.loginPath); // 跳转登录页
         }
 
+        sdk.api.controllers.delete(config['requestId']);
+
         return isOriginalData ? response : response.data;
       },
       function (error: AxiosError) {
         const { response, config } = error;
         const { isShowFailMsg } = config as ApiRequestOption;
 
+        // 如果是取消请求，则不显示错误信息
+        if (axios.isCancel(error)) return Promise.reject(error);
+
         if (response) {
           const { status, data } = response as AxiosResponse;
-
-          if (isShowFailMsg) console.error('请求出错--', config.url, data.msg);
         } else {
-          if (isShowFailMsg)
-            console.error(`请求超时或服务器异常，请检查网络或联系管理员！`);
+        }
+
+        if (isShowFailMsg) {
+          console.error('response error: ', config.url, error);
         }
 
         return Promise.reject(error);

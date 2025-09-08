@@ -10,6 +10,9 @@ interface ApiProps {
   /** Axios配置 */
   config?: ApiConfig;
 
+  /** 取消请求控制器 */
+  controllers?: Map<string, AbortController>;
+
   /**
    * 自定义请求实例
    * - 将替代 SDK 内置的请求实例
@@ -55,6 +58,9 @@ const pluginName = 'api';
  * - 内置了请求, 通过 sdk.api.request 发起请求
  * - 可通过外部传入 instance 自定义请求实例
  * - 预置了获取用户信息, 获取路由, 登录接口等接口, 以便组件使用
+ * @example sdk.api.request('/getTemp', { method: 'POST', ... })
+ * @example sdk.api.request('/getTemp', { method: 'POST', isOriginalData: true }) // 返回原始数据
+ * @example sdk.api.request('/getTemp', { method: 'POST', isShowFailMsg: false }) // 不显示错误信息
  */
 const ApiPlugin: Plugin<'api'> = {
   name: pluginName,
@@ -72,7 +78,9 @@ const ApiPlugin: Plugin<'api'> = {
     // 默认插件配置
     const defaultOptions = {
       config: axiosConfig,
+      controllers: new Map(),
       instance: null,
+
       getUserInfoApi: async () => {
         return await sdk.api.request('/getUserInfo');
       },
@@ -85,8 +93,8 @@ const ApiPlugin: Plugin<'api'> = {
           data: values,
         });
       },
-      request: async (url, options = {}) => {
-        return await instance.request({
+      request: (url, options = {}) => {
+        return instance.request({
           url,
           isOriginalData: false,
           isShowFailMsg: true,
