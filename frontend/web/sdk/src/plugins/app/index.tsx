@@ -19,7 +19,9 @@ interface AppProps {
   locale?: LocaleProps;
 
   /** 登录页路由 */
-  loginRoute?: string;
+  loginPath?: string;
+  /** 登录后跳转的路由 */
+  defaultPath?: string;
   /** 
    * 自定义路由信息 
    * - 会合并到 allRoutes 中 
@@ -85,7 +87,8 @@ const AppPlugin: Plugin<'app'> = {
       theme: null,
       locale: null,
 
-      loginRoute: '/login',
+      loginPath: '/login',
+      defaultPath: '/',
       allRoutes: [],
       customRoutes: [],
       microApps: [],

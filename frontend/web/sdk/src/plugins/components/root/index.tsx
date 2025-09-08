@@ -24,8 +24,10 @@ import { useShallow } from 'zustand/shallow';
 
 /** 根组件 */
 const Root = () => {
+  const loginPath = sdk.app.loginPath;
+
   const defaulRoutes: RouteObject[] = [
-    { path: '/login', element: sdk.app.renderComponent('Login') },
+    { path: loginPath, element: sdk.app.renderComponent('Login') },
     { path: '*', element: sdk.app.renderComponent('NotFound') },
     ...sdk.app.customRoutes,
   ];
@@ -81,7 +83,10 @@ const Root = () => {
       start();
 
       // 获取首页路径
-      const firstPath = getFirstPagePathUtil(menuData);
+      const firstPath =
+        sdk.app.defaultPath === '/'
+          ? getFirstPagePathUtil(menuData)
+          : sdk.app.defaultPath;
 
       // 合并所有路由
       const allRoutes: RouteObject[] = [
@@ -98,7 +103,15 @@ const Root = () => {
       setRouter(allRoutes);
 
       // 注入属性
-      sdk.register({ app: { allRoutes, microApps, menuData, ...userInfo } });
+      sdk.register({
+        app: {
+          allRoutes,
+          microApps,
+          menuData,
+          defaultPath: firstPath,
+          ...userInfo,
+        },
+      });
     } catch (error) {
       setLoading(() => false);
       console.error('初始化数据错误:', error);
@@ -108,14 +121,15 @@ const Root = () => {
   // 设置初始值
   useEffect(() => {
     // 注入属性
-    sdk.register({ app: { initData } });
+    sdk.register({ app: { initData, allRoutes: defaulRoutes } });
+
+    const paths = sdk.app.customRoutes?.map((item) => item.path);
+    const pathName = window.location.pathname;
+    const noNeedAuth = [loginPath, ...paths]?.includes(pathName);
 
     // 如果时登录页面
-    if (window.location.pathname === '/login') {
-      setThemeLocale();
-    } else {
-      initData();
-    }
+    if (noNeedAuth) setThemeLocale();
+    else initData();
   }, []);
 
   useEffect(() => {

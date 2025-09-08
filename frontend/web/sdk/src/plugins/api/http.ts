@@ -99,6 +99,19 @@ class Http {
 
         if (code !== 200 && isShowFailMsg) console.error(msg);
 
+        if (code == 401) {
+          sdk.register({
+            app: {
+              settings: {},
+              roles: [],
+              permissions: [],
+              user: {},
+            },
+          });
+          localStorage.removeItem('token'); // 清除本地存储
+          sdk.client.navigate(sdk.app.loginPath); // 跳转登录页
+        }
+
         return isOriginalData ? response : response.data;
       },
       function (error: AxiosError) {
@@ -108,18 +121,6 @@ class Http {
         if (response) {
           const { status, data } = response as AxiosResponse;
 
-          if (data.code == 401) {
-            sdk.register({
-              app: {
-                settings: {},
-                roles: [],
-                permissions: [],
-                user: {},
-              },
-            });
-            localStorage.removeItem('token'); // 清除本地存储
-            sdk.client.navigate('/login'); // 跳转登录页
-          }
           if (isShowFailMsg) console.error('请求出错--', config.url, data.msg);
         } else {
           if (isShowFailMsg)

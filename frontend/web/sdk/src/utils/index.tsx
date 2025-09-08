@@ -57,6 +57,8 @@ export const transformRoutesUtil = (
   microAppsMap: MicroAppsMap,
   sdk: SdkResult,
 ) => {
+  if (!routes || routes?.length === 0) return [];
+
   return routes.map((item) => {
     let element = null; //
 
@@ -109,6 +111,8 @@ export const transformRoutesUtil = (
  * @param routes 路由
  */
 export function replacePathUtil(routes: any[]) {
+  if (!routes || routes?.length === 0) return [];
+
   return routes.map((item) => {
     const { path } = item;
     if (path) {

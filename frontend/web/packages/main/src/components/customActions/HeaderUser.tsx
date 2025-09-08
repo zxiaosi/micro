@@ -1,6 +1,6 @@
 import { UserOutlined } from '@ant-design/icons';
 import { sdk } from '@zxiaosi/sdk';
-import { Dropdown, Space } from 'antd';
+import { Dropdown } from 'antd';
 import { memo } from 'react';
 import './index.less';
 
@@ -37,10 +37,8 @@ const HeaderUser = () => {
       arrow={true}
     >
       <div className="header-user">
-        <Space>
-          <UserOutlined />
-          {sdk.app.user?.nickName}
-        </Space>
+        <UserOutlined />
+        {sdk.app.user?.nickName}
       </div>
     </Dropdown>
   );
