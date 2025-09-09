@@ -18,6 +18,9 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.less';
 
+import { setupProdMockServer } from './mockProdServer';
+setupProdMockServer();
+
 const Login = lazy(() => import('@/pages/login'));
 const Dashboard = lazy(() => import('@/pages/dashboard/index.tsx'));
 const Guide = lazy(() => import('@/pages/guide'));

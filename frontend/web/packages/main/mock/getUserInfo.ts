@@ -1,4 +1,4 @@
-import { defineFakeRoute } from 'vite-plugin-fake-server/client';
+import { MockMethod } from 'vite-plugin-mock';
 
 const useInfo = {
   user: {
@@ -21,9 +21,9 @@ const useInfo = {
   },
 };
 
-export default defineFakeRoute([
+export default [
   {
-    url: '/getUserInfo',
+    url: '/api/getUserInfo',
     method: 'get',
     timeout: 1000, // 模拟延时
     response: ({ query, headers }) => {
@@ -34,4 +34,4 @@ export default defineFakeRoute([
       }
     },
   },
-]);
+] as MockMethod[];

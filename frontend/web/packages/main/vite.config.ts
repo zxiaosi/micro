@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { defineConfig, loadEnv, type ConfigEnv } from 'vite';
-import { vitePluginFakeServer } from 'vite-plugin-fake-server';
+import { viteMockServe } from 'vite-plugin-mock';
 import { name } from './package.json';
 
 // https://vite.dev/config/
@@ -22,13 +22,17 @@ export default ({ mode }: ConfigEnv) => {
           plugins: [['babel-plugin-react-compiler', { target: '19' }]],
         },
       }),
-      vitePluginFakeServer({
-        basename: 'api',
-        enableDev: true,
-        enableProd: true,
-        build: true,
-        watch: true,
+      // https://blog.csdn.net/XH_jing/article/details/150554654
+      viteMockServe({
+        mockPath: 'mock',
+        localEnabled: true,
+        prodEnabled: true,
+        watchFiles: true,
         logger: true,
+        injectCode: `
+            import { setupProdMockServer } from './mockProdServer';
+            setupProdMockServer();
+        `,
       }),
     ],
     resolve: {

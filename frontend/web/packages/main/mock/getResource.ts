@@ -1,4 +1,4 @@
-import { defineFakeRoute } from 'vite-plugin-fake-server/client';
+import { MockMethod } from 'vite-plugin-mock';
 
 const resources = [
   {
@@ -91,12 +91,12 @@ const resources = [
   },
 ];
 
-export default defineFakeRoute([
+export default [
   {
-    url: '/getResources',
+    url: '/api/getResources',
     method: 'get',
     timeout: 1000, // 模拟延时
-    response: ({ query, headers }, req, res) => {
+    response: ({ query, headers }) => {
       if (!headers.authorization) {
         return { code: 401, data: null, msg: '请先登录' };
       } else {
@@ -104,4 +104,4 @@ export default defineFakeRoute([
       }
     },
   },
-]);
+] as MockMethod[];

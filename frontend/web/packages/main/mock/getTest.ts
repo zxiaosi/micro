@@ -1,9 +1,9 @@
 import mockjs from 'mockjs';
-import { defineFakeRoute } from 'vite-plugin-fake-server/client';
+import { MockMethod } from 'vite-plugin-mock';
 
-export default defineFakeRoute([
+export default [
   {
-    url: '/test',
+    url: '/api/test',
     method: 'get',
     timeout: 3 * 1000, // 模拟延时
     response: ({ query }) => {
@@ -14,4 +14,4 @@ export default defineFakeRoute([
       };
     },
   },
-]);
+] as MockMethod[];
