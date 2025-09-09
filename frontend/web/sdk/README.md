@@ -1,47 +1,134 @@
-## SDK
+## SDK 实现功能
 
-### api 模块
+### 挂载 `SDK`
 
-- `axios` 请求配置 `config`
+- 主应用, `use(Plugin, options)`, `mount('sdk')` 使用插件, 挂载到 window 上
 
-- 常用请求 `getUserInfoApi`、`getRoutesApi`
+```js
+// main.ts
 
-### app 模块
+import { ApiPlugin, sdk } from '@es/sdk';
 
-- `env` 环境变量
+sdk
+  .use(ApiPlugin, {
+    config: {
+      baseURL: '/api',
+    },
+  })
+  .mount('sdk');
+```
 
-- `location`、`navigate`, 解决应用之间跳转问题
+- 子应用 `mount('sdk')`, 从 window 上找实例
 
-- 其他通用配置
+```js
+// main.ts
 
-### components 模块
+import { sdk } from '@es/sdk';
 
-- 外部传入组件, 主要是获取路由组件
+// qiankun 生命周期
+export async function mount(props: any) {
+  sdk.mount('sdk');
+  render(props);
+}
+```
 
-### hooks 模块
+### `Axios` 网络请求
 
-- `useRoot` 获取 `sdk` 信息
+- 项目中调用 `sdk.api.request`
 
-- `useMicroState` 获取 `子应用加载状态` 信息
+### `qiankun` 微前端
 
-- `useTheme` 获取 `主题` 信息
+- 主应用使用 `ApiPlugin` 插件的时候, 传入 `getRoutesApi` 接口, SDK 会自动调用并注册路由信息
 
-### router 模块
+- 主应用调用 `sdk.app.getRootComponent()` 获取根组件
 
-- 路由信息、菜单信息、子应用信息
+### `zustand` 全局状态管理
 
-### storage 模块
+- 项目中通过 `useStore(sdk.store, (state) => state.xxx)` 订阅
 
-- 通用 localStorage 封装
+### 国际化
 
-### store 模块
+- 主应用使用 `I18nPlugin` 插件的时候, 传入 `intlConfig`(ReactIntl-Message) 和 `loadLocale`(antd) 配置
 
-- 全局状态管理
+- 项目中通过 `sdk.i18n.intl.formatMessage` 获取转换后的语言
 
-## ui 模块
+- 或者获取通过 `const intl = useIntl()` 的方式获取
 
-- `ProLayout` 模块
+### 图标库
 
-## utils 模块
+- 目前两种方案
 
-- 通用方法
+- 方案一: 封装成单独的 `@es/icons` 包, 优点方便使用, 缺点会导致包体积一直增大
+
+- 方案二: 主应用使用 `AppPlugin` 插件的时候, 传入 `iconfontUrl` 地址, `SDK` 会自动加载图标库, 项目中通过从 `SDK` 中导出 `<IconFont />` 使用图标, 优点是不用打包, 确定是会报 `React 多实例错误`, 需要排除依赖
+
+### 路由动态添加
+
+- 主应用使用 `AppPlugin` 插件的时候, 传入 `customRoutes` 属性, `SDK` 会注册路由信息, 当前只支持最外层路由, 子路由不支持
+
+### 待开发
+
+- [] echart 样式
+- [] 面包屑
+- [] ClI 工具
+
+## 如何开发一个自己的插件？
+
+1. 在 `/src/plugins` 下新建一个文件夹,比如 `customPlugin`, 然后在 `index.ts` 中导出插件的构造函数
+
+```ts
+// 按需引入
+import merge from 'lodash/merge';
+
+interface CustomProps {}
+
+interface CustomResult extends Required<Readonly<CustomProps>> {}
+
+/** 插件名称 */
+const pluginName = 'customPlugin';
+
+/**
+ * MyPlugin 插件
+ * - 详见配置 {@link CustomProps} {@link CustomResult}
+ */
+const CustomPlugin: Plugin<'customPlugin'> = {
+  name: pluginName,
+  install(sdk, options = {}) {
+    // 默认插件配置
+    const defaultOptions = {} satisfies CustomResult;
+
+    sdk[pluginName] = merge({}, defaultOptions, options);
+  },
+};
+
+export { CustomPlugin, CustomProps, CustomResult };
+```
+
+2. 在 `/src/types` 中的 `InstanceProps` 和 `InstanceResult` 加上自己的插件类型定义
+
+```ts
+interface InstanceProps {
+  myPlugin?: CustomProps;
+}
+
+interface InstanceResult {
+  myPlugin: CustomResult;
+}
+```
+
+3. 在 `/src/core/index.ts` 中定义插件变量
+
+```ts
+class Sdk implements SdkResult {
+  name: BaseProps['name'];
+  plugins: BaseProps['plugins'];
+
+  myPlugin: SdkResult['myPlugin'];
+}
+```
+
+4. 在 `/src/index.ts` 导出插件
+
+```ts
+export { CustomPlugin, Sdk };
+```

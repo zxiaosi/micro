@@ -165,13 +165,13 @@ export const getDefaultThemeUtil = (sdk): ThemeProps => {
 
 /** 获取国际化默认值 */
 export const getDefaultLocaleUtil = (sdk): LocaleProps => {
-  // localStorage > sdk中主题 > 浏览器语言 > 默认
+  // localStorage > sdk中国际化 > 浏览器语言 > 默认
 
   // 1. localStorage
   const localLocale = localStorage.getItem('locale') as LocaleProps;
   if (localLocale) return localLocale;
 
-  // 2. sdk中主题
+  // 2. sdk中国际化
   const sdkLocale = sdk.app?.locale;
   if (sdkLocale) return sdkLocale;
 
