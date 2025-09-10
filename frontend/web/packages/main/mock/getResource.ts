@@ -98,9 +98,9 @@ export default [
     timeout: 1000, // 模拟延时
     response: ({ query, headers }) => {
       if (!headers.authorization) {
-        return { code: 401, data: null, msg: '请先登录' };
+        return { code: 200401, data: null, msg: '请先登录' };
       } else {
-        return { code: 200, data: resources, msg: 'success' };
+        return { code: 0, data: resources, msg: 'success' };
       }
     },
   },

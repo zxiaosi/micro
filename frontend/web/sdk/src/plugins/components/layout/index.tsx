@@ -1,7 +1,6 @@
 import sdk from '@/core';
-import { replacePathUtil } from '@/utils';
 import { ProLayout } from '@ant-design/pro-layout';
-import { memo, useMemo } from 'react';
+import { memo, Suspense, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
 /** 布局组件 */
@@ -11,10 +10,7 @@ const BaseLayout = () => {
 
   const locale = useStore(sdk.store, (state) => state.locale);
 
-  // 是否有权限
-  const isAuth = useMemo(() => {
-    return sdk.app.permissions.includes(location.pathname);
-  }, [location.pathname]);
+  const [isAuth, setIsAuth] = useState(false);
 
   /** 菜单点击事件 */
   const handleMenuClick = (item: any) => {
@@ -26,23 +22,36 @@ const BaseLayout = () => {
     navigate('/');
   };
 
+  /** 页面切换事件 */
+  const handlePageChange = (location) => {
+    const pathName = location.pathname;
+
+    // 是否有认证
+    const token = localStorage.getItem(sdk.config.tokenName);
+    if (!token) return sdk.app.pageToLogin();
+
+    // 是否有权限
+    setIsAuth(sdk.app.permissions.includes(pathName));
+  };
+
   return (
     <ProLayout
-      {...sdk.config.proLayoutConfig}
-      location={{ pathname: location.pathname }}
-      menu={{
-        request: async () => {
-          return replacePathUtil(sdk.app.menuData) || [];
-        },
-      }}
+      locale={locale}
+      formatMessage={sdk.i18n.intl.formatMessage}
       menuItemRender={(item, dom) => (
         <div onClick={() => handleMenuClick(item)}>{dom}</div>
       )}
       onMenuHeaderClick={handleMenuHeaderClick}
-      locale={locale}
-      formatMessage={sdk.i18n.intl.formatMessage}
+      onPageChange={handlePageChange}
+      {...sdk.config.proLayoutConfig}
+      menu={{
+        request: async () => sdk.app.menuData || [],
+        ...sdk.config.proLayoutConfig.menu,
+      }}
     >
-      {isAuth ? <Outlet /> : <>无权限</>}
+      <Suspense fallback={<>Loading...</>}>
+        {isAuth ? <Outlet /> : <>无权限</>}
+      </Suspense>
     </ProLayout>
   );
 };

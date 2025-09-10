@@ -2,6 +2,7 @@
 import isEmpty from 'lodash/isEmpty';
 
 import sdk from '@/core';
+import { message } from 'antd';
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -116,20 +117,12 @@ class Http {
 
         const { code, msg } = data;
 
-        if (code !== 200 && isShowFailMsg) {
+        // 跟后端定义的成功标识 非0的都是失败
+        if (code !== 0) {
+          if (isShowFailMsg) message.error(msg);
           console.error('response error: ', config.url, msg);
-        }
 
-        if (code == 401) {
-          sdk.app = {
-            ...sdk.app,
-            user: {},
-            roles: [],
-            permissions: [],
-            settings: {},
-          };
-          localStorage.removeItem('token'); // 清除本地存储
-          sdk.client.navigate(sdk.config.loginPath); // 跳转登录页
+          if (code == 200401) sdk.app.pageToLogin();
         }
 
         sdk.api.controllers.delete(config['requestId']);
@@ -144,12 +137,18 @@ class Http {
         if (axios.isCancel(error)) return Promise.reject(error);
 
         if (response) {
-          const { status, data } = response as AxiosResponse;
-        } else {
-        }
+          // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+          const { status, data, statusText } = response as AxiosResponse;
 
-        if (isShowFailMsg) {
-          console.error('response error: ', config.url, error);
+          if (isShowFailMsg) message.error(data.msg || statusText);
+
+          if (status == 401) sdk.app.pageToLogin();
+        } else {
+          // 请求已经成功发起，但没有收到响应
+          if (isShowFailMsg)
+            message.error('请求超时或服务器异常，请检查网络或联系管理员');
+
+          console.error('Request error:', config.url, error);
         }
 
         return Promise.reject(error);

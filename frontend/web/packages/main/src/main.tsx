@@ -19,7 +19,9 @@ import App from './App';
 import './index.less';
 
 import { setupProdMockServer } from './mockProdServer';
-setupProdMockServer();
+if (!import.meta.env.DEV) {
+  setupProdMockServer();
+}
 
 const Login = lazy(() => import('@/pages/login'));
 const Dashboard = lazy(() => import('@/pages/dashboard/index.tsx'));
@@ -40,7 +42,7 @@ sdk
       menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     },
   })
-  .use(ComponentsPlugin, { Dashboard, Login })
+  .use(ComponentsPlugin, { Dashboard })
   .use(I18nPlugin, I18nConfig)
   .use(StorePlugin)
   .mount('sdk');

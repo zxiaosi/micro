@@ -1,8 +1,8 @@
 import { MockMethod } from 'vite-plugin-mock';
 
 const handleRoutesData = (isDev = true) => {
-  const flowEntry = isDev ? 'http://localhost:8002' : '/subapp/sub-flow/';
-  const systemEntry = isDev ? 'http://localhost:8001' : '/subapp/sub-system/';
+  const flowEntry = isDev ? 'http://localhost:8001' : '/subapp/sub-flow/';
+  const systemEntry = isDev ? 'http://localhost:8002' : '/subapp/sub-system/';
 
   return [
     {
@@ -15,12 +15,23 @@ const handleRoutesData = (isDev = true) => {
     },
     {
       name: '拓扑图模块',
-      path: '/flow/*',
+      path: '/flow',
       component: 'Microapp',
       icon: 'NodeIndexOutlined',
       locale: 'menu.flow',
       hideInMenu: false,
       routeAttr: `{"name": "flow", "entry": "${flowEntry}", "activeRule": "/flow", "rootId": "sub-app"}`,
+      children: [
+        {
+          name: '拓扑图模块详情',
+          path: '/flow/detail',
+          component: 'Microapp',
+          icon: 'NodeIndexOutlined',
+          locale: 'menu.flow',
+          hideInMenu: true,
+          routeAttr: `{"name": "flow", "entry": "${flowEntry}", "activeRule": "/flow", "rootId": "sub-app"}`,
+        },
+      ],
     },
     {
       name: '系统模块',
@@ -69,10 +80,10 @@ export default [
     timeout: 1000, // 模拟延时
     response: ({ query, headers }) => {
       if (!headers.authorization) {
-        return { code: 401, data: null, msg: '请先登录' };
+        return { code: 200401, data: null, msg: '请先登录' };
       } else {
         const routes = handleRoutesData(query['isDev'] === 'true');
-        return { code: 200, data: routes, msg: 'success' };
+        return { code: 0, data: routes, msg: 'success' };
       }
     },
   },

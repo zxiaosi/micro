@@ -10,6 +10,13 @@ interface ConfigProps {
   /** 环境变量 */
   env?: Record<string, any>;
 
+  /** Token 存储名称 */
+  tokenName?: string;
+  /** 主题存储名称  */
+  themeName?: string;
+  /** 国际化存储名称 */
+  localeName?: string;
+
   /** 主题 */
   theme?: ThemeProps;
   /** 国际化 */
@@ -53,6 +60,10 @@ const ConfigPlugin: Plugin<'config'> = {
     // 默认插件配置
     const defaultOptions = {
       env: {},
+
+      tokenName: 'token',
+      themeName: 'theme',
+      localeName: 'locale',
 
       theme: null,
       locale: null,

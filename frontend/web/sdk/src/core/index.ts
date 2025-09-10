@@ -29,9 +29,6 @@ class Sdk implements SdkResult {
 
       // 使用 new Proxy 禁止修改
       const _this = new Proxy(this, {
-        set: (target, key, value, receiver) => {
-          return Reflect.set(target, key, value, receiver);
-        },
         get: (target, key, receiver) => {
           if (!target) return null;
           return Reflect.get(target, key, receiver);

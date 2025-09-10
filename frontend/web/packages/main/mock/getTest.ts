@@ -8,7 +8,7 @@ export default [
     timeout: 3 * 1000, // 模拟延时
     response: ({ query }) => {
       return {
-        code: 200,
+        code: 0,
         data: mockjs.mock('@datetime'),
         msg: 'success',
       };
