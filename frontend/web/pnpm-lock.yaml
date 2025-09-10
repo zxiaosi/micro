@@ -291,13 +291,13 @@ importers:
         specifier: ^2.5.15
         version: 2.5.19(prettier@3.6.2)
       rolldown:
-        specifier: ^1.0.0-beta.34
+        specifier: ^1.0.0-beta.35
         version: 1.0.0-beta.36
       rolldown-plugin-dts:
-        specifier: ^0.15.9
-        version: 0.15.10(rolldown@1.0.0-beta.36)(typescript@5.8.3)
+        specifier: ^0.16.1
+        version: 0.16.1(rolldown@1.0.0-beta.36)(typescript@5.8.3)
       rollup-plugin-node-externals:
-        specifier: ^8.1.0
+        specifier: ^8.1.1
         version: 8.1.1(rollup@4.50.1)
 
 packages:
@@ -2578,8 +2578,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@0.15.10:
-    resolution: {integrity: sha512-8cPVAVQUo9tYAoEpc3jFV9RxSil13hrRRg8cHC9gLXxRMNtWPc1LNMSDXzjyD+5Vny49sDZH77JlXp/vlc4I3g==}
+  rolldown-plugin-dts@0.16.1:
+    resolution: {integrity: sha512-bEfJpvhHm+h2cldNUbj8dT5tF9BJrJawPquScFdodob/55DqYkBis7iar8nkn8wSNIFKxwd2jP9ly/Z7lRME2w==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       '@typescript/native-preview': '>=7.0.0-dev.20250601.1'
@@ -5256,7 +5256,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.15.10(rolldown@1.0.0-beta.36)(typescript@5.8.3):
+  rolldown-plugin-dts@0.16.1(rolldown@1.0.0-beta.36)(typescript@5.8.3):
     dependencies:
       '@babel/generator': 7.28.3
       '@babel/parser': 7.28.4
