@@ -37,7 +37,7 @@ interface ConfigProps {
   proLayoutConfig?: ProLayoutProps;
 }
 
-interface ConfigResult extends Required<Readonly<ConfigProps>> {}
+interface ConfigResult extends Required<ConfigProps> {}
 
 /** 插件名称 */
 const pluginName = 'config';

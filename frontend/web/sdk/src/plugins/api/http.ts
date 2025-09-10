@@ -121,14 +121,13 @@ class Http {
         }
 
         if (code == 401) {
-          sdk.register({
-            app: {
-              settings: {},
-              roles: [],
-              permissions: [],
-              user: {},
-            },
-          });
+          sdk.app = {
+            ...sdk.app,
+            user: {},
+            roles: [],
+            permissions: [],
+            settings: {},
+          };
           localStorage.removeItem('token'); // 清除本地存储
           sdk.client.navigate(sdk.config.loginPath); // 跳转登录页
         }

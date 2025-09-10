@@ -33,17 +33,17 @@ interface AppProps {
   initData?: () => Promise<void>;
 }
 
-interface AppResult extends Required<Readonly<AppProps>> {
+interface AppResult extends Required<AppProps> {
   /**
    * 获取组件
    * @param name 组件名称
    */
-  getComponent?: (name: string) => ComponentType;
+  readonly getComponent?: (name: string) => ComponentType;
   /**
    * 渲染组件
    * @param name 组件名称
    */
-  renderComponent?: (name: string, props?: any) => ReactElement;
+  readonly renderComponent?: (name: string, props?: any) => ReactElement;
 }
 
 /** 插件名称 */

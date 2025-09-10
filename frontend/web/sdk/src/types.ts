@@ -69,8 +69,6 @@ export interface BaseProps {
     plugin: Plugin<K>,
     options?: InstanceProps[K],
   ) => this;
-  /** 注册属性 - 运行时注入属性 */
-  register: (options?: InstanceProps) => void;
 }
 
 export type SdkProps = BaseProps & InstanceProps;

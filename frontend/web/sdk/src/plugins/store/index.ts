@@ -34,7 +34,7 @@ const initStore = (sdk: SdkResult) =>
       theme: null,
       setTheme: (theme) => {
         set(() => ({ theme })); // 自动合并其他
-        sdk.register({ app: { theme } }); // 注入属性
+        sdk.config.theme = theme; // 记录值
 
         // 设置属性
         document.documentElement.setAttribute('theme', theme);
@@ -51,7 +51,7 @@ const initStore = (sdk: SdkResult) =>
       locale: null,
       setLocale: (locale) => {
         set(() => ({ locale })); // 自动合并其他
-        sdk.register({ app: { locale } }); // 注入属性
+        sdk.config.locale = locale; // 记录值
 
         // 设置属性
         localStorage.setItem('locale', locale);
@@ -72,7 +72,7 @@ const initStore = (sdk: SdkResult) =>
           return { ...state, antdConfig: newAntdConfig };
         });
 
-        sdk.register({ app: { antdConfig } }); // 注入属性
+        sdk.config.antdConfig = antdConfig; // 记录值
       },
 
       microAppState: false,

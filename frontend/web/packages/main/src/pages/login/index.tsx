@@ -111,7 +111,7 @@ const Login = () => {
 
       localStorage.setItem('token', token);
       sdk.client.navigate(sdk.config.defaultPath); // 防止页面重新加载
-      await sdk.config.initData();
+      await sdk.app.initData();
     } catch (err) {
       setLoading(() => false);
       console.error('登录异常---', err);

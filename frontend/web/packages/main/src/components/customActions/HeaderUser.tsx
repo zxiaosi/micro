@@ -10,15 +10,14 @@ const HeaderUser = () => {
   const handleMenuClick = ({ key }: any) => {
     switch (key) {
       case 'logout':
-        sdk.register({
-          app: {
-            menuData: [],
-            settings: {},
-            roles: [],
-            permissions: [],
-            user: {},
-          },
-        });
+        sdk.app = {
+          ...sdk.app,
+          menuData: [],
+          settings: {},
+          roles: [],
+          permissions: [],
+          user: {},
+        };
         localStorage.removeItem('token'); // 清除本地存储
         sdk.client.navigate('/login'); // 跳转登录页
         break;

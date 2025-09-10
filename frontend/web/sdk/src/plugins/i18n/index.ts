@@ -53,7 +53,7 @@ interface I18nProps {
   loadLocale?: (locale: string) => any;
 }
 
-interface I18nResult extends Required<Readonly<I18nProps>> {}
+interface I18nResult extends Required<I18nProps> {}
 
 /** 插件名称 */
 const pluginName = 'i18n';

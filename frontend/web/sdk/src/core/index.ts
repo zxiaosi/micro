@@ -1,5 +1,4 @@
 // 按需引入
-import merge from 'lodash/merge';
 
 import { BaseProps, InstanceProps, Plugin, SdkResult } from '@/types';
 
@@ -73,10 +72,6 @@ class Sdk implements SdkResult {
 
     // 链式调用
     return this;
-  }
-
-  register(args: InstanceProps) {
-    merge(this, args);
   }
 }
 

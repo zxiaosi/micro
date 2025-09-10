@@ -11,7 +11,7 @@ interface ClientProps {
   navigate?: NavigateFunction;
 }
 
-interface ClientResult extends Required<Readonly<ClientProps>> {}
+interface ClientResult extends Required<ClientProps> {}
 
 /** 插件名称 */
 const pluginName = 'client';

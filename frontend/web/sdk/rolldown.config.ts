@@ -27,8 +27,8 @@ const common = defineConfig({
   platform: 'browser', // 作用于浏览器环境
   tsconfig: './tsconfig.json', // 指定 tsconfig 文件
   output: {
-    // sourcemap: true, // 生成 sourcemap 文件
-    minify: true, // 启用代码压缩, 调试时可以关闭
+    sourcemap: true, // 生成 sourcemap 文件
+    // minify: true, // 启用代码压缩, 调试时可以关闭
   },
 });
 

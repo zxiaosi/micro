@@ -1,3 +1,6 @@
+// 按需引入
+import set from 'lodash/set';
+
 import sdk from '@/core';
 import { LocaleProps, ThemeProps } from '@/types';
 import {
@@ -99,11 +102,9 @@ const Root = () => {
 
       setRouter(allRoutes);
 
-      // 注入属性
-      sdk.register({
-        app: { allRoutes, microApps, menuData, ...userInfo },
-      });
+      sdk.app = { ...sdk.app, allRoutes, microApps, menuData, ...userInfo };
     } catch (error) {
+      setThemeLocale();
       setLoading(() => false);
       console.error('初始化数据错误:', error);
     }
@@ -111,8 +112,9 @@ const Root = () => {
 
   // 设置初始值
   useEffect(() => {
-    // 注入属性
-    sdk.register({ app: { initData, allRoutes: defaulRoutes } });
+    // 记录值
+    sdk.app.initData = initData;
+    sdk.app.allRoutes = defaulRoutes;
 
     const paths = sdk.config.customRoutes?.map((item) => item.path);
     const pathName = window.location.pathname;
@@ -124,8 +126,7 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    // 注入父组件的 navigate 方法到 SDK
-    sdk.register({ client: { navigate, location } });
+    set(sdk, 'client', { location, navigate });
   }, [location]);
 
   if (!locale || loading) return <>Loading...</>;
@@ -136,8 +137,8 @@ const Root = () => {
     sdk.i18n.cache,
   );
 
-  // 注入属性
-  sdk.register({ i18n: { intl } });
+  // 记录值
+  sdk.i18n.intl = intl;
 
   return (
     <RawIntlProvider value={intl}>
