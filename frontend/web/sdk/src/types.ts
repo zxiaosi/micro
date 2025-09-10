@@ -2,8 +2,8 @@ import { ApiProps, ApiResult } from '@/plugins/api';
 import { AppProps, AppResult } from '@/plugins/app';
 import { ClientProps, ClientResult } from '@/plugins/client';
 import { ComponentsProps, ComponentsResult } from '@/plugins/components';
+import { ConfigProps, ConfigResult } from '@/plugins/config';
 import { I18nProps, I18nResult } from '@/plugins/i18n';
-import { StorageProps, StorageResult } from '@/plugins/storage';
 import { StoreProps, StoreResult } from '@/plugins/store';
 
 export type ThemeProps = 'light' | 'dark';
@@ -30,10 +30,10 @@ export interface InstanceProps {
   client?: ClientProps;
   /** 公用组件 */
   components?: ComponentsProps;
+  /** Config 配置 */
+  config?: ConfigProps;
   /** 国际化 */
   i18n?: I18nProps;
-  /** localStorage */
-  storage?: StorageProps;
   /** 全局 Store */
   store?: StoreProps;
 }
@@ -47,10 +47,10 @@ export interface InstanceResult {
   client: ClientResult;
   /** 公用组件 */
   components: ComponentsResult;
+  /** Config 配置 */
+  config: ConfigResult;
   /** 国际化 */
   i18n: I18nResult;
-  /** localStorage */
-  storage: StorageResult;
   /** 全局 Store */
   store: StoreResult;
 }

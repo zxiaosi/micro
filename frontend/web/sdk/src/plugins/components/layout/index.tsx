@@ -28,7 +28,7 @@ const BaseLayout = () => {
 
   return (
     <ProLayout
-      {...sdk.app.proLayoutConfig}
+      {...sdk.config.proLayoutConfig}
       location={{ pathname: location.pathname }}
       menu={{
         request: async () => {

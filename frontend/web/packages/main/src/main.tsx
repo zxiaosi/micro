@@ -8,9 +8,9 @@ import {
   ApiPlugin,
   AppPlugin,
   ComponentsPlugin,
+  ConfigPlugin,
   I18nPlugin,
   sdk,
-  StoragePlugin,
   StorePlugin,
 } from '@zxiaosi/sdk';
 import { lazy } from 'react';
@@ -27,7 +27,8 @@ const Guide = lazy(() => import('@/pages/guide'));
 
 sdk
   .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi, loginApi })
-  .use(AppPlugin, {
+  .use(AppPlugin)
+  .use(ConfigPlugin, {
     customRoutes: [{ path: '/guide', element: <Guide /> }],
     antdConfig: { theme },
     proLayoutConfig: {
@@ -41,7 +42,6 @@ sdk
   })
   .use(ComponentsPlugin, { Dashboard, Login })
   .use(I18nPlugin, I18nConfig)
-  .use(StoragePlugin)
   .use(StorePlugin)
   .mount('sdk');
 

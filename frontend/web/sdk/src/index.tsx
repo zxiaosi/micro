@@ -4,8 +4,8 @@ import { ApiPlugin } from '@/plugins/api';
 import { AppPlugin } from '@/plugins/app';
 import { ClientPlugin } from '@/plugins/client';
 import { ComponentsPlugin } from '@/plugins/components';
+import { ConfigPlugin } from '@/plugins/config';
 import { I18nPlugin } from '@/plugins/i18n';
-import { StoragePlugin } from '@/plugins/storage';
 import { StorePlugin } from '@/plugins/store';
 
 import { useIntl } from '@/common/useIntl';
@@ -15,9 +15,9 @@ export {
   AppPlugin,
   ClientPlugin,
   ComponentsPlugin,
+  ConfigPlugin,
   I18nPlugin,
   sdk,
-  StoragePlugin,
   StorePlugin,
   useIntl,
 };

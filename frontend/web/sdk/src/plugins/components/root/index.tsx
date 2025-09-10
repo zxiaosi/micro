@@ -24,12 +24,12 @@ import { useShallow } from 'zustand/shallow';
 
 /** 根组件 */
 const Root = () => {
-  const loginPath = sdk.app.loginPath;
+  const loginPath = sdk.config.loginPath;
 
   const defaulRoutes: RouteObject[] = [
     { path: loginPath, element: sdk.app.renderComponent('Login') },
     { path: '*', element: sdk.app.renderComponent('NotFound') },
-    ...sdk.app.customRoutes,
+    ...sdk.config.customRoutes,
   ];
 
   const [locale, setTheme, setLocale, antdConfig, setAntdConfig] = useStore(
@@ -57,7 +57,7 @@ const Root = () => {
   const setThemeLocale = (apiTheme?: ThemeProps, apiLocale?: LocaleProps) => {
     setTheme(apiTheme || getDefaultThemeUtil(sdk));
     setLocale(apiLocale || getDefaultLocaleUtil(sdk));
-    setAntdConfig(sdk.app.antdConfig);
+    setAntdConfig(sdk.config.antdConfig);
   };
 
   /** 初始化数据方法 */
@@ -83,10 +83,7 @@ const Root = () => {
       start();
 
       // 获取首页路径
-      const firstPath =
-        sdk.app.defaultPath === '/'
-          ? getFirstPagePathUtil(menuData)
-          : sdk.app.defaultPath;
+      const firstPath = getFirstPagePathUtil(menuData);
 
       // 合并所有路由
       const allRoutes: RouteObject[] = [
@@ -104,13 +101,7 @@ const Root = () => {
 
       // 注入属性
       sdk.register({
-        app: {
-          allRoutes,
-          microApps,
-          menuData,
-          defaultPath: firstPath,
-          ...userInfo,
-        },
+        app: { allRoutes, microApps, menuData, ...userInfo },
       });
     } catch (error) {
       setLoading(() => false);
@@ -123,7 +114,7 @@ const Root = () => {
     // 注入属性
     sdk.register({ app: { initData, allRoutes: defaulRoutes } });
 
-    const paths = sdk.app.customRoutes?.map((item) => item.path);
+    const paths = sdk.config.customRoutes?.map((item) => item.path);
     const pathName = window.location.pathname;
     const noNeedAuth = [loginPath, ...paths]?.includes(pathName);
 

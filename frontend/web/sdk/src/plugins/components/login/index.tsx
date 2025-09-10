@@ -11,7 +11,7 @@ const Login = () => {
       const token = resp?.data?.token || '';
       if (token) {
         localStorage.setItem('token', token);
-        sdk.client.navigate(sdk.app.defaultPath);
+        sdk.client.navigate(sdk.config.defaultPath);
       } else {
         message.error('登录失败');
       }

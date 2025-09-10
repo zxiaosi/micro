@@ -110,8 +110,8 @@ const Login = () => {
       if (!token) return message.error('缺少token');
 
       localStorage.setItem('token', token);
-      sdk.client.navigate(sdk.app.defaultPath); // 防止页面重新加载
-      await sdk.app.initData();
+      sdk.client.navigate(sdk.config.defaultPath); // 防止页面重新加载
+      await sdk.config.initData();
     } catch (err) {
       setLoading(() => false);
       console.error('登录异常---', err);

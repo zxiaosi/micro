@@ -97,7 +97,7 @@ class Http {
         config['requestId'] = requestId; // 记录请求id
         config.signal = controller.signal; // 取消请求标识
         config.headers.Authorization = token; // 添加token到请求头
-        config.headers.lang = sdk.app.locale; // 添加语言到请求头
+        config.headers.lang = sdk.config.locale; // 添加语言到请求头
         return config;
       },
       function (error: AxiosError) {
@@ -130,7 +130,7 @@ class Http {
             },
           });
           localStorage.removeItem('token'); // 清除本地存储
-          sdk.client.navigate(sdk.app.loginPath); // 跳转登录页
+          sdk.client.navigate(sdk.config.loginPath); // 跳转登录页
         }
 
         sdk.api.controllers.delete(config['requestId']);

@@ -144,7 +144,7 @@ export const getFirstPagePathUtil = (routes: any[]) => {
 };
 
 /** 获取主题默认值 */
-export const getDefaultThemeUtil = (sdk): ThemeProps => {
+export const getDefaultThemeUtil = (sdk: SdkResult): ThemeProps => {
   // localStorage > sdk中主题 > 系统主题 > 默认
 
   // 1. localStorage
@@ -152,7 +152,7 @@ export const getDefaultThemeUtil = (sdk): ThemeProps => {
   if (localTheme) return localTheme;
 
   // 2. sdk中主题
-  const sdkTheme = sdk.app?.theme;
+  const sdkTheme = sdk.config?.theme;
   if (sdkTheme) return sdkTheme;
 
   // 3. 系统主题
@@ -172,7 +172,7 @@ export const getDefaultLocaleUtil = (sdk): LocaleProps => {
   if (localLocale) return localLocale;
 
   // 2. sdk中国际化
-  const sdkLocale = sdk.app?.locale;
+  const sdkLocale = sdk.config?.locale;
   if (sdkLocale) return sdkLocale;
 
   // 3. 浏览器语言
