@@ -1,4 +1,4 @@
-import { sdk, useIntl } from '@zxiaosi/sdk';
+import { Crumb, sdk, useIntl } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -30,7 +30,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <Space direction="vertical" style={{ display: 'flex' }}>
-        <div className="title">主应用-首页</div>
+        <Crumb />
 
         <Card title="CSS 变量、Token 变量">
           <Space wrap>

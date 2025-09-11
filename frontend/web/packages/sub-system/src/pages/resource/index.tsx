@@ -1,4 +1,4 @@
-import { sdk } from '@zxiaosi/sdk';
+import { Crumb, sdk } from '@zxiaosi/sdk';
 import { Button, Spin, Tree, type TreeDataNode, type TreeProps } from 'antd';
 import { useState } from 'react';
 import './index.less';
@@ -100,7 +100,9 @@ const Resource = () => {
 
   return (
     <div className="resource-page">
-      <div className="resource-page-title">子应用-系统模块-资源管理</div>
+      <div className="resource-page-header">
+        <Crumb />
+      </div>
 
       <Button type="primary" onClick={getResources}>
         测试接口

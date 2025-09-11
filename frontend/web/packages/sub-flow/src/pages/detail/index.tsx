@@ -1,19 +1,19 @@
+import { Crumb, sdk } from '@zxiaosi/sdk';
 import { Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import './index.less';
 
 /** 详情页 */
 const Detail = () => {
-  const navigate = useNavigate();
-
   /** 返回上一级 */
   const handleGoBack = () => {
-    navigate('/');
+    sdk.client.navigate(-1);
   };
 
   return (
     <div className="detail">
-      <div className="title">子应用-拓扑图模块-详情</div>
+      <div className="detail-crumb">
+        <Crumb />
+      </div>
 
       <Button onClick={handleGoBack} type="primary">
         返回上一级

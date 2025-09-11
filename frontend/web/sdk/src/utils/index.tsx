@@ -66,7 +66,15 @@ export const transformRoutesUtil = (
 
     // 处理子应用路由
     if (routeAttr) {
-      const { name, rootId, ...rest } = JSON.parse(routeAttr);
+      let newRouteAttr = {} as any;
+
+      try {
+        newRouteAttr = JSON.parse(routeAttr); // // 解析子应用路由属性
+      } catch (error) {
+        console.error('子应用路由属性格式错误：', routeAttr);
+      }
+
+      const { name, rootId, ...rest } = newRouteAttr;
 
       // 子应用信息
       const microAppInfo = {
@@ -97,9 +105,14 @@ export const transformRoutesUtil = (
 
     return {
       ...item,
+      key: `${item.locale}_${item.icon}_${item.path}`, // 唯一key, 判断菜单是否折叠
       element,
       icon: dynamicIcon(icon),
       children: processedChildren,
+      handle: {
+        // 用户面包屑 https://reactrouter.com/6.30.1/hooks/use-matches
+        crumb: (data) => ({ ...item, ...data }),
+      },
     };
   });
 };

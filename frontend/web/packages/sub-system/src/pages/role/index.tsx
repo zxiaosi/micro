@@ -1,3 +1,4 @@
+import { Crumb } from '@zxiaosi/sdk';
 import { Anchor } from 'antd';
 import './index.less';
 
@@ -5,7 +6,9 @@ import './index.less';
 const Role = () => {
   return (
     <div className="role-page">
-      <div className="role-page-title">子应用-系统模块-角色管理</div>
+      <div className="role-page-header">
+        <Crumb />
+      </div>
 
       <div className="role-page-content">
         <div style={{ width: 'calc(100% - 200px)' }}>

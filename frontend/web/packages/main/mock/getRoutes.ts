@@ -27,7 +27,7 @@ const handleRoutesData = (isDev = true) => {
           path: '/flow/detail',
           component: 'Microapp',
           icon: 'NodeIndexOutlined',
-          locale: 'menu.flow',
+          locale: 'menu.flow.detail',
           hideInMenu: true,
           routeAttr: `{"name": "flow", "entry": "${flowEntry}", "activeRule": "/flow", "rootId": "sub-app"}`,
         },
@@ -35,7 +35,7 @@ const handleRoutesData = (isDev = true) => {
     },
     {
       name: '系统模块',
-      path: '/system',
+      path: '/',
       component: 'Outlet',
       icon: 'SettingOutlined',
       locale: 'menu.system',

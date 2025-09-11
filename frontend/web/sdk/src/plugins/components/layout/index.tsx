@@ -1,9 +1,6 @@
-// 按需引入
-import set from 'lodash/set';
-
 import sdk from '@/core';
 import { ProLayout } from '@ant-design/pro-layout';
-import { memo, Suspense, useState } from 'react';
+import { memo, Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
 /** 布局组件 */
@@ -28,8 +25,7 @@ const BaseLayout = () => {
 
   /** 页面切换事件 */
   const handlePageChange = (location) => {
-    // 使用 set 防止赋值报错
-    set(sdk, 'client', { location, matches, navigate });
+    sdk.client.location = location;
 
     const pathName = location.pathname;
 
@@ -40,6 +36,14 @@ const BaseLayout = () => {
     // 是否有权限
     setIsAuth(sdk.app.permissions.includes(pathName));
   };
+
+  useEffect(() => {
+    sdk.client.navigate = navigate;
+  }, []);
+
+  useEffect(() => {
+    sdk.client.matches = matches;
+  }, [matches]);
 
   return (
     <ProLayout

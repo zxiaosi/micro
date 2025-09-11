@@ -1,4 +1,4 @@
-import { sdk, useIntl } from '@zxiaosi/sdk';
+import { Crumb, sdk, useIntl } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <div className="home">
       <Space direction="vertical" style={{ display: 'flex' }}>
-        <div className="title">子应用-拓扑图模块</div>
+        <Crumb />
 
         <Card title="CSS 变量、Token 变量">
           <Space wrap>
@@ -51,7 +51,9 @@ const Home = () => {
         <Card title="全局样式、postcss-prefix-selector 样式隔离">
           <Space wrap>
             <div className="global-style">全局样式</div>
-            <div className="postcss-prefix-selector">postcss-prefix-selector 样式隔离</div>
+            <div className="postcss-prefix-selector">
+              postcss-prefix-selector 样式隔离
+            </div>
           </Space>
         </Card>
 
