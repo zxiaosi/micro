@@ -9,10 +9,10 @@ import { ComponentType, createElement, ReactElement } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 interface AppProps {
-  /** 微应用信息 */
-  microApps?: RegistrableApp<ObjectType>[];
   /** 菜单数据 */
   menuData?: MenuDataItem[];
+  /** 微应用信息 */
+  microApps?: RegistrableApp<ObjectType>[];
   /** 所有路由信息 */
   allRoutes?: RouteObject[];
 
@@ -66,8 +66,8 @@ const AppPlugin: Plugin<'app'> = {
   install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
-      microApps: [],
       menuData: [],
+      microApps: [],
       allRoutes: [],
 
       user: null,
@@ -77,18 +77,6 @@ const AppPlugin: Plugin<'app'> = {
 
       initData: null,
       pageToLogin: () => {
-        const restRoutes = sdk.app.allRoutes.filter((_) => _.path !== '/');
-        sdk.app = {
-          ...sdk.app,
-          permissions: [],
-          roles: [],
-          settings: {},
-          user: {},
-          menuData: [],
-          microApps: [],
-          allRoutes: restRoutes,
-        };
-
         // 清除 Token
         localStorage.removeItem(sdk.config.tokenName);
 
@@ -97,8 +85,7 @@ const AppPlugin: Plugin<'app'> = {
         const redirect = encodeURIComponent(path || '/');
         const loginPath = `${sdk.config.loginPath}?redirect=${redirect}`;
 
-        // 跳转登录页
-        // sdk.client.navigate(loginPath, { replace: true });
+        // 跳转登录页(这里必须刷新一下页面, 否则qiankun实例不会销毁, 登录后会直接mount子应用, 而不是bootstrap子应用)
         window.location.replace(loginPath);
       },
       getRedirectPath: () => {

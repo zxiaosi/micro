@@ -2,16 +2,18 @@
 import merge from 'lodash/merge';
 
 import { Plugin } from '@/types';
-import { Location, NavigateFunction } from 'react-router-dom';
+import { Location, NavigateFunction, UIMatch } from 'react-router-dom';
 
-interface ClientProps {
+interface ClientProps {}
+
+interface ClientResult extends Required<ClientProps> {
   /** 主应用 location */
-  location?: Location;
+  location: Location;
   /** 主应用navigate（解决子应用跳转问题） */
-  navigate?: NavigateFunction;
+  navigate: NavigateFunction;
+  /** 路由匹配（用于面包屑） */
+  matches: UIMatch[];
 }
-
-interface ClientResult extends Required<ClientProps> {}
 
 /** 插件名称 */
 const pluginName = 'client';
@@ -28,6 +30,7 @@ const ClientPlugin: Plugin<'client'> = {
     const defaultOptions = {
       location: null,
       navigate: null,
+      matches: null,
     } satisfies ClientResult;
 
     sdk[pluginName] = merge({}, defaultOptions, options);

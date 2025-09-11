@@ -1,6 +1,3 @@
-// 按需引入
-import set from 'lodash/set';
-
 import sdk from '@/core';
 import { LocaleProps, ThemeProps } from '@/types';
 import {
@@ -15,12 +12,10 @@ import { registerMicroApps, start } from 'qiankun';
 import { Suspense, useEffect, useState } from 'react';
 import { createIntl, RawIntlProvider } from 'react-intl';
 import {
-  BrowserRouter,
+  createBrowserRouter,
   Navigate,
   RouteObject,
-  useLocation,
-  useNavigate,
-  useRoutes,
+  RouterProvider,
 } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -46,13 +41,8 @@ const Root = () => {
     ]),
   );
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [loading, setLoading] = useState(false);
   const [router, setRouter] = useState<RouteObject[]>(defaulRoutes);
-
-  const element = useRoutes(router || []);
 
   /** 设置图标组件 */
 
@@ -125,10 +115,6 @@ const Root = () => {
     else initData();
   }, []);
 
-  useEffect(() => {
-    set(sdk, 'client', { location, navigate });
-  }, [location]);
-
   if (!locale || loading) return <>Loading...</>;
 
   // 创建 Intl 对象
@@ -143,24 +129,14 @@ const Root = () => {
   return (
     <RawIntlProvider value={intl}>
       <ConfigProvider {...antdConfig}>
-        <Suspense fallback={<>Loading...</>}>{element}</Suspense>
+        <Suspense fallback={<>Loading...</>}>
+          <RouterProvider
+            router={createBrowserRouter(router, { basename: '/' })}
+          />
+        </Suspense>
       </ConfigProvider>
     </RawIntlProvider>
   );
 };
 
-/**
- * 根组件Provider
- * - 为什么要用 Provider 包一层？
- * - 要在 sdk 中注入 navigate 方法, 防止 login、404 等页面获取不到 navigate 方法
- */
-const RootProvider = () => (
-  <BrowserRouter
-    basename="/"
-    future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
-  >
-    <Root />
-  </BrowserRouter>
-);
-
-export default RootProvider;
+export default Root;

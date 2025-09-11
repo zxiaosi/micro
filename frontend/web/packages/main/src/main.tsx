@@ -7,6 +7,7 @@ import theme from '@/theme/token';
 import {
   ApiPlugin,
   AppPlugin,
+  ClientPlugin,
   ComponentsPlugin,
   ConfigPlugin,
   I18nPlugin,
@@ -30,6 +31,7 @@ const Guide = lazy(() => import('@/pages/guide'));
 sdk
   .use(ApiPlugin, { config: { baseURL: '/api' }, getRoutesApi, loginApi })
   .use(AppPlugin)
+  .use(ClientPlugin)
   .use(ConfigPlugin, {
     customRoutes: [{ path: '/guide', element: <Guide /> }],
     antdConfig: { theme },

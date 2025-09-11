@@ -46,7 +46,7 @@ const User = () => {
         <Card title="全局样式、postcss-prefix-selector 样式隔离">
           <Space wrap>
             <div className="global-style">全局样式</div>
-            <div className="css-modules">postcss-prefix-selector 样式隔离</div>
+            <div className="postcss-prefix-selector">postcss-prefix-selector 样式隔离</div>
           </Space>
         </Card>
 

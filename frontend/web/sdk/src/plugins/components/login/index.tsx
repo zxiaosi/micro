@@ -1,9 +1,12 @@
 import sdk from '@/core';
 import { Button, Flex, Form, FormProps, Input } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /** 登录页（可从主应用传入覆盖） */
 const Login = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
   /** 表单提交成功事件 */
@@ -16,14 +19,13 @@ const Login = () => {
 
     localStorage.setItem(sdk.config.tokenName, token);
     const defaultPath = sdk.app.getRedirectPath();
-    sdk.app.initData();
-    // sdk.client.navigate(defaultPath, { replace: true });
-    window.location.replace(defaultPath);
+    navigate(defaultPath, { replace: true }); // 这里可以用 navigation, 不用刷新页面, 因为下方调用了初始化接口
+    await sdk.app.initData();
   };
 
   return (
     <Flex
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', background: 'var(--bg-color)' }}
       justify={'center'}
       align={'center'}
     >

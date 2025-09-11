@@ -45,7 +45,7 @@ const Dashboard = () => {
         <Card title="全局样式、样式隔离">
           <Space wrap>
             <div className="global-style">全局样式</div>
-            <div className="css-modules">样式隔离</div>
+            <div className="postcss-prefix-selector">样式隔离</div>
           </Space>
         </Card>
 

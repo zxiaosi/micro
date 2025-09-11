@@ -14,7 +14,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build": "rolldown -c rolldown.config.ts"
+    "build": "npx rimraf dist && rolldown -c rolldown.config.ts"
   },
   "dependencies": {
     "@ant-design/pro-layout": "^7.22.7",

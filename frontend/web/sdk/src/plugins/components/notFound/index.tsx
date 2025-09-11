@@ -4,7 +4,7 @@ import { Empty, Flex } from 'antd';
 const NotFound = () => {
   return (
     <Flex
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', background: 'var(--bg-color)' }}
       justify={'center'}
       align={'center'}
     >
