@@ -1,8 +1,7 @@
 import beian from '@/assets/beian.png';
-import { loginApi } from '@/service';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { sdk } from '@zxiaosi/sdk';
-import { Button, ConfigProvider, Form, Input, message, theme } from 'antd';
+import { Button, ConfigProvider, Form, Input, theme } from 'antd';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.less';
@@ -56,7 +55,7 @@ const getWeappQrcode = async () => {
  * @see 流动波浪页脚 https://www.bilibili.com/video/BV1Ax4y157AB/
  */
 const Login = () => {
-  const navicate = useNavigate();
+  const navigate = useNavigate();
   const eventRef = useRef<EventSource>(null);
 
   const [qrCode, setQrCode] = useState('');
@@ -101,22 +100,16 @@ const Login = () => {
 
   /** 登录成功 */
   const handleFinish = async (values: any) => {
-    try {
-      setLoading(() => true);
-      const resp = await loginApi(values);
-      setLoading(() => false);
+    setLoading(() => true);
+    const resp = await sdk.api.loginApi(values);
+    setLoading(() => false);
+    const token = resp?.data?.token || '';
+    if (!token) return;
 
-      const token = resp?.data?.token;
-      if (!token) return message.error('缺少token');
-
-      localStorage.setItem('token', token);
-      sdk.client.navigate(sdk.config.defaultPath); // 防止页面重新加载
-      await sdk.app.initData();
-    } catch (err) {
-      setLoading(() => false);
-      console.error('登录异常---', err);
-      message.error('登录异常');
-    }
+    localStorage.setItem(sdk.config.tokenName, token);
+    const defaultPath = sdk.app.getRedirectPath();
+    navigate(defaultPath, { replace: true }); // 这里可以用 navigation, 不用刷新页面, 因为下方调用了初始化接口
+    await sdk.app.initData();
   };
 
   return (

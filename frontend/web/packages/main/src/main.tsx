@@ -44,7 +44,7 @@ sdk
       menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     },
   })
-  .use(ComponentsPlugin, { Dashboard })
+  .use(ComponentsPlugin, { Login, Dashboard })
   .use(I18nPlugin, I18nConfig)
   .use(StorePlugin)
   .mount('sdk');

@@ -2,11 +2,12 @@ import sdk from '@/core';
 import { Breadcrumb, BreadcrumbItemProps } from 'antd';
 import { useMemo } from 'react';
 import { useCrumb } from './useCrumb';
+import { useIntl } from './useIntl';
 
 /** 面包屑 */
 const Crumb = (props: BreadcrumbItemProps) => {
   const crumb = useCrumb();
-  console.log('Crumb', crumb);
+  const { formatMessage } = useIntl();
 
   /** 页面跳转 */
   const handlePageTo = (url, e?: any) => {
@@ -27,7 +28,7 @@ const Crumb = (props: BreadcrumbItemProps) => {
         path = children[0].path;
       }
 
-      const text = sdk.i18n.intl.formatMessage({ id: locale }) || name;
+      const text = formatMessage({ id: locale }) || name;
       if (index === crumb.length - 1) {
         return { title: text };
       } else {
