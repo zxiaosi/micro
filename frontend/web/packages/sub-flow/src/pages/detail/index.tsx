@@ -6,7 +6,7 @@ import './index.less';
 const Detail = () => {
   /** 返回上一级 */
   const handleGoBack = () => {
-    sdk.client.navigate(-1);
+    sdk.client.navigate('/flow');
   };
 
   return (
