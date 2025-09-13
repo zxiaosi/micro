@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItemProps } from 'antd';
 import { useMemo } from 'react';
 
 /** 面包屑 */
-const Crumb = (props: BreadcrumbItemProps) => {
+const Crumb: React.FC = (props: BreadcrumbItemProps) => {
   const crumb = useCrumb();
   const { formatMessage } = useIntl();
 

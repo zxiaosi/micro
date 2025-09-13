@@ -1,3 +1,21 @@
+## 目录
+
+```sh
+├── src
+├── src/components       # 公共组件(不可替换)
+├── src/core             # sdk 实例
+├── src/hooks            # hooks
+├── src/plugins          # sdk 插件
+    ├── api              # 请求插件
+    ├── app              # 应用数据和业务逻辑
+    ├── client           # 路由信息
+    ├── config           # 配置
+    ├── i18n             # 国际化
+    ├── router           # 全局状态
+    ├── ui               # 组件(可传入覆盖)
+├── src/utils            # 工具类
+```
+
 ## SDK 实现功能
 
 ### 挂载 `SDK`
@@ -69,7 +87,6 @@ export async function mount(props: any) {
 ### 待开发
 
 - [] echart 样式
-- [] 面包屑
 - [] ClI 工具
 
 ## 如何开发一个自己的插件？

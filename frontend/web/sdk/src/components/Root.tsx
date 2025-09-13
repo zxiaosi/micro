@@ -9,7 +9,7 @@ import {
 } from '@/utils';
 import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
-import { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { createIntl, RawIntlProvider } from 'react-intl';
 import {
   createBrowserRouter,
@@ -21,7 +21,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 /** 根组件 */
-const Root = () => {
+const Root: React.FC = () => {
   const loginPath = sdk.config.loginPath;
 
   const defaulRoutes: RouteObject[] = [
@@ -84,7 +84,7 @@ const Root = () => {
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          element: sdk.ui.renderComponent('Layout'),
+          element: sdk.ui.renderComponent('Layout', { menuData }),
           children: menuData,
           errorElement: <>找不到页面</>,
         },
@@ -139,4 +139,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export { Root };

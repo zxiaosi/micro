@@ -8,7 +8,6 @@ import Layout from './layout';
 import Login from './login';
 import Microapp from './microapp';
 import NotFound from './notFound';
-import Root from './root';
 
 interface UIProps {
   /** 组件 */
@@ -34,7 +33,7 @@ const pluginName = 'ui';
 /**
  * 组件
  * - 详情参考 {@link UIProps} {@link UIResult}
- * - 内置了 Login、NotFound、Microapp 等组件, 可传入覆盖
+ * - 内置了 Login、NotFound、Microapp、Layout 等组件, 可传入覆盖
  * - 组件共享
  *    - 在主应用中, 可通过 use(UIPlugin, { MyComponent }) 传入组件
  *    - 在子应用中, 可通过 sdk.ui.renderComponent('MyComponent') 使用组件
@@ -46,7 +45,6 @@ const UIPlugin: Plugin<'ui'> = {
     const defaultOptions = {
       Login,
       NotFound,
-      Root,
       Layout, // 不要使用懒加载 - 防止多次渲染
       Microapp, // 不要使用懒加载 - 防止qiankun挂载不上
 
