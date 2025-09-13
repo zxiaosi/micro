@@ -17,7 +17,7 @@ const render = (props: any = {}) => {
 
   root = createRoot(container);
 
-  root.render(<App basename={props?.name} />);
+  root.render(<App basename={props?.name} container={container}/>);
 };
 
 if (!window.__POWERED_BY_QIANKUN__) {

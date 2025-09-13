@@ -1,10 +1,14 @@
 import { sdk } from '@/core';
 import { useCrumb, useIntl } from '@/hooks';
-import { Breadcrumb, BreadcrumbItemProps } from 'antd';
+import { Breadcrumb, BreadcrumbProps } from 'antd';
 import { useMemo } from 'react';
 
-/** 面包屑 */
-const Crumb: React.FC = (props: BreadcrumbItemProps) => {
+/**
+ * Antd 面包屑
+ * - 使用 useCrumb 自动填充 items 属性
+ * - 更多参考：https://ant.design/components/breadcrumb-cn
+ */
+const Crumb: React.FC = (props: BreadcrumbProps) => {
   const crumb = useCrumb();
   const { formatMessage } = useIntl();
 

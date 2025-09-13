@@ -1,13 +1,16 @@
-import { sdk } from '@zxiaosi/sdk';
-import { ConfigProvider } from 'antd';
+import { AntdConfigProvider } from '@zxiaosi/sdk';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
   type RouteObject,
 } from 'react-router-dom';
-import { useStore } from 'zustand';
 import './index.less';
+
+interface Props {
+  basename: string;
+  container: HTMLElement;
+}
 
 const Home = lazy(() => import('@/pages/home'));
 const Detail = lazy(() => import('@/pages/detail'));
@@ -17,14 +20,9 @@ const routes: RouteObject[] = [
   { path: '/detail', element: <Detail /> },
 ];
 
-function App({ basename, container }: any) {
-  const antdConfig = useStore(sdk.store, (state) => state.antdConfig);
-
+function App({ basename, container }: Props) {
   return (
-    <ConfigProvider
-      {...antdConfig}
-      getPopupContainer={() => container || document.body}
-    >
+    <AntdConfigProvider getPopupContainer={() => container || document.body}>
       <Suspense fallback={<>Loading...</>}>
         <RouterProvider
           router={createBrowserRouter(routes, {
@@ -33,7 +31,7 @@ function App({ basename, container }: any) {
           future={{ v7_startTransition: false }}
         />
       </Suspense>
-    </ConfigProvider>
+    </AntdConfigProvider>
   );
 }
 

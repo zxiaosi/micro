@@ -1,8 +1,6 @@
 // 按需引入
-import merge from 'lodash/merge';
 
 import { LocaleProps, Plugin, SdkResult, ThemeProps } from '@/types';
-import { theme as antdTheme, ConfigProviderProps } from 'antd';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
@@ -15,10 +13,6 @@ interface StoreProps {
   locale: LocaleProps;
   /** 设置国际化 */
   setLocale: (locale: LocaleProps) => void;
-  /** Antd配置 */
-  antdConfig: ConfigProviderProps;
-  /** 设置Antd配置 */
-  setAntdConfig: (antdConfig: ConfigProviderProps) => void;
   /** 子应用加载状态 */
   microAppState: boolean;
   /** 设置子应用加载状态 */
@@ -39,13 +33,6 @@ const initStore = (sdk: SdkResult) =>
         // 设置属性
         document.documentElement.setAttribute('theme', theme);
         localStorage.setItem('theme', theme);
-
-        // 设置Antd配置
-        const algorithm =
-          theme === 'light'
-            ? antdTheme.defaultAlgorithm
-            : antdTheme.darkAlgorithm;
-        get().setAntdConfig({ theme: { algorithm } });
       },
 
       locale: null,
@@ -55,24 +42,6 @@ const initStore = (sdk: SdkResult) =>
 
         // 设置属性
         localStorage.setItem('locale', locale);
-
-        try {
-          const localeData = sdk.i18n.loadLocale?.(locale);
-          if (!localeData) return;
-          get().setAntdConfig({ locale: localeData });
-        } catch (e) {
-          throw new Error('loadLocale -- 加载语言包失败', e);
-        }
-      },
-
-      antdConfig: null,
-      setAntdConfig: (antdConfig) => {
-        set((state) => {
-          const newAntdConfig = merge({}, state.antdConfig, antdConfig); // 合并并创建新的 antdConfig 对象
-          return { ...state, antdConfig: newAntdConfig };
-        });
-
-        sdk.config.antdConfig = antdConfig; // 记录值
       },
 
       microAppState: false,

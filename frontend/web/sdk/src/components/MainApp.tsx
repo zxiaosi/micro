@@ -7,7 +7,6 @@ import {
   handleRoutesUtil,
   lifeCyclesUtil,
 } from '@/utils';
-import { ConfigProvider } from 'antd';
 import { registerMicroApps, start } from 'qiankun';
 import React, { Suspense, useEffect, useState } from 'react';
 import { createIntl, RawIntlProvider } from 'react-intl';
@@ -19,9 +18,10 @@ import {
 } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import { AntdConfigProvider } from './AntdConfigProvider';
 
-/** 根组件 */
-const Root: React.FC = () => {
+/** 主应用的根组件 */
+const MainApp: React.FC = () => {
   const loginPath = sdk.config.loginPath;
 
   const defaulRoutes: RouteObject[] = [
@@ -30,15 +30,9 @@ const Root: React.FC = () => {
     ...sdk.config.customRoutes,
   ];
 
-  const [locale, setTheme, setLocale, antdConfig, setAntdConfig] = useStore(
+  const [locale, setTheme, setLocale] = useStore(
     sdk.store,
-    useShallow((state) => [
-      state.locale,
-      state.setTheme,
-      state.setLocale,
-      state.antdConfig,
-      state.setAntdConfig,
-    ]),
+    useShallow((state) => [state.locale, state.setTheme, state.setLocale]),
   );
 
   const [loading, setLoading] = useState(false);
@@ -50,7 +44,6 @@ const Root: React.FC = () => {
   const setThemeLocale = (apiTheme?: ThemeProps, apiLocale?: LocaleProps) => {
     setTheme(apiTheme || getDefaultThemeUtil(sdk));
     setLocale(apiLocale || getDefaultLocaleUtil(sdk));
-    setAntdConfig(sdk.config.antdConfig);
   };
 
   /** 初始化数据方法 */
@@ -128,15 +121,15 @@ const Root: React.FC = () => {
 
   return (
     <RawIntlProvider value={intl}>
-      <ConfigProvider {...antdConfig}>
+      <AntdConfigProvider>
         <Suspense fallback={<>Loading...</>}>
           <RouterProvider
             router={createBrowserRouter(router, { basename: '/' })}
           />
         </Suspense>
-      </ConfigProvider>
+      </AntdConfigProvider>
     </RawIntlProvider>
   );
 };
 
-export { Root };
+export { MainApp };

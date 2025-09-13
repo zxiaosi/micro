@@ -1,10 +1,10 @@
 import { GlobalFullscreenProvider } from '@/hooks/useGlobalFullscreen';
-import { Root } from '@zxiaosi/sdk';
+import { MainApp } from '@zxiaosi/sdk';
 
 function App() {
   return (
     <GlobalFullscreenProvider>
-      <Root />
+      <MainApp />
     </GlobalFullscreenProvider>
   );
 }

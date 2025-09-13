@@ -16,8 +16,8 @@ const useInfo = {
   ],
   roles: ['admin'],
   system: {
-    theme: 'light',
-    locale: 'zh-CN',
+    // theme: 'light',
+    // locale: 'zh-CN',
   },
 };
 
