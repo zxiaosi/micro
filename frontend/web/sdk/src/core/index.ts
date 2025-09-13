@@ -1,5 +1,3 @@
-// 按需引入
-
 import { BaseProps, InstanceProps, Plugin, SdkResult } from '@/types';
 
 class Sdk implements SdkResult {

@@ -46,8 +46,9 @@ interface AppResult extends Required<AppProps> {
 const pluginName = 'app';
 
 /**
- * 应用数据于逻辑
+ * 应用数据和业务逻辑
  * - 详情参考 {@link AppProps} {@link AppResult}
+ * - 主要存储接口数据
  */
 const AppPlugin: Plugin<'app'> = {
   name: pluginName,

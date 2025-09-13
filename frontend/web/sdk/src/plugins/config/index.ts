@@ -10,7 +10,7 @@ interface ConfigProps {
   /** 环境变量 */
   env?: Record<string, any>;
 
-  /** Token 存储名称 */
+  /** Token存储名称 */
   tokenName?: string;
   /** 主题存储名称  */
   themeName?: string;
@@ -50,9 +50,12 @@ interface ConfigResult extends Required<ConfigProps> {}
 const pluginName = 'config';
 
 /**
- * 配置 插件
+ * 配置信息
  * - 详情参考 {@link ConfigProps} {@link ConfigResult}
- * - TODO: 考虑合并到 AppPlugin 中
+ * - 配置 localStorage 变量名称
+ * - 配置 默认主题、国际化
+ * - 配置 默认登录路径、跳转路径、自定义路由
+ * - 配置 Antd 配置、ProLayout 配置
  */
 const ConfigPlugin: Plugin<'config'> = {
   name: pluginName,

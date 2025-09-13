@@ -19,9 +19,9 @@ interface ClientResult extends Required<ClientProps> {
 const pluginName = 'client';
 
 /**
- * Client 插件
+ * 客户端
  * - 详情参考 {@link ClientProps} {@link ClientResult}
- * - TODO: 考虑合并到 AppPlugin 中
+ * - 全局路由相关信息
  */
 const ClientPlugin: Plugin<'client'> = {
   name: pluginName,

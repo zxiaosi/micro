@@ -2,13 +2,13 @@
 import merge from 'lodash/merge';
 
 import { Plugin, UserInfo } from '@/types';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, CreateAxiosDefaults } from 'axios';
 import { RouteObject } from 'react-router-dom';
-import Http, { ApiConfig, ApiRequestOption } from './http';
+import Http, { ApiRequestOption } from './http';
 
 interface ApiProps {
   /** Axios配置 */
-  config?: ApiConfig;
+  config?: CreateAxiosDefaults;
 
   /** 取消请求控制器 */
   controllers?: Map<string, AbortController>;
@@ -37,13 +37,13 @@ interface ApiProps {
   loginApi?: (values: any) => Promise<any>;
 }
 
-interface ApiResult extends Required<Readonly<ApiProps>> {
+interface ApiResult extends Required<ApiProps> {
   /**
    * 请求
    * @param  url 请求地址
    * @param options 自定义配置项
    */
-  request: (
+  readonly request: (
     url: string,
     options?: ApiRequestOption,
   ) => Promise<AxiosResponse<any, any>>;

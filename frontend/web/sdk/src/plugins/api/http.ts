@@ -1,56 +1,15 @@
 // 使用按需加载的方式引入 lodash
-import isEmpty from 'lodash/isEmpty';
 
 import { sdk } from '@/core';
 import { message } from 'antd';
 import axios, {
   AxiosError,
   AxiosInstance,
-  AxiosInterceptorOptions,
   AxiosRequestConfig,
   AxiosResponse,
   CreateAxiosDefaults,
   InternalAxiosRequestConfig,
 } from 'axios';
-
-export interface ApiConfig extends CreateAxiosDefaults {
-  /** 添加请求拦截器 */
-  addRequestInterceptor?: {
-    /**
-     * 请求拦截器成功回调
-     * @param config 请求配置
-     */
-    onFulfilled?: (
-      config: InternalAxiosRequestConfig<any>,
-    ) =>
-      | InternalAxiosRequestConfig<any>
-      | Promise<InternalAxiosRequestConfig<any>>;
-    /**
-     * 请求拦截器失败回调
-     * @param error 错误信息
-     */
-    onRejected?: ((error: AxiosError) => any) | null;
-    /**
-     * 拦截器选项
-     */
-    options?: AxiosInterceptorOptions;
-  };
-  /** 添加响应拦截器 */
-  addResponseInterceptor?: {
-    /**
-     * 响应拦截器成功回调
-     * @param response 响应信息
-     */
-    onFulfilled?: (
-      response: AxiosResponse<any, any>,
-    ) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
-    /**
-     * 响应拦截器失败回调
-     * @param error 错误信息
-     */
-    onRejected?: ((error: AxiosError) => any) | null;
-  };
-}
 
 export interface ApiRequestOption extends AxiosRequestConfig {
   /** 是否需要原始数据 */
@@ -63,14 +22,10 @@ export interface ApiRequestOption extends AxiosRequestConfig {
 class Http {
   instance: AxiosInstance;
 
-  constructor(options: ApiConfig = {}) {
-    const { addRequestInterceptor, addResponseInterceptor, ...rest } = options;
-
-    this.instance = axios.create(rest); // 创建实例
+  constructor(options: CreateAxiosDefaults = {}) {
+    this.instance = axios.create(options); // 创建实例
     this.defaultRequestInterceptor(); // 添加默认请求拦截器
     this.defaultResponseInterceptor(); // 添加默认响应拦截器
-    this.addRequestInterceptor(addRequestInterceptor); // 添加自定义请求拦截器
-    this.addResponseInterceptor(addResponseInterceptor); // 添加自定义响应拦截器
   }
 
   /** 默认请求拦截器 */
@@ -154,22 +109,6 @@ class Http {
         return Promise.reject(error);
       },
     );
-  }
-
-  /** 添加请求拦截器 */
-  addRequestInterceptor(interceptor) {
-    if (!isEmpty(interceptor)) {
-      const { onFulfilled, onRejected, options } = interceptor;
-      this.instance.interceptors.request.use(onFulfilled, onRejected, options);
-    }
-  }
-
-  /** 添加响应拦截器 */
-  addResponseInterceptor(interceptor) {
-    if (!isEmpty(interceptor)) {
-      const { onFulfilled, onRejected } = interceptor;
-      this.instance.interceptors.response.use(onFulfilled, onRejected);
-    }
   }
 
   /** 获取实例 */
