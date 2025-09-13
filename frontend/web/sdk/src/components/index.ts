@@ -1,3 +1,3 @@
-export { AntdConfigProvider } from './AntdConfigProvider';
-export { Crumb } from './Crumb';
-export { MainApp } from './MainApp';
+export { AntdConfigProvider } from './antdConfigProvider';
+export { Crumb } from './crumb';
+export { MainApp } from './mainApp';

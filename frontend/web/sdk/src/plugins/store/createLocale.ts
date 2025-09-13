@@ -1,10 +1,7 @@
 import { sdk } from '@/core';
 import { LocaleProps } from '@/types';
-import { theme as antdTheme } from 'antd';
 import intl from 'react-intl-universal';
 import { StateCreator } from 'zustand';
-
-const { defaultAlgorithm, darkAlgorithm } = antdTheme;
 
 interface LocaleStoreProps {
   /** 国际化 */
@@ -22,7 +19,10 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
 
     // 记录值
     sdk.config.locale = locale;
-    localStorage.setItem('locale', locale);
+    localStorage.setItem(sdk.config.localeName, locale);
+
+    // 设置作用域
+    document.documentElement.setAttribute('data-lang', locale);
 
     // 设置 React Intl Universal 语言包
     const intlConfig = sdk.i18n.intlConfig;

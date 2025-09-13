@@ -17,7 +17,7 @@ import {
 } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { AntdConfigProvider } from './AntdConfigProvider';
+import { AntdConfigProvider } from '../antdConfigProvider';
 
 /** 主应用的根组件 */
 const MainApp: React.FC = () => {

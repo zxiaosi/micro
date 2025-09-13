@@ -4,7 +4,7 @@ import { memo, Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
 /** 布局组件 */
-const BaseLayout = () => {
+const BaseLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const matches = useMatches();

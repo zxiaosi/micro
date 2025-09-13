@@ -3,8 +3,8 @@ import { Button, Flex, Form, FormProps, Input } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/** 登录页（可从主应用传入覆盖） */
-const Login = () => {
+/** 默认登录页 */
+const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);

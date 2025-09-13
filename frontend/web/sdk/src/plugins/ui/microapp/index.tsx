@@ -1,9 +1,13 @@
 import { sdk } from '@/core';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { useStore } from 'zustand';
 
-/** 渲染微应用 */
-const Microapp = ({ rootId }) => {
+interface Props {
+  rootId: string;
+}
+
+/** 子应用挂载节点 */
+const Microapp: React.FC<Props> = ({ rootId }) => {
   const microAppState = useStore(sdk.store, (state) => state.microAppState);
 
   return (

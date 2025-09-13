@@ -1,29 +1,22 @@
 import { Plugin } from '@/types';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+import { AppStateStoreProps, createAppStateSlice } from './createAppState';
 import { createLocaleSlice, LocaleStoreProps } from './createLocale';
 import { createThemeSlice, ThemeStoreProps } from './createTheme';
 
-interface StoreProps extends LocaleStoreProps, ThemeStoreProps {
-  /** 子应用加载状态 */
-  microAppState: boolean;
-  /** 设置子应用加载状态 */
-  setMicroAppState: (state: boolean) => void;
-}
+type StoreProps = AppStateStoreProps & LocaleStoreProps & ThemeStoreProps;
 
-type StoreResult = ReturnType<typeof initStore>;
+type StoreResult = typeof globalStore;
 
 /** 初始化 Store */
-const initStore = () =>
-  createStore<StoreProps>()(
-    subscribeWithSelector((set, get, api) => ({
-      ...createLocaleSlice(set, get, api),
-      ...createThemeSlice(set, get, api),
-
-      microAppState: false,
-      setMicroAppState: (microAppState) => set(() => ({ microAppState })),
-    })),
-  );
+const globalStore = createStore<StoreProps>()(
+  subscribeWithSelector((...a) => ({
+    ...createAppStateSlice(...a),
+    ...createLocaleSlice(...a),
+    ...createThemeSlice(...a),
+  })),
+);
 
 /** 插件名称 */
 const pluginName = 'store';
@@ -41,7 +34,7 @@ const pluginName = 'store';
 const StorePlugin: Plugin<'store'> = {
   name: pluginName,
   install(sdk, options = {}) {
-    sdk[pluginName] = initStore() satisfies StoreResult;
+    sdk[pluginName] = globalStore satisfies StoreResult;
   },
 };
 
