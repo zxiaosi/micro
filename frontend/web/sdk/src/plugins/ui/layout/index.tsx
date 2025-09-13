@@ -1,4 +1,4 @@
-import sdk from '@/core';
+import { sdk } from '@/core';
 import { ProLayout } from '@ant-design/pro-layout';
 import { memo, Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';

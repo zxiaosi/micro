@@ -89,13 +89,13 @@ export const transformRoutesUtil = (
       microAppsMap.set(name, microAppInfo);
 
       // 处理子应用挂载组件
-      element = sdk.app.renderComponent('Microapp', { rootId });
+      element = sdk.ui.renderComponent('Microapp', { rootId });
     } else if (component === 'Outlet') {
       // 处理路由出口
       element = <Outlet />;
     } else {
       // 处理普通组件
-      element = sdk.app.renderComponent(component);
+      element = sdk.ui.renderComponent(component);
     }
 
     // 转换子路由

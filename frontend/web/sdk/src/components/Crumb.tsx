@@ -1,8 +1,7 @@
-import sdk from '@/core';
+import { sdk } from '@/core';
+import { useCrumb, useIntl } from '@/hooks';
 import { Breadcrumb, BreadcrumbItemProps } from 'antd';
 import { useMemo } from 'react';
-import { useCrumb } from './useCrumb';
-import { useIntl } from './useIntl';
 
 /** 面包屑 */
 const Crumb = (props: BreadcrumbItemProps) => {

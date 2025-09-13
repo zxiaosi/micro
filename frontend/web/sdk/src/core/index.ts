@@ -9,10 +9,10 @@ class Sdk implements SdkResult {
   api: SdkResult['api'];
   app: SdkResult['app'];
   client: SdkResult['client'];
-  components: SdkResult['components'];
   config: SdkResult['config'];
   i18n: SdkResult['i18n'];
   store: SdkResult['store'];
+  ui: SdkResult['ui'];
 
   constructor() {
     this.name = '';
@@ -74,4 +74,4 @@ class Sdk implements SdkResult {
 
 const sdk = new Sdk();
 
-export default sdk;
+export { sdk };

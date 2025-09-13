@@ -8,7 +8,7 @@ import {
   ApiPlugin,
   AppPlugin,
   ClientPlugin,
-  ComponentsPlugin,
+  UIPlugin,
   ConfigPlugin,
   I18nPlugin,
   sdk,
@@ -44,7 +44,7 @@ sdk
       menuFooterRender: (props) => <CustomMenuFooter {...props} />,
     },
   })
-  .use(ComponentsPlugin, { Login, Dashboard })
+  .use(UIPlugin, { Login, Dashboard })
   .use(I18nPlugin, I18nConfig)
   .use(StorePlugin)
   .mount('sdk');

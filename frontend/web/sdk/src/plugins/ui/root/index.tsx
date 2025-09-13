@@ -1,4 +1,4 @@
-import sdk from '@/core';
+import { sdk } from '@/core';
 import { LocaleProps, ThemeProps } from '@/types';
 import {
   getDefaultLocaleUtil,
@@ -25,8 +25,8 @@ const Root = () => {
   const loginPath = sdk.config.loginPath;
 
   const defaulRoutes: RouteObject[] = [
-    { path: loginPath, element: sdk.app.renderComponent('Login') },
-    { path: '*', element: sdk.app.renderComponent('NotFound') },
+    { path: loginPath, element: sdk.ui.renderComponent('Login') },
+    { path: '*', element: sdk.ui.renderComponent('NotFound') },
     ...sdk.config.customRoutes,
   ];
 
@@ -84,7 +84,7 @@ const Root = () => {
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          element: sdk.app.renderComponent('Layout'),
+          element: sdk.ui.renderComponent('Layout'),
           children: menuData,
           errorElement: <>找不到页面</>,
         },

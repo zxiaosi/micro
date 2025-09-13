@@ -1,11 +1,9 @@
 // 按需引入
-import get from 'lodash/get';
 import merge from 'lodash/merge';
 
 import { Plugin, UserInfo } from '@/types';
 import { MenuDataItem } from '@ant-design/pro-layout';
 import { ObjectType, RegistrableApp } from 'qiankun';
-import { ComponentType, createElement, ReactElement } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 interface AppProps {
@@ -42,23 +40,13 @@ interface AppResult extends Required<AppProps> {
    * 获取重定向路径
    */
   readonly getRedirectPath: () => string;
-  /**
-   * 获取组件
-   * @param name 组件名称
-   */
-  readonly getComponent?: (name: string) => ComponentType;
-  /**
-   * 渲染组件
-   * @param name 组件名称
-   */
-  readonly renderComponent?: (name: string, props?: any) => ReactElement;
 }
 
 /** 插件名称 */
 const pluginName = 'app';
 
 /**
- * 常用配置 插件
+ * 应用数据于逻辑
  * - 详情参考 {@link AppProps} {@link AppResult}
  */
 const AppPlugin: Plugin<'app'> = {
@@ -76,6 +64,7 @@ const AppPlugin: Plugin<'app'> = {
       settings: {},
 
       initData: null,
+
       pageToLogin: () => {
         // 清除 Token
         localStorage.removeItem(sdk.config.tokenName);
@@ -100,16 +89,6 @@ const AppPlugin: Plugin<'app'> = {
 
         // 3. 最后使用菜单中第一项
         return '/';
-      },
-
-      getComponent: (name) => {
-        if (!name) throw new Error('getComponent -- 组件名称不能为空');
-
-        return get(sdk.components, name);
-      },
-      renderComponent: (name, props = {}) => {
-        const Component = sdk.app.getComponent(name);
-        return createElement(Component, props);
       },
     } satisfies AppResult;
 

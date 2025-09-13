@@ -1,4 +1,4 @@
-import sdk from '@/core';
+import { sdk } from '@/core';
 import { Button, Flex, Form, FormProps, Input } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

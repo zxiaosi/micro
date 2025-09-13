@@ -1,4 +1,4 @@
-import sdk from '@/core';
+import { sdk } from '@/core';
 import { memo } from 'react';
 import { useStore } from 'zustand';
 

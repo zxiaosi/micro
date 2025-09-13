@@ -1,7 +1,7 @@
 // 使用按需加载的方式引入 lodash
 import isEmpty from 'lodash/isEmpty';
 
-import sdk from '@/core';
+import { sdk } from '@/core';
 import { message } from 'antd';
 import axios, {
   AxiosError,

@@ -1,10 +1,10 @@
 import { ApiProps, ApiResult } from '@/plugins/api';
 import { AppProps, AppResult } from '@/plugins/app';
 import { ClientProps, ClientResult } from '@/plugins/client';
-import { ComponentsProps, ComponentsResult } from '@/plugins/components';
 import { ConfigProps, ConfigResult } from '@/plugins/config';
 import { I18nProps, I18nResult } from '@/plugins/i18n';
 import { StoreProps, StoreResult } from '@/plugins/store';
+import { UIProps, UIResult } from '@/plugins/ui';
 
 export type ThemeProps = 'light' | 'dark';
 
@@ -28,14 +28,14 @@ export interface InstanceProps {
   app?: AppProps;
   /** Client 配置 */
   client?: ClientProps;
-  /** 公用组件 */
-  components?: ComponentsProps;
   /** Config 配置 */
   config?: ConfigProps;
   /** 国际化 */
   i18n?: I18nProps;
   /** 全局 Store */
   store?: StoreProps;
+  /** 公用组件 */
+  ui?: UIProps;
 }
 
 export interface InstanceResult {
@@ -45,14 +45,14 @@ export interface InstanceResult {
   app: AppResult;
   /** Client 配置 */
   client: ClientResult;
-  /** 公用组件 */
-  components: ComponentsResult;
   /** Config 配置 */
   config: ConfigResult;
   /** 国际化 */
   i18n: I18nResult;
   /** 全局 Store */
   store: StoreResult;
+  /** 公用组件 */
+  ui: UIResult;
 }
 
 export interface BaseProps {
