@@ -1,5 +1,3 @@
-// 使用按需加载的方式引入 lodash
-
 import { sdk } from '@/core';
 import { message } from 'antd';
 import axios, {

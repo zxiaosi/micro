@@ -16,7 +16,7 @@ const User = () => {
     ]),
   );
 
-  const { formatMessage } = useIntl();
+  const intl = useIntl();
 
   /** 更新主题 */
   const handleChangeTheme = () => {
@@ -55,8 +55,7 @@ const User = () => {
         <Card title="Antd 语言包、React Intl 国际化">
           <Space>
             <DatePicker />
-            {formatMessage({ id: 'test' })}
-            {formatMessage({ id: 'hello' })}
+            {intl.get('hello')}
           </Space>
         </Card>
 

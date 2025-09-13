@@ -1,6 +1,6 @@
 import { Empty, Flex } from 'antd';
 
-/** 找不到页面 */
+/** 404页面 */
 const NotFound: React.FC = () => {
   return (
     <Flex

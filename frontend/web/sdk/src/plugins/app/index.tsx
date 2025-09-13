@@ -1,8 +1,6 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { Plugin, UserInfo } from '@/types';
 import { MenuDataItem } from '@ant-design/pro-layout';
+import { merge } from 'es-toolkit';
 import { ObjectType, RegistrableApp } from 'qiankun';
 import { RouteObject } from 'react-router-dom';
 
@@ -93,7 +91,7 @@ const AppPlugin: Plugin<'app'> = {
       },
     } satisfies AppResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

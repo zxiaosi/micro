@@ -1,6 +1,3 @@
-// 使用按需加载的方式引入 lodash
-import isEmpty from 'lodash/isEmpty';
-
 import { LocaleProps, SdkResult, ThemeProps } from '@/types';
 import * as Icons from '@ant-design/icons';
 import { FrameworkLifeCycles, ObjectType, RegistrableApp } from 'qiankun';
@@ -60,7 +57,7 @@ export const transformRoutesUtil = (
   if (!routes || routes?.length === 0) return [];
 
   return routes.map((item) => {
-    let element = null; //
+    let element = null; // 组件
 
     const { locale, path, icon, component, routeAttr, children } = item;
 
@@ -78,24 +75,21 @@ export const transformRoutesUtil = (
 
       // 子应用信息
       const microAppInfo = {
+        ...rest,
         name,
         container: `#${rootId}`,
         props: { sdk },
         loader: (loading) => sdk.store.getState().setMicroAppState(loading),
-        ...rest,
       };
 
       // 添加子应用信息
       microAppsMap.set(name, microAppInfo);
 
-      // 处理子应用挂载组件
-      element = sdk.ui.renderComponent('Microapp', { rootId });
+      element = sdk.ui.renderComponent('Microapp', { rootId }); // 子应用挂载组件
     } else if (component === 'Outlet') {
-      // 处理路由出口
-      element = <Outlet />;
+      element = <Outlet />; // 路由出口组件
     } else {
-      // 处理普通组件
-      element = sdk.ui.renderComponent(component);
+      element = sdk.ui.renderComponent(component); // 普通组件
     }
 
     // 转换子路由
@@ -124,11 +118,11 @@ export const transformRoutesUtil = (
 export const getFirstPagePathUtil = (routes: any[]) => {
   let firstPagePath = '/';
 
-  if (isEmpty(routes)) return firstPagePath;
+  if (!routes || routes.length === 0) return firstPagePath;
 
   firstPagePath = routes?.[0]?.path;
 
-  if (!isEmpty(routes?.[0]?.children)) {
+  if (routes?.[0]?.children && routes?.[0]?.children.length > 0) {
     firstPagePath = getFirstPagePathUtil(routes?.[0]?.children);
   }
 

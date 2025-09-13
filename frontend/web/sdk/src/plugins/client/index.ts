@@ -1,7 +1,5 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { Plugin } from '@/types';
+import { merge } from 'es-toolkit';
 import { Location, NavigateFunction, UIMatch } from 'react-router-dom';
 
 interface ClientProps {}
@@ -33,7 +31,7 @@ const ClientPlugin: Plugin<'client'> = {
       matches: null,
     } satisfies ClientResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

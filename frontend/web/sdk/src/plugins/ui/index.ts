@@ -1,6 +1,3 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { Plugin } from '@/types';
 import { ComponentType, createElement, ReactElement } from 'react';
 
@@ -8,6 +5,7 @@ import Layout from './layout';
 import Login from './login';
 import Microapp from './microapp';
 import NotFound from './notFound';
+import { merge } from 'es-toolkit';
 
 interface UIProps {
   /** 组件 */
@@ -59,7 +57,7 @@ const UIPlugin: Plugin<'ui'> = {
       },
     } satisfies UIResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

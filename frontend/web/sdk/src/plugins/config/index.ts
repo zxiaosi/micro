@@ -1,9 +1,7 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { LocaleProps, Plugin, ThemeProps } from '@/types';
 import { ProLayoutProps } from '@ant-design/pro-layout';
 import { ConfigProviderProps } from 'antd';
+import { merge } from 'es-toolkit';
 import { RouteObject } from 'react-router-dom';
 
 interface ConfigProps {
@@ -81,7 +79,7 @@ const ConfigPlugin: Plugin<'config'> = {
       },
     } satisfies ConfigResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

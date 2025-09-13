@@ -1,8 +1,6 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { Plugin, UserInfo } from '@/types';
 import { AxiosResponse, CreateAxiosDefaults } from 'axios';
+import { merge } from 'es-toolkit';
 import { RouteObject } from 'react-router-dom';
 import Http, { ApiRequestOption } from './http';
 
@@ -103,7 +101,7 @@ const ApiPlugin: Plugin<'api'> = {
       },
     } satisfies ApiResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

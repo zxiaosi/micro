@@ -1,7 +1,5 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { Plugin } from '@/types';
+import { merge } from 'es-toolkit';
 import intl from 'react-intl-universal';
 
 interface I18nProps {
@@ -72,7 +70,7 @@ const I18nPlugin: Plugin<'i18n'> = {
       loadLocale: (locale: string) => undefined,
     } satisfies I18nResult;
 
-    sdk[pluginName] = merge({}, defaultOptions, options);
+    sdk[pluginName] = merge(defaultOptions, options);
   },
 };
 

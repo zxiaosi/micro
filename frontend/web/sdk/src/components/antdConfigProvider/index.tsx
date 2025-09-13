@@ -1,8 +1,6 @@
-// 按需引入
-import merge from 'lodash/merge';
-
 import { sdk } from '@/core';
 import { ConfigProvider, ConfigProviderProps } from 'antd';
+import { cloneDeep, merge } from 'es-toolkit';
 import React, { useMemo } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -21,8 +19,8 @@ const AntdConfigProvider: React.FC<ConfigProviderProps> = (props) => {
   );
 
   const config = useMemo(() => {
-    const antdConfig = sdk.config.antdConfig;
-    return merge({}, antdConfig, props);
+    const antdConfig = cloneDeep(sdk.config.antdConfig); // 改变引用地址
+    return merge(antdConfig, props);
   }, [locale, theme]);
 
   return <ConfigProvider {...config}>{children}</ConfigProvider>;
