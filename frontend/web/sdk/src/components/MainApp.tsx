@@ -9,7 +9,6 @@ import {
 } from '@/utils';
 import { registerMicroApps, start } from 'qiankun';
 import React, { Suspense, useEffect, useState } from 'react';
-import { createIntl, RawIntlProvider } from 'react-intl';
 import {
   createBrowserRouter,
   Navigate,
@@ -30,9 +29,9 @@ const MainApp: React.FC = () => {
     ...sdk.config.customRoutes,
   ];
 
-  const [locale, setTheme, setLocale] = useStore(
+  const [setTheme, setLocale] = useStore(
     sdk.store,
-    useShallow((state) => [state.locale, state.setTheme, state.setLocale]),
+    useShallow((state) => [state.setTheme, state.setLocale]),
   );
 
   const [loading, setLoading] = useState(false);
@@ -108,27 +107,16 @@ const MainApp: React.FC = () => {
     else initData();
   }, []);
 
-  if (!locale || loading) return <>Loading...</>;
-
-  // 创建 Intl 对象
-  const intl = createIntl(
-    { locale, messages: sdk.i18n.intlConfig[locale] },
-    sdk.i18n.cache,
-  );
-
-  // 记录值
-  sdk.i18n.intl = intl;
+  if (loading) return <>Loading...</>;
 
   return (
-    <RawIntlProvider value={intl}>
-      <AntdConfigProvider>
-        <Suspense fallback={<>Loading...</>}>
-          <RouterProvider
-            router={createBrowserRouter(router, { basename: '/' })}
-          />
-        </Suspense>
-      </AntdConfigProvider>
-    </RawIntlProvider>
+    <AntdConfigProvider>
+      <Suspense fallback={<>Loading...</>}>
+        <RouterProvider
+          router={createBrowserRouter(router, { basename: '/' })}
+        />
+      </Suspense>
+    </AntdConfigProvider>
   );
 };
 

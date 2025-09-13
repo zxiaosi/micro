@@ -62,7 +62,7 @@ export const transformRoutesUtil = (
   return routes.map((item) => {
     let element = null; //
 
-    const { component, routeAttr, icon, children } = item;
+    const { locale, path, icon, component, routeAttr, children } = item;
 
     // 处理子应用路由
     if (routeAttr) {
@@ -105,7 +105,7 @@ export const transformRoutesUtil = (
 
     return {
       ...item,
-      key: `${item.locale}_${item.icon}_${item.path}`, // 唯一key, 判断菜单是否折叠
+      key: `${locale}_${icon}_${path}`, // 唯一key, 判断菜单是否折叠
       element,
       icon: dynamicIcon(icon),
       children: processedChildren,

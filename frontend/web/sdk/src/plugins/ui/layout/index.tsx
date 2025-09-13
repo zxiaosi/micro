@@ -48,7 +48,9 @@ const BaseLayout = () => {
   return (
     <ProLayout
       locale={locale}
-      formatMessage={sdk.i18n.intl.formatMessage}
+      formatMessage={({ id, defaultMessage }) =>
+        sdk.i18n.intl.get(id).d(defaultMessage)
+      }
       location={location}
       menuItemRender={(item, dom) => (
         <div onClick={() => handleMenuClick(item)}>{dom}</div>

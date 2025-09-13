@@ -10,7 +10,7 @@ import { useMemo } from 'react';
  */
 const Crumb: React.FC = (props: BreadcrumbProps) => {
   const crumb = useCrumb();
-  const { formatMessage } = useIntl();
+  const intl = useIntl();
 
   /** 页面跳转 */
   const handlePageTo = (url, e?: any) => {
@@ -31,7 +31,7 @@ const Crumb: React.FC = (props: BreadcrumbProps) => {
         path = children[0].path;
       }
 
-      const text = formatMessage({ id: locale }) || name;
+      const text = intl.formatMessage({ id: locale }) || name;
       if (index === crumb.length - 1) {
         return { title: text };
       } else {

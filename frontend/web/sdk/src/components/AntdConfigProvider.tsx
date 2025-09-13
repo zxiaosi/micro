@@ -2,12 +2,10 @@
 import merge from 'lodash/merge';
 
 import { sdk } from '@/core';
-import { theme as antdTheme, ConfigProvider, ConfigProviderProps } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { ConfigProvider, ConfigProviderProps } from 'antd';
+import React, { useMemo } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-
-const { defaultAlgorithm, darkAlgorithm } = antdTheme;
 
 /**
  * Antd 配置
@@ -17,48 +15,17 @@ const { defaultAlgorithm, darkAlgorithm } = antdTheme;
 const AntdConfigProvider: React.FC<ConfigProviderProps> = (props) => {
   const { children } = props;
 
-  const [theme, locale] = useStore(
+  const [locale, theme] = useStore(
     sdk.store,
-    useShallow((state) => [state.theme, state.locale]),
+    useShallow((state) => [state.locale, state.theme]),
   );
 
-  const [config, setConfig] = useState<ConfigProviderProps>(
-    sdk.config.antdConfig,
-  );
+  const config = useMemo(() => {
+    const antdConfig = sdk.config.antdConfig;
+    return merge({}, antdConfig, props);
+  }, [locale, theme]);
 
-  useEffect(() => {
-    if (!theme) return;
-
-    const oldConfig = sdk.config.antdConfig;
-
-    const algorithm = theme === 'light' ? defaultAlgorithm : darkAlgorithm;
-    const newConfig = merge({}, oldConfig, { theme: { algorithm } });
-    setConfig(() => newConfig);
-
-    sdk.config.antdConfig = newConfig;
-  }, [theme]);
-
-  useEffect(() => {
-    if (!locale) return;
-
-    try {
-      const oldConfig = sdk.config.antdConfig;
-
-      const localeData = sdk.i18n.loadLocale?.(locale) || undefined;
-      const newConfig = merge({}, oldConfig, { locale: localeData });
-      setConfig(() => newConfig);
-
-      sdk.config.antdConfig = newConfig;
-    } catch (e) {
-      throw new Error('loadLocale -- 加载语言包失败', e);
-    }
-  }, [locale]);
-
-  return (
-    <ConfigProvider {...config} {...props}>
-      {children}
-    </ConfigProvider>
-  );
+  return <ConfigProvider {...config}>{children}</ConfigProvider>;
 };
 
 export { AntdConfigProvider };

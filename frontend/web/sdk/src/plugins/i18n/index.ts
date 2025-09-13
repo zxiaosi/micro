@@ -2,18 +2,16 @@
 import merge from 'lodash/merge';
 
 import { Plugin } from '@/types';
-import { createIntlCache, IntlCache, IntlShape } from 'react-intl';
+import intl from 'react-intl-universal';
 
 interface I18nProps {
-  /** intl 缓存 */
-  cache?: IntlCache;
   /**
    * intl 实例
    * - 如果项目不使用 React Compiler, 可以直接使用 sdk.i18n.intl
    * - 默认应该在根组件去监听 locale, 然后传给 IntlProvider, 但是 IntlProvider 不能有多个
    * - 直接返回 sdk.i18n.intl 会被 React Compiler 优化, 导致组件不刷新, 使用 sdk.store.intl 代替
    */
-  intl?: IntlShape;
+  intl?: typeof intl;
   /**
    * React Intl 配置的语言包
    * @example
@@ -69,16 +67,8 @@ const I18nPlugin: Plugin<'i18n'> = {
   install(sdk, options = {}) {
     // 默认插件配置
     const defaultOptions = {
-      cache: createIntlCache(),
-      intl: null,
-      intlConfig: {
-        'zh-CN': {
-          test: '测试国际化',
-        },
-        'en-US': {
-          test: 'Test Intl',
-        },
-      },
+      intlConfig: {},
+      intl: intl,
       loadLocale: (locale: string) => undefined,
     } satisfies I18nResult;
 
