@@ -1,3 +1,4 @@
+import echarts from '../mock/getEcharts';
 import getResource from '../mock/getResource';
 import getRoutes from '../mock/getRoutes';
 import getTest from '../mock/getTest';
@@ -10,4 +11,5 @@ export default [
   ...getTest,
   ...getUserInfo,
   ...login,
+  ...echarts,
 ];

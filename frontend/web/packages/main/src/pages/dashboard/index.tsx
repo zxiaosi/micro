@@ -1,8 +1,11 @@
-import { Crumb, sdk, useIntl } from '@zxiaosi/sdk';
+import { Charts, Crumb, sdk, useIntl } from '@zxiaosi/sdk';
 import { Alert, Button, Card, DatePicker, Space } from 'antd';
+import { EChartsOption } from 'echarts';
+import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import './index.less';
+
 /** 首页 */
 const Dashboard = () => {
   const [theme, setTheme, locale, setLocale] = useStore(
@@ -17,6 +20,45 @@ const Dashboard = () => {
 
   const intl = useIntl();
 
+  const [loading, setLoading] = useState(false);
+  const [options, setOptions] = useState<EChartsOption['series']>([]);
+
+  const defaultOption: EChartsOption = {
+    title: {
+      text: '堆叠区域图',
+    },
+    tooltip: {
+      trigger: 'axis',
+    },
+    legend: {
+      data: ['邮件营销', '联盟广告', '视频广告'],
+    },
+    toolbox: {
+      feature: {
+        saveAsImage: {},
+      },
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '13%',
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      },
+    ],
+    yAxis: [
+      {
+        type: 'value',
+      },
+    ],
+    series: options,
+  };
+
   /** 更新主题 */
   const handleChangeTheme = () => {
     setTheme?.(theme === 'light' ? 'dark' : 'light');
@@ -25,6 +67,24 @@ const Dashboard = () => {
   /** 更新语言包 */
   const handleChangeLocale = () => {
     setLocale?.(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
+  };
+
+  /** 获取图标数据 */
+  const getChartData = async () => {
+    setLoading(() => true);
+    const [resp, err, cancel] = await sdk.api.request2('/chart', {
+      method: 'GET',
+    });
+    setOptions(resp?.data || []);
+    setLoading(() => false);
+  };
+
+  useEffect(() => {
+    getChartData();
+  }, []);
+
+  const handleChangeChart = () => {
+    getChartData();
   };
 
   return (
@@ -66,6 +126,21 @@ const Dashboard = () => {
               更新语言包
             </Button>
           </Space>
+        </Card>
+
+        <Card
+          title="图表"
+          extra={
+            <Button type="primary" onClick={handleChangeChart}>
+              更新图表
+            </Button>
+          }
+        >
+          <Charts
+            showLoading={loading}
+            option={defaultOption}
+            style={{ height: 400 }}
+          />
         </Card>
       </Space>
     </div>

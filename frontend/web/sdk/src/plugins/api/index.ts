@@ -46,7 +46,7 @@ interface ApiResult extends Required<ApiProps> {
   readonly request: (
     url: string,
     options?: ApiRequestOption,
-  ) => Promise<AxiosResponse>;
+  ) => Promise<AxiosResponse<any, any>>;
 
   /**
    * 二次加工请求
@@ -57,12 +57,12 @@ interface ApiResult extends Required<ApiProps> {
   readonly request2: (
     url: string,
     options?: ApiRequestOption,
-  ) => Promise<[AxiosResponse, AxiosError, () => void]>;
+  ) => Promise<[AxiosResponse<any, any>, AxiosError, () => void]>;
 
   readonly download: (
     url: string,
     options?: ApiRequestOption,
-  ) => Promise<[AxiosResponse, AxiosError, () => void]>;
+  ) => Promise<[AxiosResponse<any, any>, AxiosError, () => void]>;
 }
 
 /** 插件名称 */
