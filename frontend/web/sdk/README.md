@@ -58,7 +58,7 @@ export async function mount(props: any) {
 
 - 主应用使用 `ApiPlugin` 插件的时候, 传入 `getRoutesApi` 接口, SDK 会自动调用并注册路由信息
 
-- 主应用调用 `sdk.app.getRootComponent()` 获取根组件
+- 主应用使用 `<MainApp />` 
 
 ### `zustand` 全局状态管理
 
@@ -66,7 +66,7 @@ export async function mount(props: any) {
 
 ### 国际化
 
-- 主应用使用 `I18nPlugin` 插件的时候, 传入 `intlConfig`(ReactIntl-Message) 和 `loadLocale`(antd) 配置
+- 主应用使用 `I18nPlugin` 插件的时候, 传入 `intlConfig`(Message) 和 `loadLocale`(antd) 配置
 
 - 项目中通过 `sdk.i18n.intl.formatMessage` 获取转换后的语言
 
@@ -76,13 +76,13 @@ export async function mount(props: any) {
 
 - 目前两种方案
 
-- 方案一: 封装成单独的 `@es/icons` 包, 优点方便使用, 缺点会导致包体积一直增大
+- 方案一: 封装成单独的 `@zxiaosi/icons` 包, 优点方便使用, 缺点会导致包体积一直增大
 
-- 方案二: 主应用使用 `AppPlugin` 插件的时候, 传入 `iconfontUrl` 地址, `SDK` 会自动加载图标库, 项目中通过从 `SDK` 中导出 `<IconFont />` 使用图标, 优点是不用打包, 确定是会报 `React 多实例错误`, 需要排除依赖
+- 方案二: 主应用使用 `ConfigPlugin` 插件的时候, 传入 `iconfontUrl` 地址, `SDK` 会自动加载图标库, 项目中通过从 `SDK` 中导出 `<IconFont />` 使用图标, 优点是不用打包, 确定是会报 `React 多实例错误`, 需要排除依赖
 
 ### 路由动态添加
 
-- 主应用使用 `AppPlugin` 插件的时候, 传入 `customRoutes` 属性, `SDK` 会注册路由信息, 当前只支持最外层路由, 子路由不支持
+- 主应用使用 `ConfigPlugin` 插件的时候, 传入 `customRoutes` 属性, `SDK` 会注册路由信息, 当前只支持最外层路由, 子路由不支持
 
 ### 待开发
 
@@ -99,7 +99,7 @@ import merge from 'lodash/merge';
 
 interface CustomProps {}
 
-interface CustomResult extends Required<Readonly<CustomProps>> {}
+interface CustomResult extends Required<CustomProps> {}
 
 /** 插件名称 */
 const pluginName = 'customPlugin';

@@ -61,11 +61,13 @@ const MainApp: React.FC = () => {
       // 处理路由数据
       const { microApps, menuData } = handleRoutesUtil(routes, sdk);
 
-      // 注册微应用
-      registerMicroApps(microApps, lifeCyclesUtil);
+      if (microApps && microApps.length) {
+        // 注册微应用
+        registerMicroApps(microApps, lifeCyclesUtil);
 
-      // 启动 qiankun
-      start();
+        // 启动 qiankun
+        start();
+      }
 
       // 获取首页路径
       const firstPath = getFirstPagePathUtil(menuData);

@@ -1,5 +1,7 @@
 import { Plugin, UserInfo } from '@/types';
-import { AxiosResponse, CreateAxiosDefaults } from 'axios';
+import { cancelRequestUtil, generateRequestIdUtil } from '@/utils';
+import { message } from 'antd';
+import { AxiosError, AxiosResponse, CreateAxiosDefaults } from 'axios';
 import { merge } from 'es-toolkit';
 import { RouteObject } from 'react-router-dom';
 import Http, { ApiRequestOption } from './http';
@@ -38,13 +40,29 @@ interface ApiProps {
 interface ApiResult extends Required<ApiProps> {
   /**
    * 请求
-   * @param  url 请求地址
+   * @param url 请求地址
    * @param options 自定义配置项
    */
   readonly request: (
     url: string,
     options?: ApiRequestOption,
-  ) => Promise<AxiosResponse<any, any>>;
+  ) => Promise<AxiosResponse>;
+
+  /**
+   * 二次加工请求
+   * @param url 请求地址
+   * @param options 自定义配置项
+   * @returns [resp, err, cancel]
+   */
+  readonly request2: (
+    url: string,
+    options?: ApiRequestOption,
+  ) => Promise<[AxiosResponse, AxiosError, () => void]>;
+
+  readonly download: (
+    url: string,
+    options?: ApiRequestOption,
+  ) => Promise<[AxiosResponse, AxiosError, () => void]>;
 }
 
 /** 插件名称 */
@@ -77,6 +95,7 @@ const ApiPlugin: Plugin<'api'> = {
     const defaultOptions = {
       config: axiosConfig,
       controllers: new Map(),
+
       instance: null,
 
       getUserInfoApi: async () => {
@@ -91,6 +110,7 @@ const ApiPlugin: Plugin<'api'> = {
           data: values,
         });
       },
+
       request: (url, options = {}) => {
         return instance.request({
           url,
@@ -98,6 +118,48 @@ const ApiPlugin: Plugin<'api'> = {
           isShowFailMsg: true,
           ...options,
         });
+      },
+
+      request2: async (url, options = {}) => {
+        let resp,
+          err,
+          cancelFunc = null;
+
+        const allOptions = { url, ...options };
+        const requestId = generateRequestIdUtil(allOptions);
+        cancelFunc = () => cancelRequestUtil(allOptions);
+
+        try {
+          resp = await sdk.api.request(url, { ...allOptions, requestId });
+        } catch (e) {
+          err = e;
+        }
+
+        return [resp, err, cancelFunc];
+      },
+      download: async (url, options = {}) => {
+        let resp,
+          err,
+          cancelFunc = null;
+
+        const allOptions = {
+          url,
+          responseType: 'blob',
+          ...options,
+        } satisfies ApiRequestOption;
+        const requestId = generateRequestIdUtil(allOptions);
+        cancelFunc = () => cancelRequestUtil(allOptions);
+
+        message.loading({ key: requestId, content: '正在下载中...' });
+        try {
+          resp = await sdk.api.request(url, { ...allOptions, requestId });
+          message.success({ key: requestId, content: '下载成功' });
+        } catch (e) {
+          err = e;
+          message.error({ key: requestId, content: '下载失败' });
+        }
+
+        return [resp, err, cancelFunc];
       },
     } satisfies ApiResult;
 

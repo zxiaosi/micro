@@ -1,4 +1,5 @@
 import { sdk } from '@/core';
+import { cancelRequestUtil, generateRequestIdUtil } from '@/utils';
 import { message } from 'antd';
 import axios, {
   AxiosError,
@@ -10,6 +11,8 @@ import axios, {
 } from 'axios';
 
 export interface ApiRequestOption extends AxiosRequestConfig {
+  /** 请求唯一key(默认自动生成) */
+  requestId?: string;
   /** 是否需要原始数据 */
   isOriginalData?: boolean;
   /** 是否显示错误信息 */
@@ -33,16 +36,10 @@ class Http {
         const token = localStorage.getItem('token');
 
         // 设置请求唯一标识
-        const requestId = [
-          config.url,
-          config.method,
-          JSON.stringify(config.params),
-          JSON.stringify(config.data),
-        ].join('&');
+        const requestId = generateRequestIdUtil(config);
 
         // 取消重复请求
-        const oldController = sdk.api.controllers.get(requestId);
-        if (oldController) oldController.abort();
+        cancelRequestUtil(config);
 
         // 创建取消请求控制器
         const controller = new AbortController();
