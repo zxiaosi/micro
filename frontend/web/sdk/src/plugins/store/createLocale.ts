@@ -26,7 +26,7 @@ const createLocaleSlice: StateCreator<LocaleStoreProps> = (set, get) => ({
 
     // 设置 React Intl Universal 语言包
     const intlConfig = sdk.i18n.intlConfig;
-    intl.init({ currentLocale: locale, locales: intlConfig, debug: true });
+    intl.init({ currentLocale: locale, locales: intlConfig });
 
     // 加载 Antd 语言包
     try {
