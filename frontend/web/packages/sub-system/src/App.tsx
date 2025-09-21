@@ -24,14 +24,12 @@ const routes: RouteObject[] = [
   { path: '/resource', element: <Resource /> },
 ];
 
-function App({ basename, container }: Props) {
+function App({ basename = '/', container }: Props) {
   return (
     <AntdConfigProvider getPopupContainer={() => container || document.body}>
       <Suspense fallback={<>Loading...</>}>
         <RouterProvider
-          router={createBrowserRouter(routes, {
-            basename: basename ? `/${basename}` : '/',
-          })}
+          router={createBrowserRouter(routes, { basename })}
           future={{ v7_startTransition: false }}
         />
       </Suspense>

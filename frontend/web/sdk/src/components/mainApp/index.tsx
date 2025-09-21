@@ -116,6 +116,7 @@ const MainApp: React.FC = () => {
       <Suspense fallback={<>Loading...</>}>
         <RouterProvider
           router={createBrowserRouter(router, { basename: '/' })}
+          future={{ v7_startTransition: false }}
         />
       </Suspense>
     </AntdConfigProvider>

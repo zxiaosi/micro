@@ -175,3 +175,75 @@ class Sdk implements SdkResult {
 ```ts
 export { CustomPlugin, Sdk };
 ```
+
+## 退出是否刷新页面方案
+
+- 登录可以不刷新页面
+
+### 刷新页面
+
+- 优点:
+  - 可以使用 `qiankun` 的 `registerMicroApps` 和 `start` 方案
+  - 当退出登录刷新页面时，`qiankun` 的实例会被销毁，`sdk` 会重新实例化，免去手动清空的麻烦
+  - 当登录时，拿到后端数据重新 `start`, 可以保证只会 `start` 一次
+
+- 缺点:
+  - 退出刷新页面时会有白屏
+
+### 不刷新页面
+
+- 优点:
+  - 退出刷新页面时不会出现白屏
+- 缺点:
+  - 需要使用 `qiankun` 的 `loadMicroApp` 方案, 不刷新页面无法保证 `start` 只会执行一次
+  - `主应用` 的路由组件需要使用 `BrowserRouter` + `useRoutes`, 并且记录 `navigate`, 因为要在 `axios` 的响应拦截器中使用 `navigate`
+
+  ```tsx
+  axios.interceptors.response.use(
+    (resp) => {},
+    (error) => {
+      if (error.response.status === 401) {
+        window.navigate('/login');
+      }
+    },
+  );
+
+  const App = () => {
+    const routes = useRoutes([]);
+    const navigate = useNavigate();
+    window.navigate = navigate;
+    return <>{routes}</>;
+  };
+
+  const AppWrapper = () => {
+    return (
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+  };
+  ```
+
+  - 同时在 `Layout` 组件中监听 `location.pathname` 的变化, 并调用 `loadMicroApp`
+
+  ```tsx
+  const microAppRef = useRef<MicroApp>(null); // qiankun 实例
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    const microApps = sdk.app.microApps;
+
+    if (!microApps || microApps.length === 0) return;
+
+    const microAppInfo = microApps.find((item) =>
+      pathname.startsWith(item?.activeRule as string),
+    );
+
+    if (!microAppInfo) return;
+    microAppRef.current = loadMicroApp(microAppInfo, {}, lifeCyclesUtil);
+
+    return () => {
+      microAppRef.current?.unmount();
+    };
+  }, [location.pathname]);
+  ```
