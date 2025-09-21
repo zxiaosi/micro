@@ -58,7 +58,7 @@ export async function mount(props: any) {
 
 - 主应用使用 `ApiPlugin` 插件的时候, 传入 `getRoutesApi` 接口, SDK 会自动调用并注册路由信息
 
-- 主应用使用 `<MainApp />` 
+- 主应用使用 `<MainApp />`
 
 ### `zustand` 全局状态管理
 
@@ -74,20 +74,46 @@ export async function mount(props: any) {
 
 ### 图标库
 
-- 目前两种方案
+- 方案一: 封装成单独的 `@zxiaosi/icons` 包
+  - 优点: 方便使用
+  - 缺点: 会导致包体积一直增大
 
-- 方案一: 封装成单独的 `@zxiaosi/icons` 包, 优点方便使用, 缺点会导致包体积一直增大
-
-- 方案二: 主应用使用 `ConfigPlugin` 插件的时候, 传入 `iconfontUrl` 地址, `SDK` 会自动加载图标库, 项目中通过从 `SDK` 中导出 `<IconFont />` 使用图标, 优点是不用打包, 确定是会报 `React 多实例错误`, 需要排除依赖
+- 方案二: 主应用使用 `ConfigPlugin` 插件的时候, 传入 `iconfontUrl` 地址, `SDK` 会自动加载图标库, 项目中通过从 `SDK` 中导出 `<IconFont />` 使用图标
+  - 优点: 不用打包
+  - 缺点：会报 `React 多实例错误`, 需要排除依赖
 
 ### 路由动态添加
 
 - 主应用使用 `ConfigPlugin` 插件的时候, 传入 `customRoutes` 属性, `SDK` 会注册路由信息, 当前只支持最外层路由, 子路由不支持
 
+### Echarts 图表
+
+- 方案一: 语言包放前端
+  - 优点: 切换不需要刷新页面
+  - 缺点: 图表的国际化不好实现，在调用接口之前，并不知道图表的xAxis.data（x轴文案）和 series.name（tooltip对应的名称），所以需要后端返回
+
+- 方案二: 语言包放在后端（接口返回）
+  - 优点: 可以满足图表需求, 且能不发布修改
+  - 缺点: 需要刷新页面或者刷新组件重新请求接口
+    1. 当语言切换时, `window.location.reload()` 刷新页面重新请求接口
+    2. 当语言切换时, 添加请求接口回调, 刷新根组件
+    ```tsx
+    const AppWrapper = () => {
+      const containerKey = useMemo(
+        () => new Date().getTime().toString(),
+        [lang],
+      );
+      return (
+        <div key={containerKey}>
+          <App />
+        </div>
+      );
+    };
+    ```
+
 ### 待开发
 
-- [] echart 样式
-- [] ClI 工具
+- [] Cli 工具
 
 ## 如何开发一个自己的插件？
 
