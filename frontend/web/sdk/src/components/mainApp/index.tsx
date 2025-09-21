@@ -29,9 +29,13 @@ const MainApp: React.FC = () => {
     ...sdk.config.customRoutes,
   ];
 
-  const [setTheme, setLocale] = useStore(
+  const [setTheme, setLocale, setInitState] = useStore(
     sdk.store,
-    useShallow((state) => [state.setTheme, state.setLocale]),
+    useShallow((state) => [
+      state.setTheme,
+      state.setLocale,
+      state.setInitState,
+    ]),
   );
 
   const [loading, setLoading] = useState(false);
@@ -86,7 +90,8 @@ const MainApp: React.FC = () => {
 
       setRouter(allRoutes);
 
-      sdk.app = { ...sdk.app, allRoutes, microApps, menuData, ...userInfo };
+      sdk.app = { ...sdk.app, allRoutes, microApps, menuData };
+      setInitState(userInfo);
     } catch (error) {
       setThemeLocale();
       setLoading(() => false);

@@ -2,10 +2,14 @@ import { Plugin } from '@/types';
 import { createStore } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { AppStateStoreProps, createAppStateSlice } from './createAppState';
+import { createInitStateSlice, InitStateStoreProps } from './createInitState';
 import { createLocaleSlice, LocaleStoreProps } from './createLocale';
 import { createThemeSlice, ThemeStoreProps } from './createTheme';
 
-type StoreProps = AppStateStoreProps & LocaleStoreProps & ThemeStoreProps;
+type StoreProps = AppStateStoreProps &
+  InitStateStoreProps &
+  LocaleStoreProps &
+  ThemeStoreProps;
 
 type StoreResult = typeof globalStore;
 
@@ -16,6 +20,7 @@ type StoreResult = typeof globalStore;
 const globalStore = createStore<StoreProps>()(
   subscribeWithSelector((...a) => ({
     ...createAppStateSlice(...a),
+    ...createInitStateSlice(...a),
     ...createLocaleSlice(...a),
     ...createThemeSlice(...a),
   })),

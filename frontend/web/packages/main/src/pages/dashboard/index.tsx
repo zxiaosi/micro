@@ -30,9 +30,7 @@ const Dashboard = () => {
     tooltip: {
       trigger: 'axis',
     },
-    legend: {
-      data: ['邮件营销', '联盟广告', '视频广告'],
-    },
+    legend: {},
     toolbox: {
       feature: {
         saveAsImage: {},

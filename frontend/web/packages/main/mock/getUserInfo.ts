@@ -16,6 +16,7 @@ const useInfo = {
   ],
   roles: ['admin'],
   system: {
+    // 后端保存的系统设置
     // theme: 'light',
     // locale: 'zh-CN',
   },
