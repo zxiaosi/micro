@@ -8,6 +8,13 @@ interface ConfigProps {
   /** 环境变量 */
   env?: Record<string, any>;
 
+  /**
+   * qiankun模式(切换模式后请打开新的窗口)
+   * - 'router': 基于路由模式
+   * - 'load': 手动加载模式
+   */
+  qiankunMode?: 'router' | 'load';
+
   /** Token存储名称 */
   tokenName?: string;
   /** 主题存储名称  */
@@ -61,6 +68,8 @@ const ConfigPlugin: Plugin<'config'> = {
     // 默认插件配置
     const defaultOptions = {
       env: {},
+
+      qiankunMode: 'router',
 
       tokenName: 'token',
       themeName: 'theme',

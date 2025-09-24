@@ -1,16 +1,19 @@
 import { Plugin, UserInfo } from '@/types';
 import { MenuDataItem } from '@ant-design/pro-layout';
 import { merge } from 'es-toolkit';
-import { ObjectType, RegistrableApp } from 'qiankun';
+import { MicroApp, ObjectType, RegistrableApp } from 'qiankun';
 import { RouteObject } from 'react-router-dom';
 
 interface AppProps {
   /** 菜单数据 */
   menuData?: MenuDataItem[];
-  /** 微应用信息 */
-  microApps?: RegistrableApp<ObjectType>[];
   /** 所有路由信息 */
   allRoutes?: RouteObject[];
+
+  /** 微应用信息 */
+  microApps?: RegistrableApp<ObjectType>[];
+  /** 微应用实例 */
+  microAppsInstance?: Map<string, MicroApp>;
 
   /** 用户信息 */
   user?: UserInfo['user'];
@@ -54,8 +57,10 @@ const AppPlugin: Plugin<'app'> = {
     // 默认插件配置
     const defaultOptions = {
       menuData: [],
-      microApps: [],
       allRoutes: [],
+
+      microApps: [],
+      microAppsInstance: new Map(),
 
       user: null,
       permissions: [],
@@ -69,12 +74,25 @@ const AppPlugin: Plugin<'app'> = {
         localStorage.removeItem(sdk.config.tokenName);
 
         // 获取当前页路由
-        const path = window.location.pathname;
+        const path = location.pathname;
+        const loginPath = sdk.config.loginPath;
         const redirect = encodeURIComponent(path || '/');
-        const loginPath = `${sdk.config.loginPath}?redirect=${redirect}`;
+        const allPath =
+          path === loginPath ? loginPath : `${loginPath}?redirect=${redirect}`;
 
-        // 跳转登录页(这里必须刷新一下页面, 否则qiankun实例不会销毁, 登录后会直接mount子应用, 而不是bootstrap子应用)
-        window.location.replace(loginPath);
+        if (sdk.config.qiankunMode === 'router') {
+          // 跳转登录页(这里必须刷新一下页面, 否则qiankun实例不会销毁, 登录后会直接mount子应用, 而不是bootstrap子应用)
+          window.location.replace(allPath);
+        } else {
+          sdk.app.allRoutes = sdk.app.allRoutes.filter(
+            (item) => item.path !== '/',
+          );
+          sdk.app.microApps = [];
+          sdk.app.microAppsInstance.forEach((item) => item.unmount());
+          sdk.app.microAppsInstance.clear();
+          sdk.store.getState().setInitState(null);
+          sdk.client.navigate(allPath, { replace: true });
+        }
       },
       getRedirectPath: () => {
         // 1. 优先使用指定值

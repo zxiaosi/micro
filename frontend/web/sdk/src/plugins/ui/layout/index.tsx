@@ -3,7 +3,6 @@ import { ProLayout } from '@ant-design/pro-layout';
 import { memo, Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router-dom';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 
 /** 布局组件 */
 const BaseLayout: React.FC = () => {
@@ -11,10 +10,7 @@ const BaseLayout: React.FC = () => {
   const location = useLocation();
   const matches = useMatches();
 
-  const [locale, initState] = useStore(
-    sdk.store,
-    useShallow((state) => [state.locale, state.initState]),
-  );
+  const locale = useStore(sdk.store, (state) => state.locale);
 
   const [isAuth, setIsAuth] = useState(false);
 
@@ -35,7 +31,8 @@ const BaseLayout: React.FC = () => {
     const pathName = location.pathname;
 
     // 是否有用户信息
-    if (!initState.user) return sdk.app.pageToLogin();
+    if (!sdk.app.user || Object.keys(sdk.app.user).length === 0)
+      return sdk.app.pageToLogin();
 
     // 是否有权限
     setIsAuth(sdk.app.permissions.includes(pathName));

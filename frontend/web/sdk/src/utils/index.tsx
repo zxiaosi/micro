@@ -91,7 +91,7 @@ export const transformRoutesUtil = (
       // 添加子应用信息
       microAppsMap.set(name, microAppInfo);
 
-      element = sdk.ui.renderComponent('Microapp', { rootId }); // 子应用挂载组件
+      element = sdk.ui.renderComponent('Microapp', { name, rootId }); // 子应用挂载组件
     } else if (component === 'Outlet') {
       element = <Outlet />; // 路由出口组件
     } else {

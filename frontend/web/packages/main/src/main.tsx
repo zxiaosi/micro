@@ -33,6 +33,7 @@ sdk
   .use(AppPlugin)
   .use(ClientPlugin)
   .use(ConfigPlugin, {
+    qiankunMode: 'load',
     customRoutes: [{ path: '/guide', element: <Guide /> }],
     antdConfig: { theme },
     proLayoutConfig: {

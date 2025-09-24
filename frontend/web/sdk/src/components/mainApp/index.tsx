@@ -65,7 +65,11 @@ const MainApp: React.FC = () => {
       // 处理路由数据
       const { microApps, menuData } = handleRoutesUtil(routes, sdk);
 
-      if (microApps && microApps.length) {
+      if (
+        sdk.config.qiankunMode === 'router' &&
+        microApps &&
+        microApps.length
+      ) {
         // 注册微应用
         registerMicroApps(microApps, lifeCyclesUtil);
 
@@ -82,7 +86,7 @@ const MainApp: React.FC = () => {
         { path: '/', element: <Navigate to={firstPath} replace /> },
         {
           path: '/',
-          element: sdk.ui.renderComponent('Layout', { menuData }),
+          element: sdk.ui.renderComponent('Layout'),
           children: menuData,
           errorElement: <>找不到页面</>,
         },
